@@ -272,7 +272,7 @@ export class GachaScene extends Phaser.Scene {
         fx.add(T(this, 380, 84, rarityName(r.rarity), { size: 12, color: col, bold: true, stroke: true }));
         fx.add(T(this, 380, 102, c.name, { size: c.name.length > 5 ? 24 : 36, color: '#ffffff', stroke: true }));
         fx.add(T(this, 380, 148, `${c.title} · ${App.content.domainName(c.domain)}`, { color: C.dim, stroke: true, wrap: 240 }));
-        fx.add(T(this, 380, 174, `"${c.line}"`, { color: C.text, wrap: 240, stroke: true }));
+        if (c.line) fx.add(T(this, 380, 174, `"${c.line}"`, { color: C.text, wrap: 240, stroke: true }));
         fx.add(T(this, 380, 226, this.dupText(r), { bold: true, color: r.isNew ? C.accent : C.gold, stroke: true }));
         if (r.pity) fx.add(T(this, 380, 246, '천장 도달!', { size: 10, color: C.gold, stroke: true }));
       }

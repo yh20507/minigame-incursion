@@ -1412,5 +1412,187 @@
   ],
   "desc": "공허의 갑피와 하나가 된 사냥꾼. 균열 너머의 위협에 가장 민감하다.",
   "line": "공허도 이 균열은 못 넘어."
+ },
+ {
+  "id": "sl_yuni",
+  "name": "아야츠노 유니",
+  "title": "1기생",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 5,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "지구에서 깨어난 알리콘. 게임과 저스트 채팅 방송을 한다.",
+  "line": ""
+ },
+ {
+  "id": "sl_huya",
+  "name": "사키하네 후야",
+  "title": "1기생 · Everys",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "한때 별이었던 고대의 엘더 드래곤. 스텔라이브의 첫 전학생.",
+  "line": ""
+ },
+ {
+  "id": "sl_hina",
+  "name": "시라유키 히나",
+  "title": "2기생 · Universe",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 12
+   }
+  ],
+  "desc": "아이돌의 꿈을 접은, 차분한 목소리의 가수이자 피아니스트.",
+  "line": ""
+ },
+ {
+  "id": "sl_mashiro",
+  "name": "네네코 마시로",
+  "title": "2기생 · Universe",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 12
+   }
+  ],
+  "desc": "고양이 동료들을 찾아 헤매는 외계인. 공포 게임을 즐긴다.",
+  "line": ""
+ },
+ {
+  "id": "sl_lize",
+  "name": "아카네 리제",
+  "title": "2기생 · Universe",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   }
+  ],
+  "desc": "피보다 음악을 좋아하는 하프 뱀파이어.",
+  "line": ""
+ },
+ {
+  "id": "sl_tabi",
+  "name": "아라하시 타비",
+  "title": "2기생 · Universe",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "다른 우주에서 온 보물 사냥꾼.",
+  "line": ""
+ },
+ {
+  "id": "sl_shibuki",
+  "name": "텐코 시부키",
+  "title": "3기생 · Cliché",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "천 년 묵은 여우신이었지만 지금은 게임에 빠진 집순이.",
+  "line": ""
+ },
+ {
+  "id": "sl_rin",
+  "name": "아오쿠모 린",
+  "title": "3기생 · Cliché",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "진심 어린 서비스를 배우러 온 전직 지하 메이드 콘셉트 아이돌.",
+  "line": ""
+ },
+ {
+  "id": "sl_nana",
+  "name": "하나코 나나",
+  "title": "3기생 · Cliché",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "정체를 숨기고 도망 중인 전직 비밀 요원.",
+  "line": ""
+ },
+ {
+  "id": "sl_riko",
+  "name": "유즈하 리코",
+  "title": "3기생 · Cliché",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 5
+   }
+  ],
+  "desc": "마왕을 쓰러뜨린 뒤 다시 용사가 되고 싶은 용사.",
+  "line": ""
  }
 ]
