@@ -1,6 +1,35 @@
 [
-  { "id": "all", "name": "통합 균열", "type": "all", "desc": "열린 모든 영역의 캐릭터가 같은 확률로 등장한다." },
-  { "id": "pickup_ashen", "name": "잿빛 균열", "type": "pickup", "domain": "ashen", "desc": "잿빛 왕관 캐릭터 확률 증가" },
-  { "id": "pickup_neon", "name": "네온 균열", "type": "pickup", "domain": "neon", "desc": "네온 하버 캐릭터 확률 증가" },
-  { "id": "pickup_nebula", "name": "성운 균열", "type": "pickup", "domain": "nebula", "desc": "성운 표류선 캐릭터 확률 증가" }
+ {
+  "id": "standard",
+  "name": "상시 균열",
+  "type": "standard",
+  "desc": "게임 오리지널 캐릭터 30종과 아이템이 나온다. 언제든 열려 있다."
+ },
+ {
+  "id": "b_marvel",
+  "name": "마블 균열",
+  "type": "world",
+  "world": "marvel",
+  "start": "2026-10-28",
+  "end": null,
+  "desc": "한정 균열. 이 세계관의 캐릭터와 아이템만 나온다. 기간이 끝나면 닫힌다."
+ },
+ {
+  "id": "b_onepiece",
+  "name": "원피스 균열",
+  "type": "world",
+  "world": "onepiece",
+  "start": "2026-10-28",
+  "end": null,
+  "desc": "한정 균열. 이 세계관의 캐릭터와 아이템만 나온다. 기간이 끝나면 닫힌다."
+ },
+ {
+  "id": "b_lol",
+  "name": "리그 오브 레전드 균열",
+  "type": "world",
+  "world": "lol",
+  "start": "2026-10-28",
+  "end": null,
+  "desc": "한정 균열. 이 세계관의 캐릭터와 아이템만 나온다. 기간이 끝나면 닫힌다."
+ }
 ]

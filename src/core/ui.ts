@@ -227,7 +227,8 @@ export function charSlot(
       c.once('destroy', () => tw.remove());
     }
     const b = App.store.save.owned[ch.id]?.b ?? 0;
-    if (owned && b > 0) c.add(T(scene, size - 3, size - 12, '+' + b, { size: 10, align: 'right', color: C.gold, stroke: true }));
+    if (owned && b > 0) c.add(T(scene, size - 3, size - 12, b + '강', { size: 10, align: 'right', color: C.gold, stroke: true }));
+    if (size >= 40) c.add(T(scene, 3, 1, '★' + ch.rarity, { size: 10, color: owned ? RARITY_COLORS[ch.rarity] : '#3a3270', stroke: true }));
     if (o.label) {
       c.add(T(scene, size / 2, size + 2, owned ? ch.name : '???', { size: 10, align: 'center', color: owned ? C.text : C.faint }));
     }
@@ -251,8 +252,13 @@ export function starsRow(scene: Phaser.Scene, x: number, y: number, n: number, m
   return c;
 }
 
+/** 등급 표시: ★1 ~ ★5 를 별 개수로 */
 export function rarityName(r: number) {
-  return App.content.rarity(r)?.name ?? '';
+  return r > 0 ? '★'.repeat(r) : '아이템';
+}
+
+export function enhanceLabel(b: number) {
+  return b > 0 ? `${b}강` : '';
 }
 
 /** 화면 배경 (영역 배경 + 어둡게) */

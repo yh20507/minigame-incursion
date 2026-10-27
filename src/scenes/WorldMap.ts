@@ -54,10 +54,11 @@ export class WorldMapScene extends Phaser.Scene {
       ['차원 균열', '뽑기', () => go(this, 'Gacha'), false],
       ['도감', `${st.ownedChars().length}/${App.content.chars.length}`, () => go(this, 'Collection')],
       ['편성', '팀 · 패시브', () => go(this, 'Team')],
-      ['도전', '번개 · 오늘 · 마라톤', () => go(this, 'Challenge'), !st.modeUnlocked('micro')],
+      ['도전', '번개·오늘·마라톤', () => go(this, 'Challenge'), !st.modeUnlocked('micro')],
+      ['가방', '아이템', () => go(this, 'Bag')],
       ['설정', '', () => go(this, 'Settings')],
     ];
-    const bw = 118,
+    const bw = 100,
       gap = 8,
       x0 = (W - (bw * menu.length + gap * (menu.length - 1))) / 2;
     menu.forEach(([label, sub, fn, locked], i) => {
@@ -201,8 +202,8 @@ export class WorldMapScene extends Phaser.Scene {
       }
       audio.sfx('confirm');
       const playData = { mode: 'final', domain: 'rift' };
-      if (!st.save.story['final_boss']) go(this, 'Story', { id: 'final_boss', next: 'Play', nextData: playData });
-      else go(this, 'Play', playData);
+      if (!st.save.story['final_boss']) go(this, 'Story', { id: 'final_boss', next: 'Prep', nextData: playData });
+      else go(this, 'Prep', playData);
     });
   }
 }

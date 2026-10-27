@@ -1,12 +1,12 @@
 import Phaser from 'phaser';
 import { App, C, H, W } from '../core/app';
 import { Content } from '../core/content';
-import { makeBgTextures, makeCharTextures, makeIconTextures } from '../core/art';
+import { makeBgTextures, makeCharTextures, makeIconTextures, makeItemTextures } from '../core/art';
 import { LocalBackend, SupabaseBackend, loadOnlineConfig } from '../core/backend';
 import { Store } from '../core/store';
 import { T } from '../core/ui';
 
-const DATA = ['domains', 'minigames', 'characters', 'gacha', 'banners', 'synergies', 'challenges', 'story'];
+const DATA = ['domains', 'minigames', 'characters', 'gacha', 'banners', 'synergies', 'challenges', 'story', 'worlds', 'items'];
 
 export class BootScene extends Phaser.Scene {
   constructor() {
@@ -28,8 +28,10 @@ export class BootScene extends Phaser.Scene {
     for (const ch of App.content.chars) {
       this.load.image('spr_' + ch.id, `assets/chars/${ch.id}_sprite.png`);
       this.load.image('art_' + ch.id, `assets/chars/${ch.id}_art.png`);
+      if (ch.rarity === 5) this.load.image('full_' + ch.id, `assets/chars/${ch.id}_full.png`);
     }
-    for (const id of [...App.content.domains.map((d) => d.id), 'rift']) this.load.image('bg_' + id, `assets/bg/${id}.png`);
+    for (const id of [...App.content.domains.map((d) => d.id), 'rift', ...App.content.worlds.map((w) => w.id)]) this.load.image('bg_' + id, `assets/bg/${id}.png`);
+    for (const it of App.content.items) this.load.image('it_' + it.id, `assets/items/${it.id}.png`);
     this.load.image('logo', 'assets/ui/logo.png');
     this.load.once('complete', () => this.finish());
     this.load.start();
@@ -39,6 +41,7 @@ export class BootScene extends Phaser.Scene {
     makeIconTextures(this);
     makeCharTextures(this, App.content);
     makeBgTextures(this, App.content);
+    makeItemTextures(this, App.content);
 
     const cfg = await loadOnlineConfig();
     if (cfg) {

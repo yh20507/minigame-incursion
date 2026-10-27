@@ -1,7 +1,7 @@
 import type { Backend, SaveEvent } from './backend';
 import type { Content } from './content';
-import { rollPulls } from './gacha';
-import type { Bonus, CharDef, DomainDef, PullResult, SaveData } from './types';
+import { addDupe, rollPulls } from './gacha';
+import type { BannerDef, Bonus, CharDef, DomainDef, ItemDef, PullResult, SaveData } from './types';
 import { todayKey } from './rng';
 
 export function defaultSave(content: Content): SaveData {
@@ -10,7 +10,8 @@ export function defaultSave(content: Content): SaveData {
     coins: content.gacha.startCoins,
     pity: { legend: 0, ultra: 0 },
     totalPulls: 0,
-    owned: { teumsae: { b: 0, at: Date.now() } },
+    owned: { teumsae: { b: 0, d: 0, at: Date.now() } },
+    items: {},
     scores: {},
     team: { leader: 'teumsae', supports: [null, null] },
     story: {},
@@ -45,6 +46,12 @@ export class Store {
   /** 데이터 파일이 바뀌어 사라진 캐릭터 등을 정리 */
   private sanitize() {
     for (const id of Object.keys(this.save.owned)) if (!this.content.hasChar(id)) delete this.save.owned[id];
+    const max = this.content.gacha.enhance.max;
+    for (const o of Object.values(this.save.owned)) {
+      o.b = Math.min(o.b ?? 0, max);
+      o.d = o.d ?? 0;
+    }
+    this.save.items = this.save.items ?? {};
     if (!this.save.owned[this.save.team.leader]) this.save.team.leader = 'teumsae';
     this.save.team.supports = [0, 1].map((i) => {
       const id = this.save.team.supports[i];
@@ -95,13 +102,31 @@ export class Store {
   unlockedGames() {
     return this.unlockedDomains().flatMap((d) => d.games);
   }
-  gachaPool(): CharDef[] {
-    const open = new Set(this.unlockedDomains().map((d) => d.id));
-    return this.content.chars.filter((c) => c.pool && open.has(c.domain));
+  /** 균열별 캐릭터 풀: 상시 = 오리지널, 세계관 = 그 세계관 */
+  gachaPool(bannerId: string): CharDef[] {
+    const b = this.content.banners.find((x) => x.id === bannerId);
+    if (!b) return [];
+    if (b.type === 'world') return this.content.chars.filter((c) => c.pool && c.origin === 'world' && c.domain === b.world);
+    return this.content.chars.filter((c) => c.pool && c.origin === 'original');
+  }
+  bannerActive(b: BannerDef) {
+    const today = todayKey();
+    if (b.start && today < b.start) return false;
+    if (b.end && today > b.end) return false;
+    return true;
   }
   availableBanners() {
-    const open = new Set(this.unlockedDomains().map((d) => d.id));
-    return this.content.banners.filter((b) => b.type === 'all' || (b.domain && open.has(b.domain)));
+    return this.content.banners.filter((b) => this.bannerActive(b));
+  }
+  /** 도감에 보여줄 세계관: 균열이 한 번이라도 열렸던 것 */
+  visibleWorlds() {
+    const today = todayKey();
+    return this.content.worlds.filter((w) =>
+      this.content.banners.some((b) => b.world === w.id && (!b.start || b.start <= today)),
+    );
+  }
+  itemCount(id: string) {
+    return this.save.items[id] ?? 0;
   }
   owns(id: string) {
     return !!this.save.owned[id];
@@ -129,11 +154,12 @@ export class Store {
       if (!this.content.hasChar(m.id)) continue;
       const ch = this.content.char(m.id);
       const br = this.save.owned[m.id]?.b ?? 0;
-      const mult = 1 + 0.2 * br;
+      const enh = this.content.gacha.enhance;
+      const mult = 1 + enh.bonusPerLevel * br;
       for (const p of ch.passives) {
         if (p.domain && p.domain !== domainId) continue;
         if (p.type === 'shield') {
-          if (m.f === 1) b.shield += p.value + (br >= 5 ? 1 : 0);
+          if (m.f === 1) b.shield += p.value + (br >= enh.max ? 1 : 0);
           continue;
         }
         const v = p.value * mult * m.f;
@@ -147,6 +173,14 @@ export class Store {
         const s = this.content.synergies.set;
         b[s.type] += s.value;
         b.notes.push(`세트 보너스: ${this.content.domainName(domainId)} 코인 +${s.value}%`);
+      }
+    }
+    for (const w of this.content.worlds) {
+      const wc = this.content.chars.filter((c) => c.origin === 'world' && c.domain === w.id);
+      if (wc.length && wc.every((c) => this.save.owned[c.id])) {
+        const ws = this.content.synergies.worldSet;
+        b[ws.type] += ws.value;
+        b.notes.push(`${w.name} 완성: ${effectLabel(ws.type, ws.value)}`);
       }
     }
     const ids = new Set(this.teamIds());
@@ -165,21 +199,21 @@ export class Store {
   }
 
   // ---------- 변경 ----------
-  async recordResult(gameId: string, score: number, domainId: string) {
+  async recordResult(gameId: string, score: number, domainId: string, extraCoinPct = 0) {
     const g = this.content.game(gameId);
     const rec = this.save.scores[gameId] ?? { best: 0, stars: 0, plays: 0 };
     const stars = g.stars.filter((s) => score >= s).length;
     const newStars = Math.max(0, stars - rec.stars);
     const newBest = score > rec.best;
     const bonus = this.bonus(domainId);
-    const coins = Math.floor(score * g.coinRate * (1 + bonus.coin / 100)) + newStars * 100;
+    const coins = Math.floor(score * g.coinRate * (1 + (bonus.coin + extraCoinPct) / 100)) + newStars * 100;
     rec.best = Math.max(rec.best, score);
     rec.stars = Math.max(rec.stars, stars);
     rec.plays += 1;
     this.save.scores[gameId] = rec;
     this.save.coins += coins;
     await this.commit({ t: 'result', game: gameId, score, stars, coins });
-    return { stars, newStars, newBest, coins, best: rec.best, coinBonus: bonus.coin };
+    return { stars, newStars, newBest, coins, best: rec.best, coinBonus: bonus.coin + extraCoinPct };
   }
 
   async addCoins(n: number) {
@@ -190,7 +224,7 @@ export class Store {
 
   async grant(charId: string) {
     if (this.save.owned[charId]) return false;
-    this.save.owned[charId] = { b: 0, at: Date.now() };
+    this.save.owned[charId] = { b: 0, d: 0, at: Date.now() };
     await this.commit({ t: 'grant', id: charId });
     return true;
   }
@@ -215,37 +249,67 @@ export class Store {
     return first;
   }
 
-  async pull(bannerId: string, count: number): Promise<PullResult[]> {
+  async pull(bannerId: string, multi: boolean): Promise<PullResult[]> {
     const cfg = this.content.gacha;
-    const cost = count >= 10 ? cfg.cost.ten : cfg.cost.single * count;
+    const cost = multi ? cfg.cost.multi : cfg.cost.single;
+    const count = multi ? cfg.cost.multiCount : 1;
     if (this.save.coins < cost) throw new Error('코인이 부족해요');
     const banner = this.content.banners.find((b) => b.id === bannerId)!;
-    const pickup = banner.type === 'pickup' ? banner.domain ?? null : null;
-    const domains = this.unlockedDomains().map((d) => d.id);
+    if (!this.bannerActive(banner)) throw new Error('지금은 닫힌 균열이에요');
+    const pool = this.gachaPool(bannerId);
 
-    const online = await this.backend.pull(bannerId, pickup, count, domains);
+    const online = await this.backend.pull(bannerId, pool.map((c) => c.id), multi);
     let results: PullResult[];
     if (online) {
       results = online.results;
       this.save.coins = online.coins;
       this.save.pity = online.pity;
       this.save.totalPulls = online.totalPulls;
+      this.save.items = online.items;
       for (const r of results) {
-        if (r.isNew) this.save.owned[r.id] = { b: 0, at: Date.now() };
-        else if (this.save.owned[r.id]) this.save.owned[r.id].b = r.b;
+        if (r.kind !== 'char') continue;
+        const o = this.save.owned[r.id];
+        if (o) {
+          o.b = r.b;
+          o.d = r.d;
+        } else this.save.owned[r.id] = { b: r.b, d: r.d, at: Date.now() };
       }
     } else {
       this.save.coins -= cost;
-      results = rollPulls(this.save, this.gachaPool(), cfg, pickup, count);
+      results = rollPulls(this.save, pool, cfg, this.content.items, count);
     }
     const now = Date.now();
     this.save.extra.log = [
       ...results.map((r) => ({ id: r.id, r: r.rarity, banner: bannerId, at: now })).reverse(),
       ...this.save.extra.log,
-    ].slice(0, 200);
-    if (online) await this.saveMeta();
-    else await this.commit({ t: 'meta' });
+    ].slice(0, 300);
+    await this.commit({ t: 'meta' });
     return results;
+  }
+
+  /** 출전 전에 아이템 사용. 실제로 쓴 아이템 목록을 돌려준다 */
+  async useItems(ids: string[]): Promise<ItemDef[]> {
+    const used: ItemDef[] = [];
+    for (const id of ids) {
+      if ((this.save.items[id] ?? 0) <= 0) continue;
+      this.save.items[id] -= 1;
+      const it = this.content.item(id);
+      if (it) used.push(it);
+    }
+    if (used.length) await this.commit({ t: 'items', used: used.map((u) => u.id) });
+    return used;
+  }
+
+  /** 만능 조각을 ★1~★3 캐릭터의 중복 1개로 쓴다 */
+  async useShard(charId: string) {
+    const ch = this.content.char(charId);
+    const o = this.save.owned[charId];
+    if (!o || ch.rarity > 3 || o.b >= this.content.gacha.enhance.max) return null;
+    if ((this.save.items['shard'] ?? 0) <= 0) return null;
+    this.save.items['shard'] -= 1;
+    const r = addDupe(this.save, this.content.gacha, ch);
+    await this.commit({ t: 'shard', char: charId });
+    return r;
   }
 
   async updateDaily(score: number, cleared: boolean) {

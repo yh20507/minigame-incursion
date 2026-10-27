@@ -5,6 +5,8 @@ export type SaveEvent =
   | { t: 'result'; game: string; score: number; stars: number; coins: number }
   | { t: 'coins'; n: number }
   | { t: 'grant'; id: string }
+  | { t: 'items'; used: string[] }
+  | { t: 'shard'; char: string }
   | { t: 'meta' };
 
 export interface PullResponse {
@@ -12,6 +14,7 @@ export interface PullResponse {
   coins: number;
   pity: { legend: number; ultra: number };
   totalPulls: number;
+  items: Record<string, number>;
 }
 
 export interface Backend {
@@ -20,7 +23,7 @@ export interface Backend {
   load(def: SaveData): Promise<SaveData>;
   commit(save: SaveData, ev: SaveEvent): Promise<void>;
   /** 온라인 모드 전용. 로컬 모드는 null 을 돌려주고 Store 가 직접 판정한다. */
-  pull(bannerId: string, pickup: string | null, count: number, domains: string[]): Promise<PullResponse | null>;
+  pull(bannerId: string, poolIds: string[], multi: boolean): Promise<PullResponse | null>;
   logout(): Promise<void>;
 }
 
@@ -67,6 +70,7 @@ export function mergeSave(def: SaveData, raw: Partial<SaveData>): SaveData {
   };
   s.extra.log = raw.extra?.log ?? [];
   s.owned = { ...def.owned, ...(raw.owned ?? {}) };
+  s.items = { ...(raw.items ?? {}) };
   return s;
 }
 
@@ -155,14 +159,15 @@ export class SupabaseBackend implements Backend {
         story: prof.story ?? {},
         cleared: prof.cleared ?? {},
         extra: prof.extra ?? def.extra,
+        items: prof.items ?? {},
       });
       s.scores = {};
       for (const r of scores.data ?? []) s.scores[r.game_id] = { best: r.best_score, stars: r.stars, plays: r.plays };
       s.owned = {};
       for (const r of owned.data ?? [])
-        s.owned[r.character_id] = { b: r.breakthrough, at: new Date(r.obtained_at).getTime() };
+        s.owned[r.character_id] = { b: r.level, d: r.dupes, at: new Date(r.obtained_at).getTime() };
       if (!s.owned['teumsae']) {
-        s.owned['teumsae'] = { b: 0, at: Date.now() };
+        s.owned['teumsae'] = { b: 0, d: 0, at: Date.now() };
         await this.sb.rpc('mi_grant_character', { p_char: 'teumsae' });
       }
       localStorage.setItem(this.cacheKey, JSON.stringify(s));
@@ -191,6 +196,12 @@ export class SupabaseBackend implements Backend {
         break;
       case 'grant':
         r = await this.sb.rpc('mi_grant_character', { p_char: ev.id });
+        break;
+      case 'items':
+        r = await this.sb.rpc('mi_use_items', { p_items: ev.used });
+        break;
+      case 'shard':
+        r = await this.sb.rpc('mi_use_shard', { p_char: ev.char });
         break;
       case 'meta':
         r = await this.sb.rpc('mi_save_meta', {
@@ -233,19 +244,15 @@ export class SupabaseBackend implements Backend {
     }
   }
 
-  async pull(bannerId: string, pickup: string | null, count: number, domains: string[]): Promise<PullResponse> {
-    const { data, error } = await this.sb.rpc('mi_pull', {
-      p_banner: bannerId,
-      p_pickup: pickup,
-      p_count: count,
-      p_domains: domains,
-    });
+  async pull(bannerId: string, poolIds: string[], multi: boolean): Promise<PullResponse> {
+    const { data, error } = await this.sb.rpc('mi_pull', { p_banner: bannerId, p_pool: poolIds, p_multi: multi });
     if (error) throw error;
     return {
       results: data.results,
       coins: data.coins,
       pity: { legend: data.pity_legend, ultra: data.pity_ultra },
       totalPulls: data.total_pulls,
+      items: data.items ?? {},
     };
   }
 }

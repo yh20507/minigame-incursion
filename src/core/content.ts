@@ -5,7 +5,9 @@ import type {
   DomainDef,
   GachaConfig,
   GameDef,
+  ItemDef,
   StoryData,
+  WorldDef,
   Synergies,
 } from './types';
 
@@ -19,6 +21,8 @@ export class Content {
   synergies!: Synergies;
   challenges!: Challenges;
   story!: StoryData;
+  worlds: WorldDef[] = [];
+  items: ItemDef[] = [];
 
   private charMap = new Map<string, CharDef>();
   private gameMap = new Map<string, GameDef>();
@@ -34,6 +38,8 @@ export class Content {
     c.synergies = cache.get('synergies');
     c.challenges = cache.get('challenges');
     c.story = cache.get('story');
+    c.worlds = cache.get('worlds');
+    c.items = cache.get('items');
     c.index();
     return c;
   }
@@ -63,12 +69,18 @@ export class Content {
   rarity(r: number) {
     return this.gacha.rarities.find((x) => x.id === r)!;
   }
+  world(id: string) {
+    return this.worlds.find((w) => w.id === id);
+  }
+  item(id: string) {
+    return this.items.find((i) => i.id === id);
+  }
   domainName(id: string) {
     if (id === 'rift') return '균열';
-    return this.domain(id)?.name ?? id;
+    return this.domain(id)?.name ?? this.world(id)?.name ?? id;
   }
   domainColor(id: string) {
     if (id === 'rift') return '#b48cff';
-    return this.domain(id)?.color ?? '#ffffff';
+    return this.domain(id)?.color ?? this.world(id)?.color ?? '#ffffff';
   }
 }

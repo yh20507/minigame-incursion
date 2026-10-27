@@ -10,6 +10,9 @@ export interface CharDef {
   id: string;
   name: string;
   title: string;
+  /** original = 게임 오리지널(상시 균열), special = 스토리·실력 해금, world = 세계관 한정 */
+  origin: 'original' | 'special' | 'world';
+  /** 오리지널·특별은 영역 id, 세계관 캐릭터는 세계관 id */
   domain: string;
   rarity: number;
   pool: boolean;
@@ -58,20 +61,45 @@ export interface RarityDef {
 
 export interface GachaConfig {
   rarities: RarityDef[];
+  /** 아이템이 나올 확률(%) */
+  itemRate: number;
   pity: { legend: number; ultra: number };
-  tenPullGuarantee: number;
-  pickupChance: number;
-  cost: { single: number; ten: number };
-  maxBreakthrough: number;
+  /** 10+1회에서 보장하는 최소 별 */
+  multiGuarantee: number;
+  cost: { single: number; multi: number; multiCount: number };
+  /** need[i] = i강 → i+1강에 필요한 중복 수 */
+  enhance: { max: number; need: number[]; bonusPerLevel: number };
   startCoins: number;
 }
 
 export interface BannerDef {
   id: string;
   name: string;
-  type: 'all' | 'pickup';
-  domain?: string;
+  type: 'standard' | 'world';
+  world?: string;
+  start?: string | null;
+  end?: string | null;
   desc: string;
+}
+
+export interface WorldDef {
+  id: string;
+  name: string;
+  subtitle: string;
+  color: string;
+  desc: string;
+}
+
+export type ItemEffect = 'instant' | 'shield' | 'time' | 'score' | 'coin' | 'revive' | 'shard';
+
+export interface ItemDef {
+  id: string;
+  name: string;
+  desc: string;
+  weight: number;
+  effect: ItemEffect;
+  value: number;
+  color: string;
 }
 
 export interface Crossover {
@@ -84,6 +112,7 @@ export interface Crossover {
 
 export interface Synergies {
   set: { type: PassiveType; value: number; desc: string };
+  worldSet: { type: PassiveType; value: number; desc: string };
   crossovers: Crossover[];
 }
 
@@ -113,7 +142,8 @@ export interface StoryData {
 }
 
 export interface OwnedChar {
-  b: number; // 돌파 수
+  b: number; // 강화 단계 (0~3)
+  d?: number; // 다음 강화를 위해 모은 중복 수
   at: number; // 최초 획득 시각 (ms)
 }
 
@@ -129,6 +159,7 @@ export interface SaveData {
   pity: { legend: number; ultra: number };
   totalPulls: number;
   owned: Record<string, OwnedChar>;
+  items: Record<string, number>;
   scores: Record<string, ScoreRec>;
   team: { leader: string; supports: (string | null)[] };
   story: Record<string, boolean>;
@@ -144,16 +175,23 @@ export interface SaveData {
 
 export interface GachaLogEntry {
   id: string;
+  /** 별 수. 아이템이면 0 */
   r: number;
   banner: string;
   at: number;
 }
 
 export interface PullResult {
+  kind: 'char' | 'item';
   id: string;
+  /** 캐릭터 별 수 (아이템은 0) */
   rarity: number;
   isNew: boolean;
+  /** 강화 단계 */
   b: number;
+  /** 모은 중복 수 */
+  d: number;
+  levelUp: boolean;
   refund: number;
   pity: boolean;
 }

@@ -212,7 +212,7 @@ export function makeCharTextures(scene: Phaser.Scene, content: Content) {
     if (!scene.textures.exists(ak)) {
       const { c, g } = canvas(256, 256);
       const dom = content.domain(ch.domain);
-      const sky = dom?.sky ?? ['#3a2a5a', '#120d22'];
+      const sky = dom?.sky ?? [shade(color, -0.65), '#120d22'];
       const grad = g.createLinearGradient(0, 0, 0, 256);
       grad.addColorStop(0, sky[0]);
       grad.addColorStop(1, sky[1]);
@@ -342,6 +342,7 @@ export function makeBgTextures(scene: Phaser.Scene, content: Content) {
   const themes: { id: string; color: string; sky: [string, string] }[] = [
     ...content.domains.map((d) => ({ id: d.id, color: d.color, sky: d.sky })),
     { id: 'rift', color: '#b48cff', sky: ['#24123d', '#07060f'] },
+    ...content.worlds.map((w) => ({ id: w.id, color: w.color, sky: [shade(w.color, -0.7), '#07060f'] as [string, string] })),
   ];
   for (const t of themes) {
     const key = 'bg_' + t.id;
@@ -424,4 +425,54 @@ export function fitImage(img: Phaser.GameObjects.Image, maxW: number, maxH: numb
   const s = Math.min(maxW / f.width, maxH / f.height);
   img.setScale(s);
   return img;
+}
+
+const ITEM_ICONS: Record<string, { rows: string[]; pal: Record<string, string> }> = {
+  pouch: {
+    rows: ['....1111....', '...122221...', '....1331....', '...122221...', '..12222221..', '.1222442221.', '.1224444221.', '.1222442221.', '.1222222221.', '..11111111..'],
+    pal: { '1': '#5a3a1b', '2': '#c98a4a', '3': '#ffd84b', '4': '#ffd84b' },
+  },
+  shield: {
+    rows: ['....11....', '....22....', '...1221...', '..133331..', '.13444431.', '.13444431.', '.13444431.', '..133331..', '...1111...'],
+    pal: { '1': '#0d0a16', '2': '#9aa3ad', '3': '#5fd3e0', '4': '#bff6ff' },
+  },
+  time: {
+    rows: ['1111111111', '.12222221.', '..133331..', '...1331...', '....11....', '...1221...', '..122221..', '.12333321.', '1111111111'],
+    pal: { '1': '#5a3a1b', '2': '#d9c9a6', '3': '#d9a066' },
+  },
+  score: {
+    rows: ['....1....', '...121...', '1111211111', '.1222221.', '..12221..', '.1221221.', '11.....11'],
+    pal: { '1': '#a03a8a', '2': '#ff5fd2' },
+  },
+  coin: {
+    rows: ['..1111..', '.122221.', '12233221', '12322321', '12322321', '12233221', '.122221.', '..1111..'],
+    pal: { '1': '#8a5a1a', '2': '#ffc845', '3': '#fff2b3' },
+  },
+  revive: {
+    rows: ['.......11', '......121', '.....1221', '....12221', '...12221.', '..12221..', '.12221...', '.1221....', '1.11.....'],
+    pal: { '1': '#6d669a', '2': '#ffffff' },
+  },
+  shard: {
+    rows: ['....1....', '...121...', '..12321..', '.1233321.', '123333321', '.1233321.', '..12321..', '...121...', '....1....'],
+    pal: { '1': '#3a2a6a', '2': '#b48cff', '3': '#e8dcff' },
+  },
+};
+
+export function makeItemTextures(scene: Phaser.Scene, content: Content) {
+  for (const it of content.items) {
+    const key = 'it_' + it.id;
+    if (scene.textures.exists(key)) continue;
+    const ic = ITEM_ICONS[it.id] ?? ITEM_ICONS.shard;
+    const w = Math.max(...ic.rows.map((r) => r.length));
+    const { c, g } = canvas(w, ic.rows.length);
+    ic.rows.forEach((row, y) =>
+      [...row].forEach((chr, x) => {
+        const col = ic.pal[chr];
+        if (!col) return;
+        g.fillStyle = col;
+        g.fillRect(x, y, 1, 1);
+      }),
+    );
+    scene.textures.addCanvas(key, c);
+  }
 }

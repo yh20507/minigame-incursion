@@ -80,7 +80,7 @@ export class ChallengeScene extends Phaser.Scene {
         T(this, x + 10, y + 50, `${need} 해방 후 열린다.`, { size: 10, color: C.faint, wrap: cw - 20 });
         this.add.image(x + cw / 2, y + 110, 'ic_lock').setScale(4);
       }
-      button(this, x + 10, y + 172, cw - 20, 28, open ? '시작' : '잠김', () => go(this, 'Play', { mode: c.key, domain: 'rift' }), {
+      button(this, x + 10, y + 172, cw - 20, 28, open ? '시작' : '잠김', () => go(this, 'Prep', { mode: c.key, domain: 'rift' }), {
         disabled: !open,
         color: c.color,
       });

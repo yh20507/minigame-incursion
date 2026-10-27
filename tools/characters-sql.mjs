@@ -8,15 +8,18 @@ import { dirname, join } from 'node:path';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const chars = JSON.parse(readFileSync(join(root, 'public/data/characters.json'), 'utf8'));
 const gacha = JSON.parse(readFileSync(join(root, 'public/data/gacha.json'), 'utf8'));
+const items = JSON.parse(readFileSync(join(root, 'public/data/items.json'), 'utf8'));
 const q = (s) => `'${String(s).replace(/'/g, "''")}'`;
 
-const rows = chars.map((c) => `  (${q(c.id)}, ${q(c.domain)}, ${c.rarity}, ${c.pool ? 'true' : 'false'})`).join(',\n');
+const rows = chars.map((c) => `  (${q(c.id)}, ${q(c.origin)}, ${q(c.domain)}, ${c.rarity}, ${c.pool ? 'true' : 'false'})`).join(',\n');
 const sql = `-- 자동 생성: tools/characters-sql.mjs (직접 고치지 말고 JSON 을 고친 뒤 다시 생성)
-insert into public.mi_characters (id, domain, rarity, pool) values
+insert into public.mi_characters (id, origin, domain, rarity, pool) values
 ${rows}
-on conflict (id) do update set domain = excluded.domain, rarity = excluded.rarity, pool = excluded.pool;
+on conflict (id) do update set origin = excluded.origin, domain = excluded.domain, rarity = excluded.rarity, pool = excluded.pool;
 
-insert into public.mi_config (key, value) values ('gacha', ${q(JSON.stringify(gacha))}::jsonb)
+insert into public.mi_config (key, value) values
+  ('gacha', ${q(JSON.stringify(gacha))}::jsonb),
+  ('items', ${q(JSON.stringify(items))}::jsonb)
 on conflict (key) do update set value = excluded.value;
 `;
 writeFileSync(join(root, 'supabase/seed.sql'), sql);

@@ -30,12 +30,13 @@ export class ResultScene extends Phaser.Scene {
     let newBest = false;
     let joined: string | null = null;
     let next: { key: string; data?: object } = { key: 'WorldMap' };
+    const boost = (n: number) => Math.floor(n * (1 + (r.coinPct ?? 0) / 100));
     let retry: { key: string; data?: object } | null = null;
 
     switch (r.mode) {
       case 'normal': {
         const g = App.content.game(r.game!);
-        const res = await st.recordResult(g.id, r.score, g.domain);
+        const res = await st.recordResult(g.id, r.score, g.domain, r.coinPct);
         title = r.success ? '타임 업!' : '게임 오버';
         titleColor = r.success ? C.good : C.bad;
         coins = res.coins;
@@ -47,7 +48,7 @@ export class ResultScene extends Phaser.Scene {
         const d = App.content.domain(g.domain)!;
         if (st.bossUnlocked(d.id) && !st.save.cleared[d.id]) lines.push({ t: `${d.name}의 보스 스테이지에 도전할 수 있어요!`, c: C.accent });
         next = { key: 'Domain', data: { id: g.domain } };
-        retry = { key: 'Play', data: { mode: 'normal', game: g.id, domain: g.domain } };
+        retry = { key: 'Prep', data: { mode: 'normal', game: g.id, domain: g.domain } };
         break;
       }
       case 'boss':
@@ -59,7 +60,7 @@ export class ResultScene extends Phaser.Scene {
           const first = await st.markCleared(key);
           title = isFinal ? '설계자와의 놀이, 승리!' : '문지기 해방!';
           titleColor = C.gold;
-          coins = first ? cfg.reward : Math.round(cfg.reward * 0.2);
+          coins = boost(first ? cfg.reward : Math.round(cfg.reward * 0.2));
           await st.addCoins(coins);
           if (first) {
             const gk = isFinal ? 'architect' : App.content.domain(r.domain)!.gatekeeper;
@@ -75,12 +76,12 @@ export class ResultScene extends Phaser.Scene {
         } else {
           title = '도전 실패...';
           titleColor = C.bad;
-          coins = Math.floor(r.score * 0.03);
+          coins = boost(Math.floor(r.score * 0.03));
           await st.addCoins(coins);
           lines.push({ t: '편성을 바꾸거나, 미니게임에서 실력을 쌓고 다시 도전하자.', c: C.dim });
           next = { key: isFinal ? 'WorldMap' : 'Domain', data: isFinal ? {} : { id: r.domain } };
         }
-        retry = { key: 'Play', data: { mode: r.mode, domain: r.domain } };
+        retry = { key: 'Prep', data: { mode: r.mode, domain: r.domain } };
         r.segments.forEach((s, i) => {
           const g = App.content.game(s.game);
           lines.push({ t: `${i + 1}. ${g.name}  ${s.score.toLocaleString()}점  ${s.passed ? '통과' : '실패'}`, c: s.passed ? C.text : C.bad });
@@ -90,38 +91,39 @@ export class ResultScene extends Phaser.Scene {
       case 'micro': {
         title = '번개 모드 종료';
         scoreLabel = '성공한 게임';
-        coins = r.microCleared * ch.micro.coinPerClear;
+        coins = boost(r.microCleared * ch.micro.coinPerClear);
         await st.addCoins(coins);
         newBest = await st.setBest('microBest', r.microCleared);
         lines.push({ t: `최고 기록 ${st.save.extra.microBest}개`, c: C.dim });
         next = { key: 'Challenge' };
-        retry = { key: 'Play', data: { mode: 'micro', domain: 'rift' } };
+        retry = { key: 'Prep', data: { mode: 'micro', domain: 'rift' } };
         break;
       }
       case 'marathon': {
         title = '마라톤 종료';
-        coins = Math.floor(r.score * ch.marathon.coinRate);
+        coins = boost(Math.floor(r.score * ch.marathon.coinRate));
         await st.addCoins(coins);
         newBest = await st.setBest('marathonBest', r.score);
         lines.push({ t: `버틴 시련 ${r.segments.filter((s) => s.passed).length}개 · 최고 ${st.save.extra.marathonBest.toLocaleString()}점`, c: C.dim });
         next = { key: 'Challenge' };
-        retry = { key: 'Play', data: { mode: 'marathon', domain: 'rift' } };
+        retry = { key: 'Prep', data: { mode: 'marathon', domain: 'rift' } };
         break;
       }
       case 'daily': {
         const firstClear = await st.updateDaily(r.score, r.success);
         title = r.success ? '오늘의 도전 클리어!' : '오늘의 도전 실패';
         titleColor = r.success ? C.good : C.bad;
-        coins = Math.floor(r.score * 0.05) + (firstClear ? ch.daily.reward : 0);
+        coins = boost(Math.floor(r.score * 0.05)) + (firstClear ? ch.daily.reward : 0);
         await st.addCoins(coins);
         if (firstClear) lines.push({ t: `첫 클리어 보상 +${ch.daily.reward} 코인`, c: C.gold });
         lines.push({ t: `규칙: ${r.modifier} · 오늘 최고 ${st.dailyToday().best.toLocaleString()}점`, c: C.dim });
         next = { key: 'Challenge' };
-        retry = { key: 'Play', data: { mode: 'daily', domain: 'rift' } };
+        retry = { key: 'Prep', data: { mode: 'daily', domain: 'rift' } };
         break;
       }
     }
 
+    if (r.items?.length) lines.push({ t: '사용한 아이템: ' + r.items.map((i) => App.content.item(i)?.name ?? i).join(', '), c: C.cyan });
     // ---- 화면 ----
     panel(this, 120, 40, 400, 250);
     const tt = T(this, W / 2, 54, title, { size: 24, align: 'center', color: titleColor, stroke: true });

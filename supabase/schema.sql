@@ -4,6 +4,7 @@
 
 create table if not exists public.mi_characters (
   id text primary key,
+  origin text not null default 'original',
   domain text not null,
   rarity int not null check (rarity between 1 and 5),
   pool boolean not null default true
@@ -24,6 +25,7 @@ create table if not exists public.mi_profiles (
   story jsonb not null default '{}'::jsonb,
   cleared jsonb not null default '{}'::jsonb,
   extra jsonb,
+  items jsonb not null default '{}'::jsonb,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -41,7 +43,8 @@ create table if not exists public.mi_scores (
 create table if not exists public.mi_owned_characters (
   user_id uuid not null references auth.users on delete cascade,
   character_id text not null references public.mi_characters (id) on update cascade,
-  breakthrough int not null default 0,
+  level int not null default 0,
+  dupes int not null default 0,
   obtained_at timestamptz not null default now(),
   primary key (user_id, character_id)
 );
@@ -51,6 +54,7 @@ create table if not exists public.mi_gacha_log (
   user_id uuid not null references auth.users on delete cascade,
   banner_id text not null,
   character_id text not null,
+  kind text not null default 'char',
   rarity int not null,
   pity_legend int not null,
   pity_ultra int not null,
@@ -156,122 +160,189 @@ begin
   where user_id = auth.uid();
 end $$;
 
--- 뽑기: 확률·천장·코인 차감·돌파·기록을 한 번에 처리한다.
-create or replace function public.mi_pull(p_banner text, p_pickup text, p_count int, p_domains text[])
+-- 중복 1개 처리 (강화). 최대 강화 뒤에는 코인 환급
+create or replace function public.mi__add_dupe(p_uid uuid, p_char text, p_rarity int, cfg jsonb,
+  out o_level int, out o_dupes int, out o_level_up boolean, out o_refund int)
+language plpgsql security definer set search_path = '' as $$
+declare
+  max_l int := coalesce((cfg -> 'enhance' ->> 'max')::int, 3);
+  need int;
+begin
+  select level, dupes into o_level, o_dupes from public.mi_owned_characters where user_id = p_uid and character_id = p_char for update;
+  o_level_up := false;
+  o_refund := 0;
+  if o_level >= max_l then
+    select (e ->> 'refund')::int into o_refund from jsonb_array_elements(cfg -> 'rarities') e where (e ->> 'id')::int = p_rarity;
+    o_refund := coalesce(o_refund, 0);
+    update public.mi_profiles set coins = coins + o_refund where user_id = p_uid;
+    return;
+  end if;
+  o_dupes := o_dupes + 1;
+  need := coalesce((cfg -> 'enhance' -> 'need' ->> o_level)::int, 1);
+  if o_dupes >= need then
+    o_level := o_level + 1;
+    o_dupes := 0;
+    o_level_up := true;
+  end if;
+  update public.mi_owned_characters set level = o_level, dupes = o_dupes where user_id = p_uid and character_id = p_char;
+end $$;
+revoke execute on function public.mi__add_dupe(uuid, text, int, jsonb) from public, anon, authenticated;
+
+-- 뽑기: 확률·천장·아이템·코인 차감·강화·기록을 한 번에 처리한다.
+-- p_pool: 이번 균열에서 나올 수 있는 캐릭터 id 목록 (클라이언트가 균열 설정에서 계산해 보냄)
+create or replace function public.mi_pull(p_banner text, p_pool text[], p_multi boolean)
 returns jsonb
 language plpgsql security definer set search_path = '' as $$
 declare
   uid uuid := auth.uid();
   cfg jsonb;
+  items_cfg jsonb;
   prof public.mi_profiles;
   cost int;
+  cnt int;
   results jsonb := '[]'::jsonb;
-  total_rate numeric;
   x numeric;
   rr record;
-  rarity int;
+  rar int;
   is_pity boolean;
-  got_rare boolean := false;
+  got_g boolean := false;
   guarantee int;
   pick text;
-  owned_b int;
+  it record;
+  total_w numeric;
+  d record;
   is_new boolean;
-  b int;
-  refund int;
-  max_b int;
   i int;
 begin
   if uid is null then raise exception 'not signed in'; end if;
-  if p_count not in (1, 10) then raise exception 'invalid count'; end if;
   select value into cfg from public.mi_config where key = 'gacha';
-  if cfg is null then raise exception 'gacha config missing'; end if;
-  guarantee := coalesce((cfg ->> 'tenPullGuarantee')::int, 2);
-  max_b := coalesce((cfg ->> 'maxBreakthrough')::int, 5);
-  cost := case when p_count >= 10 then (cfg -> 'cost' ->> 'ten')::int else (cfg -> 'cost' ->> 'single')::int * p_count end;
+  select value into items_cfg from public.mi_config where key = 'items';
+  if cfg is null or items_cfg is null then raise exception 'gacha config missing'; end if;
+  guarantee := coalesce((cfg ->> 'multiGuarantee')::int, 2);
+  cost := case when p_multi then (cfg -> 'cost' ->> 'multi')::int else (cfg -> 'cost' ->> 'single')::int end;
+  cnt := case when p_multi then (cfg -> 'cost' ->> 'multiCount')::int else 1 end;
 
   select * into prof from public.mi_profiles where user_id = uid for update;
   if prof is null then raise exception 'profile missing'; end if;
   if prof.coins < cost then raise exception '코인이 부족해요'; end if;
-  prof.coins := prof.coins - cost;
+  update public.mi_profiles set coins = coins - cost where user_id = uid;
+  select sum((e ->> 'weight')::numeric) into total_w from jsonb_array_elements(items_cfg) e;
 
-  select sum((e ->> 'rate')::numeric) into total_rate from jsonb_array_elements(cfg -> 'rarities') e;
-
-  for i in 1 .. p_count loop
+  for i in 1 .. cnt loop
     prof.pity_legend := prof.pity_legend + 1;
     prof.pity_ultra := prof.pity_ultra + 1;
     is_pity := false;
-    rarity := 0;
+    rar := 0;
     if prof.pity_ultra >= (cfg -> 'pity' ->> 'ultra')::int
-       and exists (select 1 from public.mi_characters c where c.pool and c.domain = any (p_domains) and c.rarity = 5) then
-      rarity := 5; is_pity := true;
+       and exists (select 1 from public.mi_characters c where c.id = any (p_pool) and c.pool and c.rarity = 5) then
+      rar := 5; is_pity := true;
     elsif prof.pity_legend >= (cfg -> 'pity' ->> 'legend')::int
-       and exists (select 1 from public.mi_characters c where c.pool and c.domain = any (p_domains) and c.rarity = 4) then
-      rarity := 4; is_pity := true;
+       and exists (select 1 from public.mi_characters c where c.id = any (p_pool) and c.pool and c.rarity = 4) then
+      rar := 4; is_pity := true;
     else
-      x := random() * total_rate;
+      x := random() * 100;
       for rr in select (e ->> 'id')::int as id, (e ->> 'rate')::numeric as rate
                 from jsonb_array_elements(cfg -> 'rarities') e order by (e ->> 'id')::int desc loop
-        if x < rr.rate then rarity := rr.id; exit; end if;
+        if x < rr.rate then rar := rr.id; exit; end if;
         x := x - rr.rate;
       end loop;
-      if rarity = 0 then rarity := 1; end if;
-      if p_count >= 10 and i = p_count and not got_rare and rarity < guarantee then rarity := guarantee; end if;
+      if p_multi and i = cnt and not got_g and rar < guarantee then rar := guarantee; end if;
     end if;
-    while rarity > 1 and not exists (select 1 from public.mi_characters c where c.pool and c.domain = any (p_domains) and c.rarity = rarity) loop
-      rarity := rarity - 1;
+    while rar > 0 and not exists (select 1 from public.mi_characters c where c.id = any (p_pool) and c.pool and c.rarity = rar) loop
+      rar := rar - 1;
     end loop;
-    if rarity >= guarantee then got_rare := true; end if;
-    if rarity = 5 then prof.pity_ultra := 0; end if;
-    if rarity = 4 then prof.pity_legend := 0; end if;
+    if rar >= guarantee then got_g := true; end if;
+    if rar = 5 then prof.pity_ultra := 0; end if;
+    if rar = 4 then prof.pity_legend := 0; end if;
 
-    pick := null;
-    if p_pickup is not null and (is_pity or random() < coalesce((cfg ->> 'pickupChance')::numeric, 0.5)) then
-      select c.id into pick from public.mi_characters c
-      where c.pool and c.domain = p_pickup and c.domain = any (p_domains) and c.rarity = rarity
-      order by random() limit 1;
+    if rar = 0 then
+      -- 아이템
+      x := random() * total_w;
+      pick := null;
+      for it in select e ->> 'id' as id, (e ->> 'weight')::numeric as w, e ->> 'effect' as effect, (e ->> 'value')::int as v
+                from jsonb_array_elements(items_cfg) e loop
+        if x < it.w then
+          pick := it.id;
+          if it.effect = 'instant' then
+            update public.mi_profiles set coins = coins + it.v where user_id = uid;
+          else
+            update public.mi_profiles set items = jsonb_set(items, array[it.id], to_jsonb(coalesce((items ->> it.id)::int, 0) + 1))
+            where user_id = uid;
+          end if;
+          exit;
+        end if;
+        x := x - it.w;
+      end loop;
+      insert into public.mi_gacha_log (user_id, banner_id, character_id, kind, rarity, pity_legend, pity_ultra)
+      values (uid, p_banner, coalesce(pick, '?'), 'item', 0, prof.pity_legend, prof.pity_ultra);
+      results := results || jsonb_build_object('kind', 'item', 'id', pick, 'rarity', 0, 'isNew', false, 'b', 0, 'd', 0, 'levelUp', false, 'refund', 0, 'pity', false);
+      continue;
     end if;
-    if pick is null then
-      select c.id into pick from public.mi_characters c
-      where c.pool and c.domain = any (p_domains) and c.rarity = rarity
-      order by random() limit 1;
-    end if;
-    if pick is null then raise exception 'empty pool'; end if;
 
-    select breakthrough into owned_b from public.mi_owned_characters where user_id = uid and character_id = pick;
-    is_new := false; b := 0; refund := 0;
-    if not found then
+    select c.id into pick from public.mi_characters c
+    where c.id = any (p_pool) and c.pool and c.rarity = rar order by random() limit 1;
+    is_new := not exists (select 1 from public.mi_owned_characters where user_id = uid and character_id = pick);
+    if is_new then
       insert into public.mi_owned_characters (user_id, character_id) values (uid, pick);
-      is_new := true;
-    elsif owned_b < max_b then
-      update public.mi_owned_characters set breakthrough = breakthrough + 1
-      where user_id = uid and character_id = pick returning breakthrough into b;
+      select 0 as o_level, 0 as o_dupes, false as o_level_up, 0 as o_refund into d;
     else
-      b := owned_b;
-      select (e ->> 'refund')::int into refund from jsonb_array_elements(cfg -> 'rarities') e where (e ->> 'id')::int = rarity;
-      prof.coins := prof.coins + coalesce(refund, 0);
+      select * into d from public.mi__add_dupe(uid, pick, rar, cfg);
     end if;
-
-    insert into public.mi_gacha_log (user_id, banner_id, character_id, rarity, pity_legend, pity_ultra)
-    values (uid, p_banner, pick, rarity, prof.pity_legend, prof.pity_ultra);
-
-    results := results || jsonb_build_object('id', pick, 'rarity', rarity, 'isNew', is_new, 'b', b, 'refund', coalesce(refund, 0), 'pity', is_pity);
+    insert into public.mi_gacha_log (user_id, banner_id, character_id, kind, rarity, pity_legend, pity_ultra)
+    values (uid, p_banner, pick, 'char', rar, prof.pity_legend, prof.pity_ultra);
+    results := results || jsonb_build_object('kind', 'char', 'id', pick, 'rarity', rar, 'isNew', is_new,
+      'b', d.o_level, 'd', d.o_dupes, 'levelUp', d.o_level_up, 'refund', d.o_refund, 'pity', is_pity);
   end loop;
 
   update public.mi_profiles set
-    coins = prof.coins,
     pity_legend = prof.pity_legend,
     pity_ultra = prof.pity_ultra,
-    total_pulls = total_pulls + p_count,
+    total_pulls = total_pulls + cnt,
     updated_at = now()
-  where user_id = uid;
+  where user_id = uid
+  returning * into prof;
 
-  return jsonb_build_object(
-    'results', results,
-    'coins', prof.coins,
-    'pity_legend', prof.pity_legend,
-    'pity_ultra', prof.pity_ultra,
-    'total_pulls', prof.total_pulls + p_count
-  );
+  return jsonb_build_object('results', results, 'coins', prof.coins, 'pity_legend', prof.pity_legend,
+    'pity_ultra', prof.pity_ultra, 'total_pulls', prof.total_pulls, 'items', prof.items);
+end $$;
+
+-- 출전 전 아이템 사용
+create or replace function public.mi_use_items(p_items text[])
+returns jsonb
+language plpgsql security definer set search_path = '' as $$
+declare
+  k text;
+  r jsonb;
+begin
+  if auth.uid() is null then raise exception 'not signed in'; end if;
+  foreach k in array p_items loop
+    update public.mi_profiles set items = jsonb_set(items, array[k], to_jsonb(greatest(coalesce((items ->> k)::int, 0) - 1, 0)))
+    where user_id = auth.uid() and coalesce((items ->> k)::int, 0) > 0;
+  end loop;
+  select items into r from public.mi_profiles where user_id = auth.uid();
+  return r;
+end $$;
+
+-- 만능 조각: ★1~★3 캐릭터에 중복 1개로 사용
+create or replace function public.mi_use_shard(p_char text)
+returns jsonb
+language plpgsql security definer set search_path = '' as $$
+declare
+  uid uuid := auth.uid();
+  cfg jsonb;
+  rar int;
+  d record;
+begin
+  if uid is null then raise exception 'not signed in'; end if;
+  select value into cfg from public.mi_config where key = 'gacha';
+  select rarity into rar from public.mi_characters where id = p_char;
+  if rar is null or rar > 3 then raise exception 'not allowed'; end if;
+  if not exists (select 1 from public.mi_owned_characters where user_id = uid and character_id = p_char) then raise exception 'not owned'; end if;
+  update public.mi_profiles set items = jsonb_set(items, '{shard}', to_jsonb((items ->> 'shard')::int - 1))
+  where user_id = uid and coalesce((items ->> 'shard')::int, 0) > 0;
+  if not found then raise exception 'no shard'; end if;
+  select * into d from public.mi__add_dupe(uid, p_char, rar, cfg);
+  return jsonb_build_object('b', d.o_level, 'd', d.o_dupes, 'levelUp', d.o_level_up, 'refund', d.o_refund);
 end $$;
 
 -- 로그인한 사용자만 함수 실행
@@ -280,10 +351,14 @@ revoke execute on function public.mi_submit_result(text, int, int, int) from pub
 revoke execute on function public.mi_add_coins(int) from public, anon;
 revoke execute on function public.mi_grant_character(text) from public, anon;
 revoke execute on function public.mi_save_meta(jsonb, jsonb, jsonb, jsonb) from public, anon;
-revoke execute on function public.mi_pull(text, text, int, text[]) from public, anon;
+revoke execute on function public.mi_pull(text, text[], boolean) from public, anon;
+revoke execute on function public.mi_use_items(text[]) from public, anon;
+revoke execute on function public.mi_use_shard(text) from public, anon;
 grant execute on function public.mi_ensure_profile(int) to authenticated;
 grant execute on function public.mi_submit_result(text, int, int, int) to authenticated;
 grant execute on function public.mi_add_coins(int) to authenticated;
 grant execute on function public.mi_grant_character(text) to authenticated;
 grant execute on function public.mi_save_meta(jsonb, jsonb, jsonb, jsonb) to authenticated;
-grant execute on function public.mi_pull(text, text, int, text[]) to authenticated;
+grant execute on function public.mi_pull(text, text[], boolean) to authenticated;
+grant execute on function public.mi_use_items(text[]) to authenticated;
+grant execute on function public.mi_use_shard(text) to authenticated;

@@ -14,6 +14,7 @@ export interface PlayData {
   mode: Mode;
   game?: string;
   domain: string;
+  items?: string[];
 }
 
 export interface SegResult {
@@ -31,6 +32,8 @@ export interface RunResult {
   segments: SegResult[];
   microCleared: number;
   modifier?: string;
+  coinPct: number;
+  items: string[];
 }
 
 const HUD_H = 20;
@@ -72,6 +75,11 @@ export class PlayScene extends Phaser.Scene {
   bonus!: Bonus;
   segBonus!: Bonus;
   lastGame = '';
+  items: string[] = [];
+  revive = false;
+  itemScore = 0;
+  itemTime = 0;
+  itemCoin = 0;
 
   // 입력
   keys!: Record<string, Phaser.Input.Keyboard.Key>;
@@ -156,6 +164,18 @@ export class PlayScene extends Phaser.Scene {
         break;
     }
     this.shields = this.bonus.shield;
+    this.items = data.items ?? [];
+    this.revive = false;
+    this.itemScore = this.itemTime = this.itemCoin = 0;
+    for (const id of this.items) {
+      const it = App.content.item(id);
+      if (!it) continue;
+      if (it.effect === 'shield') this.shields += it.value;
+      if (it.effect === 'score') this.itemScore += it.value;
+      if (it.effect === 'time') this.itemTime += it.value;
+      if (it.effect === 'coin') this.itemCoin += it.value;
+      if (it.effect === 'revive') this.revive = true;
+    }
 
     this.bgImg = this.add.image(0, 0, 'bg_rift').setOrigin(0).setDisplaySize(W, H);
     this.add.rectangle(0, 0, W, H, 0x07060f, 0.55).setOrigin(0);
@@ -310,6 +330,7 @@ export class PlayScene extends Phaser.Scene {
     this.lastGame = id;
     this.gameDef = App.content.game(id);
     this.segBonus = App.store.bonus(this.gameDef.domain);
+    this.segBonus.score += this.itemScore;
     this.segScore = 0;
     this.segT = 0;
     this.timeAdj = 0;
@@ -323,7 +344,7 @@ export class PlayScene extends Phaser.Scene {
     const timeBonus = this.segBonus.time;
     switch (this.mode) {
       case 'normal':
-        this.segDur = 45 + timeBonus;
+        this.segDur = 45 + timeBonus + this.itemTime;
         break;
       case 'boss':
         this.segDur = ch.boss.duration;
@@ -332,7 +353,7 @@ export class PlayScene extends Phaser.Scene {
         this.segDur = ch.final.duration;
         break;
       case 'daily':
-        this.segDur = ch.daily.duration + timeBonus;
+        this.segDur = ch.daily.duration + timeBonus + (this.segIdx === 0 ? this.itemTime : 0);
         this.lives = this.gameDef.lives;
         break;
       case 'marathon':
@@ -488,6 +509,13 @@ export class PlayScene extends Phaser.Scene {
       return false;
     }
     this.lives--;
+    if (this.lives <= 0 && this.revive) {
+      this.revive = false;
+      this.lives = 1;
+      audio.sfx('legend');
+      this.cameras.main.flash(300, 255, 255, 255);
+      this.float('부활!', x ?? W / 2, y ?? 120, '#ffffff');
+    }
     this.refreshHud();
     if (this.lives <= 0) {
       this.dead = true;
@@ -552,6 +580,11 @@ export class PlayScene extends Phaser.Scene {
         } else {
           this.lives--;
           label = '실패...';
+          if (this.lives <= 0 && this.revive) {
+            this.revive = false;
+            this.lives = 1;
+            label = '부활!';
+          }
           color = C.bad;
           audio.sfx('bad');
         }
@@ -632,6 +665,8 @@ export class PlayScene extends Phaser.Scene {
       segments: this.results,
       microCleared: this.microCleared,
       modifier: this.modName,
+      coinPct: this.itemCoin,
+      items: this.items,
     };
     go(this, 'Result', r);
   }

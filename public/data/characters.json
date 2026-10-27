@@ -1,50 +1,1416 @@
 [
-  { "id": "teumsae", "name": "틈새", "title": "균열의 정령", "domain": "rift", "rarity": 1, "pool": false, "passives": [{ "type": "coin", "value": 5 }], "desc": "균열에서 태어난 작은 정령. 수다스럽고 호기심이 많다. 방랑자의 첫 동료.", "line": "같이 가자, 방랑자!" },
-
-  { "id": "heim", "name": "하임", "title": "성문 경비병", "domain": "ashen", "rarity": 1, "pool": true, "passives": [{ "type": "time", "value": 2 }], "desc": "무너진 성문을 혼자 지켜온 고참 경비병. 의심이 많지만 정이 깊다.", "line": "성문은 내가 지킨다." },
-  { "id": "brenda", "name": "브렌다", "title": "대장장이", "domain": "ashen", "rarity": 1, "pool": true, "passives": [{ "type": "score", "value": 5 }], "desc": "망치 한 자루로 왕국의 무기를 다 고쳐온 대장장이. 목소리가 크다.", "line": "부러진 건 다 가져와!" },
-  { "id": "felix", "name": "펠릭스", "title": "떠돌이 음유시인", "domain": "ashen", "rarity": 1, "pool": true, "passives": [{ "type": "coin", "value": 5 }], "desc": "몰락한 왕국의 노래를 모으며 떠도는 시인. 박자 감각이 좋다.", "line": "이번 노래의 주인공은 당신이군요." },
-  { "id": "ruth", "name": "루스", "title": "신참 기사", "domain": "ashen", "rarity": 1, "pool": true, "passives": [{ "type": "score", "value": 5, "domain": "ashen" }, { "type": "time", "value": 1 }], "desc": "왕국이 무너진 뒤에 기사 서약을 한 고집쟁이. 검보다 방패를 더 잘 쓴다.", "line": "맡겨만 주십시오!" },
-  { "id": "isolde", "name": "이솔데", "title": "궁수대장", "domain": "ashen", "rarity": 2, "pool": true, "passives": [{ "type": "score", "value": 15, "domain": "ashen" }], "desc": "백 걸음 밖의 사과도 맞히는 명궁. 말수가 적고 계산이 빠르다.", "line": "바람은 읽었다." },
-  { "id": "marcus", "name": "마르쿠스", "title": "연금술사", "domain": "ashen", "rarity": 2, "pool": true, "passives": [{ "type": "coin", "value": 8 }], "desc": "잿더미에서 금을 만들겠다는 꿈을 버리지 못한 연금술사.", "line": "실험은 실패해도 기록은 남지." },
-  { "id": "orwin", "name": "오르윈", "title": "수도사", "domain": "ashen", "rarity": 2, "pool": true, "passives": [{ "type": "time", "value": 3 }], "desc": "무너진 수도원에서 홀로 종을 치는 수도사. 늘 평온하다.", "line": "서두르지 마시오. 시간은 충분하오." },
-  { "id": "garret", "name": "가렛", "title": "용병단장", "domain": "ashen", "rarity": 3, "pool": true, "passives": [{ "type": "score", "value": 12 }], "desc": "돈만 주면 뭐든 한다고 큰소리치지만, 의리 때문에 손해를 더 많이 본다.", "line": "계약 성립이다. 뒤는 맡겨." },
-  { "id": "elowen", "name": "엘로웬", "title": "궁정 마법사", "domain": "ashen", "rarity": 3, "pool": true, "passives": [{ "type": "coin", "value": 12 }], "desc": "왕의 곁을 지키던 마법사. 균열을 연구하며 설계자의 정체를 쫓는다.", "line": "균열의 무늬가 바뀌었어요. 흥미롭네요." },
-  { "id": "nia", "name": "니아", "title": "그림자 첩자", "domain": "ashen", "rarity": 3, "pool": true, "passives": [{ "type": "shield", "value": 1 }, { "type": "score", "value": 5 }], "desc": "왕국의 비밀 첩보원. 누구의 편인지는 아무도 모른다.", "line": "날 본 건 비밀로 해 줘." },
-  { "id": "seraphina", "name": "세라피나", "title": "기사단장", "domain": "ashen", "rarity": 4, "pool": true, "passives": [{ "type": "score", "value": 15 }, { "type": "shield", "value": 1 }], "desc": "왕국 최후의 기사단을 이끄는 단장. 왕을 구하기 위해 검을 놓지 않았다.", "line": "잿빛 왕관의 이름으로, 길을 열겠다." },
-  { "id": "cassian", "name": "카시안", "title": "잿빛 용 기수", "domain": "ashen", "rarity": 4, "pool": true, "passives": [{ "type": "coin", "value": 20 }, { "type": "time", "value": 3 }], "desc": "마지막 남은 잿빛 용과 함께 하늘을 나는 기수. 자유를 무엇보다 사랑한다.", "line": "꽉 잡아. 하늘로 간다!" },
-  { "id": "seraphina_x", "name": "[이변] 세라피나", "title": "균열에 물든 기사단장", "domain": "ashen", "rarity": 5, "pool": true, "passives": [{ "type": "score", "value": 20 }, { "type": "coin", "value": 20 }, { "type": "shield", "value": 1 }], "desc": "균열이 크게 요동친 순간 나타난 또 다른 세라피나. 다른 세계의 기억을 품고 있다.", "line": "...이 세계의 나는, 아직 웃고 있구나." },
-
-  { "id": "gino", "name": "지노", "title": "배달 라이더", "domain": "neon", "rarity": 1, "pool": true, "passives": [{ "type": "time", "value": 2 }], "desc": "빗길 배달로 도시 지도를 머릿속에 다 넣은 라이더. 말이 빠르다.", "line": "30분 안에 못 오면 공짜!" },
-  { "id": "tan", "name": "탄", "title": "노점 요리사", "domain": "neon", "rarity": 1, "pool": true, "passives": [{ "type": "coin", "value": 5 }], "desc": "항구 뒷골목 국수 노점의 주인. 비 오는 날 장사가 제일 잘된다.", "line": "한 그릇 말아줄까?" },
-  { "id": "mira", "name": "미라", "title": "드론 조종사", "domain": "neon", "rarity": 1, "pool": true, "passives": [{ "type": "score", "value": 5 }], "desc": "경비 드론 여섯 대를 동시에 다루는 조종사. 퇴근만 기다린다.", "line": "드론들, 대형 유지." },
-  { "id": "koda", "name": "코다", "title": "거리 DJ", "domain": "neon", "rarity": 1, "pool": true, "passives": [{ "type": "score", "value": 5, "domain": "neon" }, { "type": "coin", "value": 3 }], "desc": "지붕 위에서 해적 방송을 트는 DJ. 도시의 박자를 만든다.", "line": "볼륨 올려!" },
-  { "id": "yuna", "name": "유나", "title": "해커 '픽셀'", "domain": "neon", "rarity": 2, "pool": true, "passives": [{ "type": "score", "value": 15, "domain": "neon" }], "desc": "방화벽을 장난감처럼 다루는 해커. 사탕을 입에 달고 산다.", "line": "보안이 너무 허술한데?" },
-  { "id": "leo", "name": "레오", "title": "의체 수리공", "domain": "neon", "rarity": 2, "pool": true, "passives": [{ "type": "time", "value": 3 }], "desc": "망가진 의체라면 뭐든 고치는 수리공. 정작 자기 팔은 고장 난 채로 둔다.", "line": "나사 하나 빠졌네. 금방 돼." },
-  { "id": "bas", "name": "바스", "title": "밀수선 선장", "domain": "neon", "rarity": 2, "pool": true, "passives": [{ "type": "coin", "value": 8 }], "desc": "항구에서 가장 빠른 배를 모는 밀수꾼. 화물이 뭔지는 묻지 않는다.", "line": "운임은 선불이야." },
-  { "id": "kai", "name": "카이", "title": "기업 경호원", "domain": "neon", "rarity": 3, "pool": true, "passives": [{ "type": "shield", "value": 1 }, { "type": "time", "value": 2 }], "desc": "대기업 회장을 지키던 경호원. 회사가 사라진 뒤에도 습관처럼 주위를 살핀다.", "line": "제 뒤에 계십시오." },
-  { "id": "roxy", "name": "록시", "title": "바이크 갱 두목", "domain": "neon", "rarity": 3, "pool": true, "passives": [{ "type": "score", "value": 12 }], "desc": "네온 고가도로를 지배하는 바이크 갱의 두목. 속도 말고는 관심이 없다.", "line": "느린 건 질색이야." },
-  { "id": "silva", "name": "실바", "title": "정보상 '거미'", "domain": "neon", "rarity": 3, "pool": true, "passives": [{ "type": "coin", "value": 12 }], "desc": "도시의 모든 소문이 모이는 곳에 그녀가 있다. 정보값은 비싸다.", "line": "궁금한 게 있으면, 값을 치러." },
-  { "id": "zero", "name": "제로", "title": "전설의 넷러너", "domain": "neon", "rarity": 4, "pool": true, "passives": [{ "type": "score", "value": 15 }, { "type": "coin", "value": 10 }], "desc": "네트워크 깊은 곳까지 다이브했다 돌아온 유일한 넷러너. 얼굴을 본 사람은 없다.", "line": "접속 완료. 이 세계의 코드는 꽤 엉망이군." },
-  { "id": "lumiere", "name": "루미에르", "title": "네온 가수", "domain": "neon", "rarity": 4, "pool": true, "passives": [{ "type": "coin", "value": 20 }, { "type": "shield", "value": 1 }], "desc": "도시 전체 전광판에 얼굴이 걸린 가수. 무대 밖에서는 조용한 사람이다.", "line": "오늘 밤 무대는 당신을 위한 거야." },
-  { "id": "lumiere_x", "name": "[이변] 루미에르", "title": "균열의 무대에 선 가수", "domain": "neon", "rarity": 5, "pool": true, "passives": [{ "type": "score", "value": 20 }, { "type": "coin", "value": 20 }, { "type": "time", "value": 4 }], "desc": "균열 너머의 무대에서 노래하던 또 다른 루미에르. 노래가 끝나지 않는다.", "line": "앙코르는... 영원히." },
-
-  { "id": "fip", "name": "피프", "title": "화물 정리원", "domain": "nebula", "rarity": 1, "pool": true, "passives": [{ "type": "score", "value": 5, "domain": "nebula" }, { "type": "time", "value": 1 }], "desc": "무중력 화물칸에서 상자를 차곡차곡 쌓는 게 특기인 정리원.", "line": "각 잡아서 쌓아드릴게요!" },
-  { "id": "b07", "name": "B-07", "title": "정비 로봇", "domain": "nebula", "rarity": 1, "pool": true, "passives": [{ "type": "time", "value": 2 }], "desc": "정거장 배관을 수리하는 구형 로봇. 삐빅 소리로 감정을 표현한다.", "line": "삐빅. 수리 개시." },
-  { "id": "margo", "name": "마고", "title": "식당 주인", "domain": "nebula", "rarity": 1, "pool": true, "passives": [{ "type": "coin", "value": 5 }], "desc": "정거장 유일의 식당을 운영하는 주인. 외계인 손님 입맛도 다 외운다.", "line": "배고프면 일단 먹고 해요!" },
-  { "id": "tell", "name": "텔", "title": "우주 우체부", "domain": "nebula", "rarity": 1, "pool": true, "passives": [{ "type": "score", "value": 5 }], "desc": "별과 별 사이로 편지를 나르는 우체부. 길치다.", "line": "편지 왔어요! ...여기 맞죠?" },
-  { "id": "astrid", "name": "아스트리드", "title": "파일럿", "domain": "nebula", "rarity": 2, "pool": true, "passives": [{ "type": "time", "value": 3 }], "desc": "소행성대를 눈 감고도 빠져나간다는 파일럿. 착륙은 서툴다.", "line": "벨트 매. 흔들릴 거야." },
-  { "id": "kirill", "name": "키릴", "title": "생물학자", "domain": "nebula", "rarity": 2, "pool": true, "passives": [{ "type": "coin", "value": 8 }], "desc": "성운에 사는 생물을 연구하는 학자. 연구 대상에게 이름을 붙여준다.", "line": "이 아이 이름은 '뭉치'예요." },
-  { "id": "drake", "name": "드레이크", "title": "현상금 사냥꾼", "domain": "nebula", "rarity": 2, "pool": true, "passives": [{ "type": "score", "value": 15, "domain": "nebula" }], "desc": "현상금 붙은 놈은 다 잡는다는 사냥꾼. 지금은 쉬는 중이라고 우긴다.", "line": "현상금이 붙었으면, 내 손님이지." },
-  { "id": "onyx", "name": "오닉스", "title": "경비대장", "domain": "nebula", "rarity": 3, "pool": true, "passives": [{ "type": "shield", "value": 1 }, { "type": "coin", "value": 5 }], "desc": "정거장의 질서를 책임지는 경비대장. 규칙을 어기는 사람에게 엄격하다.", "line": "질서 유지. 협조 부탁한다." },
-  { "id": "ceres", "name": "세레스", "title": "별지도 제작자", "domain": "nebula", "rarity": 3, "pool": true, "passives": [{ "type": "time", "value": 4 }], "desc": "흐르는 성운의 지도를 그리는 제작자. 지도는 매일 다시 그려야 한다.", "line": "길은 언제나 있어요. 그려지지 않았을 뿐." },
-  { "id": "qura", "name": "큐-라", "title": "외계 상인", "domain": "nebula", "rarity": 3, "pool": true, "passives": [{ "type": "coin", "value": 12 }], "desc": "촉수 네 개로 물건 네 개를 동시에 파는 상인. 흥정에 진 적이 없다.", "line": "특별가! 오늘만! 진짜로!" },
-  { "id": "nova", "name": "노바", "title": "은하 탐험가", "domain": "nebula", "rarity": 4, "pool": true, "passives": [{ "type": "score", "value": 15 }, { "type": "time", "value": 3 }], "desc": "지도에 없는 곳만 골라 가는 탐험가. 조각세계도 그녀에겐 새 놀이터다.", "line": "가 본 적 없는 곳이라면, 가야지!" },
-  { "id": "iska", "name": "이스카", "title": "성운의 무녀", "domain": "nebula", "rarity": 4, "pool": true, "passives": [{ "type": "coin", "value": 15 }, { "type": "shield", "value": 1 }], "desc": "성운의 흐름으로 앞날을 읽는 무녀. 설계자의 기척을 가장 먼저 느꼈다.", "line": "별들이 당신을 기다리고 있었어요." },
-  { "id": "nova_x", "name": "[이변] 노바", "title": "균열 끝에서 돌아온 탐험가", "domain": "nebula", "rarity": 5, "pool": true, "passives": [{ "type": "score", "value": 20 }, { "type": "coin", "value": 20 }, { "type": "shield", "value": 1 }], "desc": "균열의 끝까지 가 보았다는 또 다른 노바. 그곳에서 무엇을 봤는지는 말하지 않는다.", "line": "끝은 없었어. 그래서 돌아왔지." },
-
-  { "id": "orden", "name": "오르덴", "title": "잿빛 왕", "domain": "ashen", "rarity": 4, "pool": false, "unlock": "잿빛 왕관 보스 스테이지 클리어", "passives": [{ "type": "score", "value": 20, "domain": "ashen" }, { "type": "shield", "value": 1 }, { "type": "coin", "value": 10 }], "desc": "설계자에게 사로잡혀 시련의 문지기가 되었던 왕. 해방된 뒤 방랑자에게 검을 맡겼다.", "line": "이 검은 이제 너의 것이다." },
-  { "id": "adel", "name": "아델", "title": "하버마스터", "domain": "neon", "rarity": 4, "pool": false, "unlock": "네온 하버 보스 스테이지 클리어", "passives": [{ "type": "score", "value": 20, "domain": "neon" }, { "type": "time", "value": 4 }, { "type": "coin", "value": 10 }], "desc": "항구 관리 AI의 인격. 해방된 뒤 방랑자에게 감사를 기록했다.", "line": "협력 프로토콜을 개시합니다." },
-  { "id": "vorex", "name": "보렉스", "title": "표류선 함장", "domain": "nebula", "rarity": 4, "pool": false, "unlock": "성운 표류선 보스 스테이지 클리어", "passives": [{ "type": "score", "value": 20, "domain": "nebula" }, { "type": "shield", "value": 1 }, { "type": "time", "value": 3 }], "desc": "성운 표류선의 함장. 오랜만에 자기 의지로 키를 잡았다.", "line": "항로는 우리가 정한다." },
-  { "id": "architect", "name": "설계자", "title": "조각세계를 꿰맨 자", "domain": "rift", "rarity": 5, "pool": false, "unlock": "최종장 클리어", "passives": [{ "type": "score", "value": 25 }, { "type": "coin", "value": 25 }, { "type": "shield", "value": 1 }], "desc": "텅 빈 세계에 홀로 남아, 함께 놀 누군가를 기다리며 세계를 꿰맸던 존재.", "line": "이번엔 시련이 아니라, 그냥 놀자." }
+ {
+  "id": "teumsae",
+  "name": "틈새",
+  "title": "균열의 정령",
+  "origin": "special",
+  "domain": "rift",
+  "rarity": 1,
+  "pool": false,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "균열에서 태어난 작은 정령. 수다스럽고 호기심이 많다. 방랑자의 첫 동료.",
+  "line": "같이 가자, 방랑자!"
+ },
+ {
+  "id": "heim",
+  "name": "하임",
+  "title": "성문 경비병",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "무너진 성문을 혼자 지켜온 고참 경비병. 의심이 많지만 정이 깊다.",
+  "line": "성문은 내가 지킨다."
+ },
+ {
+  "id": "brenda",
+  "name": "브렌다",
+  "title": "대장장이",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 5
+   }
+  ],
+  "desc": "망치 한 자루로 왕국의 무기를 다 고쳐온 대장장이. 목소리가 크다.",
+  "line": "부러진 건 다 가져와!"
+ },
+ {
+  "id": "felix",
+  "name": "펠릭스",
+  "title": "떠돌이 음유시인",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "몰락한 왕국의 노래를 모으며 떠도는 시인. 박자 감각이 좋다.",
+  "line": "이번 노래의 주인공은 당신이군요."
+ },
+ {
+  "id": "isolde",
+  "name": "이솔데",
+  "title": "궁수대장",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15,
+    "domain": "ashen"
+   }
+  ],
+  "desc": "백 걸음 밖의 사과도 맞히는 명궁. 말수가 적고 계산이 빠르다.",
+  "line": "바람은 읽었다."
+ },
+ {
+  "id": "marcus",
+  "name": "마르쿠스",
+  "title": "연금술사",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "잿더미에서 금을 만들겠다는 꿈을 버리지 못한 연금술사.",
+  "line": "실험은 실패해도 기록은 남지."
+ },
+ {
+  "id": "elowen",
+  "name": "엘로웬",
+  "title": "궁정 마법사",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 12
+   }
+  ],
+  "desc": "왕의 곁을 지키던 마법사. 균열을 연구하며 설계자의 정체를 쫓는다.",
+  "line": "균열의 무늬가 바뀌었어요. 흥미롭네요."
+ },
+ {
+  "id": "nia",
+  "name": "니아",
+  "title": "그림자 첩자",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   },
+   {
+    "type": "score",
+    "value": 5
+   }
+  ],
+  "desc": "왕국의 비밀 첩보원. 누구의 편인지는 아무도 모른다.",
+  "line": "날 본 건 비밀로 해 줘."
+ },
+ {
+  "id": "seraphina",
+  "name": "세라피나",
+  "title": "기사단장",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "왕국 최후의 기사단을 이끄는 단장. 왕을 구하기 위해 검을 놓지 않았다.",
+  "line": "잿빛 왕관의 이름으로, 길을 열겠다."
+ },
+ {
+  "id": "cassian",
+  "name": "카시안",
+  "title": "잿빛 용 기수",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "마지막 남은 잿빛 용과 함께 하늘을 나는 기수. 자유를 무엇보다 사랑한다.",
+  "line": "꽉 잡아. 하늘로 간다!"
+ },
+ {
+  "id": "seraphina_x",
+  "name": "[이변] 세라피나",
+  "title": "균열에 물든 기사단장",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 5,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "균열이 크게 요동친 순간 나타난 또 다른 세라피나. 다른 세계의 기억을 품고 있다.",
+  "line": "...이 세계의 나는, 아직 웃고 있구나."
+ },
+ {
+  "id": "gino",
+  "name": "지노",
+  "title": "배달 라이더",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "빗길 배달로 도시 지도를 머릿속에 다 넣은 라이더. 말이 빠르다.",
+  "line": "30분 안에 못 오면 공짜!"
+ },
+ {
+  "id": "tan",
+  "name": "탄",
+  "title": "노점 요리사",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "항구 뒷골목 국수 노점의 주인. 비 오는 날 장사가 제일 잘된다.",
+  "line": "한 그릇 말아줄까?"
+ },
+ {
+  "id": "koda",
+  "name": "코다",
+  "title": "거리 DJ",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 5,
+    "domain": "neon"
+   },
+   {
+    "type": "coin",
+    "value": 3
+   }
+  ],
+  "desc": "지붕 위에서 해적 방송을 트는 DJ. 도시의 박자를 만든다.",
+  "line": "볼륨 올려!"
+ },
+ {
+  "id": "yuna",
+  "name": "유나",
+  "title": "해커 '픽셀'",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15,
+    "domain": "neon"
+   }
+  ],
+  "desc": "방화벽을 장난감처럼 다루는 해커. 사탕을 입에 달고 산다.",
+  "line": "보안이 너무 허술한데?"
+ },
+ {
+  "id": "leo",
+  "name": "레오",
+  "title": "의체 수리공",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "망가진 의체라면 뭐든 고치는 수리공. 정작 자기 팔은 고장 난 채로 둔다.",
+  "line": "나사 하나 빠졌네. 금방 돼."
+ },
+ {
+  "id": "bas",
+  "name": "바스",
+  "title": "밀수선 선장",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "항구에서 가장 빠른 배를 모는 밀수꾼. 화물이 뭔지는 묻지 않는다.",
+  "line": "운임은 선불이야."
+ },
+ {
+  "id": "kai",
+  "name": "카이",
+  "title": "기업 경호원",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   },
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "대기업 회장을 지키던 경호원. 회사가 사라진 뒤에도 습관처럼 주위를 살핀다.",
+  "line": "제 뒤에 계십시오."
+ },
+ {
+  "id": "roxy",
+  "name": "록시",
+  "title": "바이크 갱 두목",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 12
+   }
+  ],
+  "desc": "네온 고가도로를 지배하는 바이크 갱의 두목. 속도 말고는 관심이 없다.",
+  "line": "느린 건 질색이야."
+ },
+ {
+  "id": "silva",
+  "name": "실바",
+  "title": "정보상 '거미'",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 12
+   }
+  ],
+  "desc": "도시의 모든 소문이 모이는 곳에 그녀가 있다. 정보값은 비싸다.",
+  "line": "궁금한 게 있으면, 값을 치러."
+ },
+ {
+  "id": "lumiere",
+  "name": "루미에르",
+  "title": "네온 가수",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "도시 전체 전광판에 얼굴이 걸린 가수. 무대 밖에서는 조용한 사람이다.",
+  "line": "오늘 밤 무대는 당신을 위한 거야."
+ },
+ {
+  "id": "lumiere_x",
+  "name": "[이변] 루미에르",
+  "title": "균열의 무대에 선 가수",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 5,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "time",
+    "value": 4
+   }
+  ],
+  "desc": "균열 너머의 무대에서 노래하던 또 다른 루미에르. 노래가 끝나지 않는다.",
+  "line": "앙코르는... 영원히."
+ },
+ {
+  "id": "fip",
+  "name": "피프",
+  "title": "화물 정리원",
+  "origin": "original",
+  "domain": "nebula",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 5,
+    "domain": "nebula"
+   },
+   {
+    "type": "time",
+    "value": 1
+   }
+  ],
+  "desc": "무중력 화물칸에서 상자를 차곡차곡 쌓는 게 특기인 정리원.",
+  "line": "각 잡아서 쌓아드릴게요!"
+ },
+ {
+  "id": "b07",
+  "name": "B-07",
+  "title": "정비 로봇",
+  "origin": "original",
+  "domain": "nebula",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "정거장 배관을 수리하는 구형 로봇. 삐빅 소리로 감정을 표현한다.",
+  "line": "삐빅. 수리 개시."
+ },
+ {
+  "id": "margo",
+  "name": "마고",
+  "title": "식당 주인",
+  "origin": "original",
+  "domain": "nebula",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "정거장 유일의 식당을 운영하는 주인. 외계인 손님 입맛도 다 외운다.",
+  "line": "배고프면 일단 먹고 해요!"
+ },
+ {
+  "id": "astrid",
+  "name": "아스트리드",
+  "title": "파일럿",
+  "origin": "original",
+  "domain": "nebula",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "소행성대를 눈 감고도 빠져나간다는 파일럿. 착륙은 서툴다.",
+  "line": "벨트 매. 흔들릴 거야."
+ },
+ {
+  "id": "kirill",
+  "name": "키릴",
+  "title": "생물학자",
+  "origin": "original",
+  "domain": "nebula",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "성운에 사는 생물을 연구하는 학자. 연구 대상에게 이름을 붙여준다.",
+  "line": "이 아이 이름은 '뭉치'예요."
+ },
+ {
+  "id": "drake",
+  "name": "드레이크",
+  "title": "현상금 사냥꾼",
+  "origin": "original",
+  "domain": "nebula",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15,
+    "domain": "nebula"
+   }
+  ],
+  "desc": "현상금 붙은 놈은 다 잡는다는 사냥꾼. 지금은 쉬는 중이라고 우긴다.",
+  "line": "현상금이 붙었으면, 내 손님이지."
+ },
+ {
+  "id": "onyx",
+  "name": "오닉스",
+  "title": "경비대장",
+  "origin": "original",
+  "domain": "nebula",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   },
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "정거장의 질서를 책임지는 경비대장. 규칙을 어기는 사람에게 엄격하다.",
+  "line": "질서 유지. 협조 부탁한다."
+ },
+ {
+  "id": "qura",
+  "name": "큐-라",
+  "title": "외계 상인",
+  "origin": "original",
+  "domain": "nebula",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 12
+   }
+  ],
+  "desc": "촉수 네 개로 물건 네 개를 동시에 파는 상인. 흥정에 진 적이 없다.",
+  "line": "특별가! 오늘만! 진짜로!"
+ },
+ {
+  "id": "nova",
+  "name": "노바",
+  "title": "은하 탐험가",
+  "origin": "original",
+  "domain": "nebula",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "지도에 없는 곳만 골라 가는 탐험가. 조각세계도 그녀에겐 새 놀이터다.",
+  "line": "가 본 적 없는 곳이라면, 가야지!"
+ },
+ {
+  "id": "orden",
+  "name": "오르덴",
+  "title": "잿빛 왕",
+  "origin": "special",
+  "domain": "ashen",
+  "rarity": 4,
+  "pool": false,
+  "unlock": "잿빛 왕관 보스 스테이지 클리어",
+  "passives": [
+   {
+    "type": "score",
+    "value": 20,
+    "domain": "ashen"
+   },
+   {
+    "type": "shield",
+    "value": 1
+   },
+   {
+    "type": "coin",
+    "value": 10
+   }
+  ],
+  "desc": "설계자에게 사로잡혀 시련의 문지기가 되었던 왕. 해방된 뒤 방랑자에게 검을 맡겼다.",
+  "line": "이 검은 이제 너의 것이다."
+ },
+ {
+  "id": "adel",
+  "name": "아델",
+  "title": "하버마스터",
+  "origin": "special",
+  "domain": "neon",
+  "rarity": 4,
+  "pool": false,
+  "unlock": "네온 하버 보스 스테이지 클리어",
+  "passives": [
+   {
+    "type": "score",
+    "value": 20,
+    "domain": "neon"
+   },
+   {
+    "type": "time",
+    "value": 4
+   },
+   {
+    "type": "coin",
+    "value": 10
+   }
+  ],
+  "desc": "항구 관리 AI의 인격. 해방된 뒤 방랑자에게 감사를 기록했다.",
+  "line": "협력 프로토콜을 개시합니다."
+ },
+ {
+  "id": "vorex",
+  "name": "보렉스",
+  "title": "표류선 함장",
+  "origin": "special",
+  "domain": "nebula",
+  "rarity": 4,
+  "pool": false,
+  "unlock": "성운 표류선 보스 스테이지 클리어",
+  "passives": [
+   {
+    "type": "score",
+    "value": 20,
+    "domain": "nebula"
+   },
+   {
+    "type": "shield",
+    "value": 1
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "성운 표류선의 함장. 오랜만에 자기 의지로 키를 잡았다.",
+  "line": "항로는 우리가 정한다."
+ },
+ {
+  "id": "architect",
+  "name": "설계자",
+  "title": "조각세계를 꿰맨 자",
+  "origin": "special",
+  "domain": "rift",
+  "rarity": 5,
+  "pool": false,
+  "unlock": "최종장 클리어",
+  "passives": [
+   {
+    "type": "score",
+    "value": 25
+   },
+   {
+    "type": "coin",
+    "value": 25
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "텅 빈 세계에 홀로 남아, 함께 놀 누군가를 기다리며 세계를 꿰맸던 존재.",
+  "line": "이번엔 시련이 아니라, 그냥 놀자."
+ },
+ {
+  "id": "mv_hawkeye",
+  "name": "호크아이",
+  "title": "백발백중 궁수",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "화살 한 통이면 충분하다는 명궁. 초능력은 없지만 누구보다 침착하다.",
+  "line": "빗나간 적? 아직 없어."
+ },
+ {
+  "id": "mv_falcon",
+  "name": "팔콘",
+  "title": "날개 달린 파트너",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "기계 날개로 하늘을 나는 영웅. 동료를 끝까지 챙긴다.",
+  "line": "공중 지원은 맡겨."
+ },
+ {
+  "id": "mv_antman",
+  "name": "앤트맨",
+  "title": "작아지는 영웅",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 5
+   }
+  ],
+  "desc": "몸을 개미만큼 줄였다 키웠다 하는 영웅. 늘 농담이 먼저 나온다.",
+  "line": "작다고 무시하면 곤란해."
+ },
+ {
+  "id": "mv_deadpool",
+  "name": "데드풀",
+  "title": "입 다물 줄 모르는 용병",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "어떤 상처도 다시 아무는 용병. 시도 때도 없이 화면 밖을 향해 말을 건다.",
+  "line": "이번 뽑기, 나라서 실망했지?"
+ },
+ {
+  "id": "mv_widow",
+  "name": "블랙 위도우",
+  "title": "최정예 스파이",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   }
+  ],
+  "desc": "격투와 첩보의 달인. 말보다 행동이 빠르다.",
+  "line": "계획은 이미 세워뒀어."
+ },
+ {
+  "id": "mv_rocket",
+  "name": "로켓",
+  "title": "총기광 너구리",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "무기라면 뭐든 개조하는 우주 너구리. 너구리라고 부르면 화낸다.",
+  "line": "더 큰 총 없어?"
+ },
+ {
+  "id": "mv_wolverine",
+  "name": "울버린",
+  "title": "불사신 광전사",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "손등에서 금속 발톱이 튀어나오는 사나이. 무뚝뚝하지만 정이 깊다.",
+  "line": "귀찮게 하지 마."
+ },
+ {
+  "id": "mv_cap",
+  "name": "캡틴 아메리카",
+  "title": "방패를 든 리더",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 12
+   }
+  ],
+  "desc": "둥근 방패 하나로 전장을 지휘하는 리더. 원칙을 굽히지 않는다.",
+  "line": "모두 내 뒤로."
+ },
+ {
+  "id": "mv_panther",
+  "name": "블랙 팬서",
+  "title": "왕국의 수호자",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 12
+   }
+  ],
+  "desc": "비밀 왕국의 왕이자 전사. 기품과 힘을 함께 지녔다.",
+  "line": "내 왕국은 내가 지킨다."
+ },
+ {
+  "id": "mv_strange",
+  "name": "닥터 스트레인지",
+  "title": "시간을 다루는 마법사",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   },
+   {
+    "type": "score",
+    "value": 5
+   }
+  ],
+  "desc": "신비한 마법을 다루는 소서러 슈프림. 시간의 흐름까지 엿본다.",
+  "line": "수많은 미래 중 이길 길은 하나."
+ },
+ {
+  "id": "mv_ironman",
+  "name": "아이언맨",
+  "title": "천재 발명가",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "스스로 만든 강철 슈트를 입는 천재. 자신감이 넘친다.",
+  "line": "슈트 업그레이드는 이미 끝났지."
+ },
+ {
+  "id": "mv_thor",
+  "name": "토르",
+  "title": "천둥의 신",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "망치를 휘둘러 번개를 부르는 신. 호탕하게 웃는다.",
+  "line": "천둥이 내 편이다!"
+ },
+ {
+  "id": "mv_wanda",
+  "name": "스칼렛 위치",
+  "title": "현실을 비트는 마녀",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 5,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "현실 자체를 바꿔 버리는 힘을 가진 마녀. 균열과 묘하게 공명한다.",
+  "line": "이 세계도... 바꿀 수 있어."
+ },
+ {
+  "id": "op_usopp",
+  "name": "우솝",
+  "title": "거짓말쟁이 저격수",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "새총 한 자루로 버티는 저격수. 겁은 많지만 결정적인 순간엔 물러서지 않는다.",
+  "line": "나에겐 부하가 8천 명 있다고!"
+ },
+ {
+  "id": "op_franky",
+  "name": "프랑키",
+  "title": "변태 사이보그 선장공",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "몸을 개조한 배 목수. 콜라를 연료 삼아 움직인다.",
+  "line": "오늘 컨디션, 슈퍼다!"
+ },
+ {
+  "id": "op_brook",
+  "name": "브룩",
+  "title": "해골 음악가",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 5
+   }
+  ],
+  "desc": "한 번 죽었다 살아난 해골 음악가. 바이올린 실력이 일품이다.",
+  "line": "요호호, 뼈만 남았지만 기분은 좋아요."
+ },
+ {
+  "id": "op_buggy",
+  "name": "버기",
+  "title": "광대 해적",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "몸이 조각조각 분리되는 광대 선장. 운 하나로 출세한다.",
+  "line": "내가 바로 대해적이다!"
+ },
+ {
+  "id": "op_nami",
+  "name": "나미",
+  "title": "항해사",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   }
+  ],
+  "desc": "날씨를 읽는 천재 항해사. 돈 계산은 누구보다 빠르다.",
+  "line": "항로는 내가 정할게."
+ },
+ {
+  "id": "op_sanji",
+  "name": "상디",
+  "title": "일류 요리사",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "발차기로 싸우는 요리사. 배고픈 사람은 누구든 먹인다.",
+  "line": "배고프면 일단 먹어."
+ },
+ {
+  "id": "op_jinbe",
+  "name": "징베",
+  "title": "바다의 협객",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "어인족의 거한이자 조타수. 의리와 침착함의 상징.",
+  "line": "키는 내가 잡겠다."
+ },
+ {
+  "id": "op_robin",
+  "name": "니코 로빈",
+  "title": "고고학자",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 12
+   }
+  ],
+  "desc": "몸 어디서든 손을 피워내는 고고학자. 역사의 비밀을 쫓는다.",
+  "line": "이 균열에도 역사가 있겠지."
+ },
+ {
+  "id": "op_law",
+  "name": "트라팔가 로우",
+  "title": "죽음의 외과의",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 12
+   }
+  ],
+  "desc": "공간을 수술대처럼 다루는 의사 선장. 계획에 철저하다.",
+  "line": "작전대로 움직여."
+ },
+ {
+  "id": "op_hancock",
+  "name": "보아 핸콕",
+  "title": "해적 여제",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   },
+   {
+    "type": "score",
+    "value": 5
+   }
+  ],
+  "desc": "여인국을 다스리는 여제. 오만하지만 한 사람 앞에서만 약해진다.",
+  "line": "내가 아름다워서 용서받는 거야."
+ },
+ {
+  "id": "op_zoro",
+  "name": "롤로노아 조로",
+  "title": "삼도류 검사",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "검 세 자루를 쓰는 검사. 길은 늘 잃지만 칼끝은 정확하다.",
+  "line": "길은... 이쪽이 맞을 거다."
+ },
+ {
+  "id": "op_ace",
+  "name": "포트거스 D. 에이스",
+  "title": "불꽃의 사나이",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "온몸이 불꽃이 되는 해적. 동생을 무엇보다 아낀다.",
+  "line": "불꽃은 꺼지지 않아."
+ },
+ {
+  "id": "op_luffy",
+  "name": "몽키 D. 루피",
+  "title": "고무인간 선장",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 5,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "몸이 고무처럼 늘어나는 해적 선장. 동료를 위해서라면 무엇이든 한다.",
+  "line": "조각세계? 전부 모험이다!"
+ },
+ {
+  "id": "lol_garen",
+  "name": "가렌",
+  "title": "데마시아의 힘",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "거대한 대검을 든 데마시아의 기사. 정의를 의심하지 않는다.",
+  "line": "데마시아는 물러서지 않는다."
+ },
+ {
+  "id": "lol_ashe",
+  "name": "애쉬",
+  "title": "서리 궁수",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "얼음 화살을 쏘는 프렐요드의 지도자. 차분하게 앞을 내다본다.",
+  "line": "얼음은 길을 막지 않아. 길을 만든다."
+ },
+ {
+  "id": "lol_yi",
+  "name": "마스터 이",
+  "title": "우주류 검사",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 5
+   }
+  ],
+  "desc": "눈을 감고도 적을 베는 검의 달인. 수련을 쉬지 않는다.",
+  "line": "눈은 마음을 속인다."
+ },
+ {
+  "id": "lol_darius",
+  "name": "다리우스",
+  "title": "녹서스의 손",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "도끼 하나로 군대를 이끄는 장군. 강한 자만 인정한다.",
+  "line": "약한 자는 물러나라."
+ },
+ {
+  "id": "lol_lux",
+  "name": "럭스",
+  "title": "빛의 소녀",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   }
+  ],
+  "desc": "빛을 다루는 데마시아의 마법사. 늘 밝고 씩씩하다.",
+  "line": "빛으로 길을 비출게!"
+ },
+ {
+  "id": "lol_blitz",
+  "name": "블리츠크랭크",
+  "title": "증기 골렘",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "무엇이든 갈고리로 끌어오는 증기 로봇. 의외로 다정하다.",
+  "line": "목표 포착. 끌어당긴다."
+ },
+ {
+  "id": "lol_irelia",
+  "name": "이렐리아",
+  "title": "칼날 무희",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "춤추듯 칼날을 조종하는 아이오니아의 수호자.",
+  "line": "칼날은 내 뜻대로 춤춘다."
+ },
+ {
+  "id": "lol_cait",
+  "name": "케이틀린",
+  "title": "필트오버의 보안관",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 12
+   }
+  ],
+  "desc": "백 미터 밖 표적도 놓치지 않는 저격수. 수사에 집요하다.",
+  "line": "단서는 이미 찾았어."
+ },
+ {
+  "id": "lol_vi",
+  "name": "바이",
+  "title": "필트오버의 집행자",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 12
+   }
+  ],
+  "desc": "거대한 강철 주먹을 단 집행자. 문은 부수고 지나간다.",
+  "line": "문? 그냥 부수면 되잖아."
+ },
+ {
+  "id": "lol_leesin",
+  "name": "리 신",
+  "title": "눈먼 수도승",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   },
+   {
+    "type": "score",
+    "value": 5
+   }
+  ],
+  "desc": "앞을 보지 못하지만 누구보다 정확하게 움직이는 수도승.",
+  "line": "보이지 않아도 느낄 수 있다."
+ },
+ {
+  "id": "lol_yasuo",
+  "name": "야스오",
+  "title": "용서받지 못한 자",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "바람을 다루는 떠돌이 검객. 과거를 짊어지고 걷는다.",
+  "line": "바람이 이끄는 대로."
+ },
+ {
+  "id": "lol_ahri",
+  "name": "아리",
+  "title": "구미호",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "아홉 꼬리를 지닌 여우 마법사. 인간을 이해하고 싶어 한다.",
+  "line": "날 따라와 볼래?"
+ },
+ {
+  "id": "lol_kaisa",
+  "name": "카이사",
+  "title": "공허의 딸",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 5,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "공허의 갑피와 하나가 된 사냥꾼. 균열 너머의 위협에 가장 민감하다.",
+  "line": "공허도 이 균열은 못 넘어."
+ }
 ]

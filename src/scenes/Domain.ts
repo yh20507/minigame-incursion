@@ -48,7 +48,7 @@ export class DomainScene extends Phaser.Scene {
       z.on('pointerout', () => hl.setVisible(false));
       z.on('pointerup', () => {
         audio.sfx('confirm');
-        go(this, 'Prep', { game: gid, domain: d.id });
+        go(this, 'Prep', { mode: 'normal', game: gid, domain: d.id });
       });
     });
 
@@ -91,8 +91,8 @@ export class DomainScene extends Phaser.Scene {
         audio.sfx('confirm');
         const sid = d.id + '_boss';
         const playData = { mode: 'boss', domain: d.id };
-        if (!st.save.story[sid]) go(this, 'Story', { id: sid, next: 'Play', nextData: playData });
-        else go(this, 'Play', playData);
+        if (!st.save.story[sid]) go(this, 'Story', { id: sid, next: 'Prep', nextData: playData });
+        else go(this, 'Prep', playData);
       });
     } else {
       const z = this.add.zone(0, 0, bw, bh).setOrigin(0).setInteractive();

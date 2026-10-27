@@ -14,6 +14,7 @@ import { CollectionScene } from './scenes/Collection';
 import { TeamScene } from './scenes/Team';
 import { ChallengeScene } from './scenes/Challenge';
 import { SettingsScene } from './scenes/Settings';
+import { BagScene } from './scenes/Bag';
 
 async function start() {
   try {
@@ -50,6 +51,7 @@ async function start() {
       TeamScene,
       ChallengeScene,
       SettingsScene,
+      BagScene,
     ],
   });
   (window as any).__game = game;

@@ -20,3 +20,13 @@ html, body { margin: 0; padding: 0; height: 100%; background: #07060f; overflow:
 .login button:hover { filter: brightness(1.15); }
 .login .msg { min-height: 18px; margin-top: 12px; font-size: 12px; color: #ffd84b; line-height: 1.5; }
 .login .offline { margin-top: 10px; background: transparent; border: none; color: #8a83b8; text-decoration: underline; width: 100%; }
+
+.viewer { position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(ellipse at center, rgba(60, 20, 70, 0.92), rgba(7, 6, 15, 0.98)); opacity: 0; transition: opacity 0.35s; cursor: pointer; font-family: 'Galmuri11', monospace; color: #eae6ff; }
+.viewer.show { opacity: 1; }
+.viewer img { max-width: 92vw; max-height: 82vh; object-fit: contain; box-shadow: 0 0 0 2px #ff5fd2, 0 0 60px rgba(255, 95, 210, 0.45); transform: scale(0.96); transition: transform 0.5s; }
+.viewer.show img { transform: scale(1); }
+.viewer img.pixel { image-rendering: pixelated; width: min(70vh, 80vw); height: auto; }
+.viewer .cap { margin-top: 18px; font-family: 'Galmuri11Bold', monospace; font-size: 24px; color: #ff5fd2; text-shadow: 0 0 12px rgba(255, 95, 210, 0.6); }
+.viewer .sub { margin-top: 6px; font-size: 12px; color: #c9c3ef; }
+.viewer .hint { position: absolute; bottom: 18px; font-size: 12px; color: #8a83b8; }
+.viewer .note { margin-top: 10px; font-size: 12px; color: #ffd84b; }
