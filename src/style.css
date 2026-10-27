@@ -1,0 +1,22 @@
+@font-face { font-family: 'Galmuri11'; src: url('./fonts/Galmuri11.woff2') format('woff2'); }
+@font-face { font-family: 'Galmuri11Bold'; src: url('./fonts/Galmuri11-Bold.woff2') format('woff2'); }
+@font-face { font-family: 'Galmuri9'; src: url('./fonts/Galmuri9.woff2') format('woff2'); }
+
+html, body { margin: 0; padding: 0; height: 100%; background: #07060f; overflow: hidden; }
+#game { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
+#game canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
+
+#overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(7, 6, 15, 0.75); z-index: 10; font-family: 'Galmuri11', monospace; color: #eae6ff; }
+#overlay.show { display: flex; }
+.login { width: 340px; padding: 24px; background: #15122a; border: 2px solid #6b5bd6; box-shadow: 0 0 0 4px #07060f, 0 0 0 6px #2c2560; }
+.login h2 { margin: 0 0 4px; font-family: 'Galmuri11Bold', monospace; font-size: 24px; color: #ff5fd2; }
+.login p { margin: 0 0 16px; font-size: 12px; color: #a69fd0; line-height: 1.6; }
+.login label { display: block; font-size: 12px; margin: 10px 0 4px; color: #c9c3ef; }
+.login input { width: 100%; box-sizing: border-box; padding: 8px; font-family: 'Galmuri11', monospace; font-size: 12px; background: #0b0a18; color: #fff; border: 2px solid #3a3270; outline: none; }
+.login input:focus { border-color: #ff5fd2; }
+.login .row { display: flex; gap: 8px; margin-top: 18px; }
+.login button { flex: 1; padding: 9px 0; font-family: 'Galmuri11', monospace; font-size: 12px; cursor: pointer; border: 2px solid #6b5bd6; background: #2c2560; color: #fff; }
+.login button.primary { background: #ff5fd2; border-color: #ff5fd2; color: #1a0f22; }
+.login button:hover { filter: brightness(1.15); }
+.login .msg { min-height: 18px; margin-top: 12px; font-size: 12px; color: #ffd84b; line-height: 1.5; }
+.login .offline { margin-top: 10px; background: transparent; border: none; color: #8a83b8; text-decoration: underline; width: 100%; }

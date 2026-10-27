@@ -1,0 +1,15 @@
+{
+  "rarities": [
+    { "id": 1, "name": "일반", "rate": 64.4, "color": "#9aa3ad", "refund": 20 },
+    { "id": 2, "name": "희귀", "rate": 27.0, "color": "#4aa3ff", "refund": 50 },
+    { "id": 3, "name": "영웅", "rate": 8.0, "color": "#b06cff", "refund": 150 },
+    { "id": 4, "name": "전설", "rate": 0.5, "color": "#ffc845", "refund": 500 },
+    { "id": 5, "name": "초레어", "rate": 0.1, "color": "#ff5fd2", "refund": 1000 }
+  ],
+  "pity": { "legend": 500, "ultra": 2000 },
+  "tenPullGuarantee": 2,
+  "pickupChance": 0.5,
+  "cost": { "single": 100, "ten": 1000 },
+  "maxBreakthrough": 5,
+  "startCoins": 1000
+}

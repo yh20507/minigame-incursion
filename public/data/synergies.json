@@ -1,0 +1,12 @@
+{
+  "set": { "type": "coin", "value": 10, "desc": "영역의 뽑기 캐릭터를 전부 모으면 그 영역 미니게임 코인 +10%" },
+  "crossovers": [
+    { "id": "oath", "name": "경호의 맹세", "members": ["seraphina", "kai"], "effect": { "type": "score", "value": 10 }, "desc": "검과 총, 지키는 방식은 달라도 맹세는 같다." },
+    { "id": "spellcode", "name": "주문과 코드", "members": ["elowen", "zero"], "effect": { "type": "coin", "value": 15 }, "desc": "마법진과 소스 코드는 의외로 닮았다." },
+    { "id": "skyfarers", "name": "하늘을 나는 자들", "members": ["cassian", "nova"], "effect": { "type": "time", "value": 3 }, "desc": "용의 등과 우주선 조종석, 둘 다 하늘 위다." },
+    { "id": "streetfood", "name": "우주 길거리 음식", "members": ["tan", "margo"], "effect": { "type": "coin", "value": 10 }, "desc": "국수 노점과 정거장 식당의 합작 메뉴." },
+    { "id": "shadows", "name": "정보의 거래", "members": ["nia", "silva"], "effect": { "type": "score", "value": 8 }, "desc": "첩자와 정보상, 서로를 가장 잘 아는 사이." },
+    { "id": "speed", "name": "최고 속도", "members": ["roxy", "astrid"], "effect": { "type": "score", "value": 10 }, "desc": "도로든 우주든, 제일 빠른 건 우리다." },
+    { "id": "rift", "name": "균열의 양쪽", "members": ["teumsae", "architect"], "effect": { "type": "coin", "value": 20 }, "desc": "균열에서 태어난 자와 균열을 만든 자." }
+  ]
+}

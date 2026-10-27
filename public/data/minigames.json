@@ -1,0 +1,16 @@
+[
+  { "id": "jump", "domain": "ashen", "genre": "타이밍", "name": "성벽 뛰어넘기", "controls": "스페이스: 점프 (길게 누르면 높이)", "rule": "굴러오는 통과 바위를 넘어라. 넘을수록 빨라진다.", "lives": 1, "stars": [800, 1800, 3000], "coinRate": 0.1, "micro": "넘어라!" },
+  { "id": "memory", "domain": "ashen", "genre": "두뇌", "name": "문장 맞추기", "controls": "마우스 클릭 (방향키+스페이스도 가능)", "rule": "같은 문장 두 개를 찾아 짝을 맞춰라. 판을 비우면 더 큰 판이 나온다.", "lives": 1, "stars": [600, 1200, 2000], "coinRate": 0.1, "micro": "짝을 맞춰라!" },
+  { "id": "throw", "domain": "ashen", "genre": "조준", "name": "투석기 발사", "controls": "스페이스를 누르고 있다가 떼기: 힘 조절", "rule": "힘을 모아 돌을 날려 과녁에 맞혀라. 가운데일수록 고득점.", "lives": 1, "stars": [800, 1600, 2600], "coinRate": 0.1, "micro": "맞혀라!" },
+  { "id": "shuffle", "domain": "ashen", "genre": "운·배짱", "name": "술잔 야바위", "controls": "← → 로 고르고 스페이스, 또는 클릭", "rule": "구슬이 든 술잔을 눈으로 따라가라. 틀리면 목숨이 줄어든다.", "lives": 3, "stars": [600, 1200, 1800], "coinRate": 0.1, "micro": "찾아라!" },
+
+  { "id": "runner", "domain": "neon", "genre": "반사·회피", "name": "호버보드 질주", "controls": "스페이스/↑: 점프, ↓: 숙이기", "rule": "끝없이 달리며 장애물은 넘고, 머리 위 간판은 숙여서 피하라.", "lives": 1, "stars": [1500, 3000, 4500], "coinRate": 0.1, "micro": "피해라!" },
+  { "id": "rhythm", "domain": "neon", "genre": "리듬", "name": "클럽 리듬", "controls": "← ↓ ↑ → (또는 D F J K)", "rule": "내려오는 화살표가 선에 닿는 순간 눌러라. 놓치면 목숨이 줄어든다.", "lives": 4, "stars": [3000, 5500, 7500], "coinRate": 0.1, "micro": "박자에 맞춰!" },
+  { "id": "stroop", "domain": "neon", "genre": "두뇌", "name": "방화벽 해킹", "controls": "←: 다름 / →: 같음", "rule": "단어의 뜻과 글자 색이 같은지 판단하라. 틀리면 시간이 깎인다.", "lives": 1, "stars": [1500, 3000, 4500], "coinRate": 0.1, "micro": "판단하라!" },
+  { "id": "hockey", "domain": "neon", "genre": "대결", "name": "네온 하키", "controls": "마우스 또는 방향키로 채 이동", "rule": "AI와 1:1 하키. 골을 넣으면 고득점, 먹히면 목숨이 줄어든다.", "lives": 3, "stars": [700, 1500, 2500], "coinRate": 0.1, "micro": "막아라!" },
+
+  { "id": "dodge", "domain": "nebula", "genre": "반사·회피", "name": "운석 피하기", "controls": "← → 이동", "rule": "쏟아지는 운석을 피하고 별 조각을 주워라.", "lives": 1, "stars": [1500, 3000, 4500], "coinRate": 0.1, "micro": "피해라!" },
+  { "id": "stack", "domain": "nebula", "genre": "타이밍", "name": "화물 쌓기", "controls": "스페이스 또는 클릭: 화물 내려놓기", "rule": "움직이는 화물을 떨어뜨려 높이 쌓아라. 어긋난 부분은 잘려 나간다.", "lives": 1, "stars": [800, 1800, 3000], "coinRate": 0.1, "micro": "쌓아라!" },
+  { "id": "target", "domain": "nebula", "genre": "조준", "name": "드론 사격", "controls": "마우스 클릭", "rule": "날아다니는 드론을 쏴라. 빨간 폭탄 드론을 쏘면 목숨이 줄어든다.", "lives": 2, "stars": [1500, 3000, 4500], "coinRate": 0.1, "micro": "쏴라!" },
+  { "id": "orders", "domain": "nebula", "genre": "관리", "name": "우주 식당", "controls": "← ↑ → ↓: 재료 올리기, 스페이스: 서빙, X: 접시 비우기", "rule": "손님 주문대로 재료를 순서 상관없이 올리고 서빙하라. 손님이 지쳐 떠나면 목숨이 줄어든다.", "lives": 3, "stars": [600, 1300, 2200], "coinRate": 0.1, "micro": "서빙하라!" }
+]

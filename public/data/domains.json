@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ashen",
+    "name": "잿빛 왕관",
+    "subtitle": "몰락한 기사 왕국",
+    "desc": "잿빛 하늘 아래 무너진 성벽이 끝없이 이어진 왕국. 왕은 설계자에게 사로잡혀 시련의 문지기가 되었다.",
+    "color": "#d9a066",
+    "dark": "#3b2a22",
+    "sky": ["#5a5560", "#2b2530"],
+    "games": ["jump", "memory", "throw", "shuffle"],
+    "bossStars": 6,
+    "gatekeeper": "orden",
+    "unlockAfter": null,
+    "mapPos": [150, 210],
+    "music": { "root": 57, "scale": "minor", "tempo": 96 }
+  },
+  {
+    "id": "neon",
+    "name": "네온 하버",
+    "subtitle": "비가 그치지 않는 항구 도시",
+    "desc": "네온 간판이 물웅덩이 위에서 번지는 사이버펑크 항구. 항구 관리 AI가 도시 전체를 시련장으로 바꿔버렸다.",
+    "color": "#ff4fa8",
+    "dark": "#1c1433",
+    "sky": ["#2a1a4a", "#0d0a1c"],
+    "games": ["runner", "rhythm", "stroop", "hockey"],
+    "bossStars": 6,
+    "gatekeeper": "adel",
+    "unlockAfter": "ashen",
+    "mapPos": [330, 120],
+    "music": { "root": 50, "scale": "dorian", "tempo": 118 }
+  },
+  {
+    "id": "nebula",
+    "name": "성운 표류선",
+    "subtitle": "별 사이를 떠도는 정거장",
+    "desc": "성운 사이를 떠도는 거대한 정거장 겸 시장. 함장이 사로잡힌 뒤로 운석과 화물과 드론이 날뛴다.",
+    "color": "#5fd3e0",
+    "dark": "#101a2e",
+    "sky": ["#1b2450", "#070a18"],
+    "games": ["dodge", "stack", "target", "orders"],
+    "bossStars": 6,
+    "gatekeeper": "vorex",
+    "unlockAfter": "neon",
+    "mapPos": [500, 220],
+    "music": { "root": 53, "scale": "lydian", "tempo": 104 }
+  }
+]

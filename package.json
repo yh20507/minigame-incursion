@@ -1,0 +1,75 @@
+{
+  "name": "minigame-incursion",
+  "productName": "미니게임-인커젼",
+  "version": "0.1.0",
+  "description": "미니게임-인커젼: 조각세계 미니게임 수집 게임",
+  "private": true,
+  "main": "electron/main.cjs",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "app": "electron .",
+    "dist": "npm run build && electron-builder --win --x64",
+    "assets:list": "node tools/asset-list.mjs",
+    "db:characters": "node tools/characters-sql.mjs"
+  },
+  "devDependencies": {
+    "electron": "^38.8.6",
+    "electron-builder": "^26.18.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "@supabase/supabase-js": "^2.118.0",
+    "galmuri": "^2.40.3",
+    "phaser": "3.90.0"
+  },
+  "author": "yh20507",
+  "build": {
+    "appId": "com.yh20507.minigame-incursion",
+    "productName": "미니게임-인커젼",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "signAndEditExecutable": false,
+      "artifactName": "MinigameIncursion-${version}-${arch}.${ext}"
+    },
+    "portable": {
+      "artifactName": "MinigameIncursion-${version}-portable.exe"
+    },
+    "extraFiles": [
+      {
+        "from": "public/config.json",
+        "to": "config.json"
+      },
+      {
+        "from": "public/assets",
+        "to": "assets",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ]
+  }
+}

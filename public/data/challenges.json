@@ -1,0 +1,18 @@
+{
+  "daily": {
+    "games": 3,
+    "duration": 30,
+    "reward": 500,
+    "modifiers": [
+      { "id": "fast", "name": "가속", "desc": "모든 게 1.5배 빠르다" },
+      { "id": "reverse", "name": "조작 반전", "desc": "← → 가 뒤바뀐다" },
+      { "id": "mirror", "name": "거울 세계", "desc": "화면과 조작이 좌우로 뒤집힌다" },
+      { "id": "tiny", "name": "좁은 시야", "desc": "화면 가장자리가 어둡다" }
+    ]
+  },
+  "micro": { "duration": 5, "lives": 4, "speedUpEvery": 5, "speedStep": 0.15, "coinPerClear": 15 },
+  "marathon": { "duration": 15, "lives": 3, "coinRate": 0.08 },
+  "boss": { "segments": 3, "duration": 20, "lives": 3, "difficulty": 2, "reward": 1000, "passRatio": 0.4 },
+  "final": { "segments": 5, "duration": 20, "lives": 3, "difficulty": 3, "reward": 3000, "passRatio": 0.4 },
+  "unlock": { "micro": "ashen", "daily": "ashen", "marathon": "neon" }
+}

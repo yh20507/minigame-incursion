@@ -1,0 +1,57 @@
+import Phaser from 'phaser';
+import { App, C, H, W } from '../core/app';
+import { Content } from '../core/content';
+import { makeBgTextures, makeCharTextures, makeIconTextures } from '../core/art';
+import { LocalBackend, SupabaseBackend, loadOnlineConfig } from '../core/backend';
+import { Store } from '../core/store';
+import { T } from '../core/ui';
+
+const DATA = ['domains', 'minigames', 'characters', 'gacha', 'banners', 'synergies', 'challenges', 'story'];
+
+export class BootScene extends Phaser.Scene {
+  constructor() {
+    super('Boot');
+  }
+
+  preload() {
+    const bar = this.add.rectangle(W / 2 - 100, H / 2 + 20, 0, 4, C.accentN).setOrigin(0, 0.5);
+    this.add.rectangle(W / 2, H / 2 + 20, 202, 6).setStrokeStyle(1, C.lineHi);
+    T(this, W / 2, H / 2 - 4, '불러오는 중...', { align: 'center', color: C.dim });
+    this.load.on('progress', (p: number) => (bar.width = 200 * p));
+    for (const k of DATA) this.load.json(k, `data/${k}.json`);
+  }
+
+  create() {
+    App.content = Content.fromCache(this.cache.json);
+    // 사용자 그림. 없는 파일은 조용히 넘어가고 임시 그림으로 채운다.
+    this.load.on('loaderror', () => {});
+    for (const ch of App.content.chars) {
+      this.load.image('spr_' + ch.id, `assets/chars/${ch.id}_sprite.png`);
+      this.load.image('art_' + ch.id, `assets/chars/${ch.id}_art.png`);
+    }
+    for (const id of [...App.content.domains.map((d) => d.id), 'rift']) this.load.image('bg_' + id, `assets/bg/${id}.png`);
+    this.load.image('logo', 'assets/ui/logo.png');
+    this.load.once('complete', () => this.finish());
+    this.load.start();
+  }
+
+  async finish() {
+    makeIconTextures(this);
+    makeCharTextures(this, App.content);
+    makeBgTextures(this, App.content);
+
+    const cfg = await loadOnlineConfig();
+    if (cfg) {
+      const be = new SupabaseBackend(cfg);
+      App.backend = be;
+      App.online = true;
+      App.store = new Store(App.content, be);
+      // 로그인은 타이틀 화면에서
+    } else {
+      App.backend = new LocalBackend();
+      App.store = new Store(App.content, App.backend);
+      await App.store.init();
+    }
+    this.scene.start('Title');
+  }
+}
