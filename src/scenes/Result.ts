@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { App, C, H, W } from '../core/app';
 import { audio } from '../core/audio';
-import { fitImage } from '../core/art';
+import { fitImage, portraitKey } from '../core/art';
 import { T, bg, button, fadeIn, go, panel, starsRow } from '../core/ui';
 import type { RunResult } from './Play';
 
@@ -163,7 +163,7 @@ export class ResultScene extends Phaser.Scene {
     }
     if (joined) {
       const c = App.content.char(joined);
-      const img = this.add.image(560, 160, 'art_' + joined);
+      const img = this.add.image(560, 160, portraitKey(this, joined));
       fitImage(img, 120, 120);
       img.setAlpha(0);
       this.tweens.add({ targets: img, alpha: 1, y: 150, duration: 500, delay: 700 });

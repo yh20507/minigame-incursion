@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { App, C, H, W, hexNum } from './app';
 import { audio } from './audio';
-import { fitImage } from './art';
+import { fitImage, portraitKey } from './art';
 import { T, button } from './ui';
 
 /** 대화창. 스토리 장면 하나를 재생하고 끝나면 onDone 호출. */
@@ -70,8 +70,8 @@ export function playDialogue(scene: Phaser.Scene, sceneId: string, onDone: () =>
       namePlate.strokeRect(21.5, boxY - 20.5, nameT.width + 17, 17);
       nameT.setColor(col);
     }
-    if (sp.char && scene.textures.exists('art_' + sp.char)) {
-      portrait.setTexture('art_' + sp.char).setVisible(true);
+    if (sp.char) {
+      portrait.setTexture(portraitKey(scene, sp.char)).setVisible(true);
       fitImage(portrait, 150, 150);
       portrait.setAlpha(0);
       scene.tweens.add({ targets: portrait, alpha: 1, duration: 150 });

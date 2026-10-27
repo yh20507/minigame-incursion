@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { App, C, H, W, hexNum } from '../core/app';
 import { audio } from '../core/audio';
-import { RARITY_COLORS, fitImage } from '../core/art';
+import { RARITY_COLORS, fitImage, portraitKey } from '../core/art';
 import type { BannerDef, PullResult } from '../core/types';
 import { showFullArt } from '../core/viewer';
 import { T, bg, button, fadeIn, go, panel, rarityName, toast, topBar } from '../core/ui';
@@ -67,7 +67,7 @@ export class GachaScene extends Phaser.Scene {
     const pool = st.gachaPool(b.id);
     const feat = [...pool].sort((a, c) => c.rarity - a.rarity).slice(0, 3);
     feat.forEach((c, i) => {
-      const img = this.add.image(x + w - 52 - i * 82, y + h - 18, 'art_' + c.id).setOrigin(0.5, 1);
+      const img = this.add.image(x + w - 52 - i * 82, y + h - 18, portraitKey(this, c.id)).setOrigin(0.5, 1);
       fitImage(img, 100, 130);
       if (!st.owns(c.id)) img.setTint(0x8880aa);
       T(this, img.x, y + h - 16, c.name, { size: 10, align: 'center', color: RARITY_COLORS[c.rarity], stroke: true });
@@ -159,8 +159,8 @@ export class GachaScene extends Phaser.Scene {
       skip = true;
       crack.destroy();
       parts.destroy();
-      // 초레어는 전용 일러스트부터
-      const ultras = res.filter((r) => r.kind === 'char' && r.rarity === 5);
+      // ★4·★5 는 일러스트부터 (★5 먼저)
+      const ultras = res.filter((r) => r.kind === 'char' && r.rarity >= 4).sort((a, b) => b.rarity - a.rarity);
       const next = (i: number) => {
         if (i >= ultras.length) return this.showResults(ov, res);
         showFullArt(this, ultras[i].id, () => next(i + 1));
@@ -264,7 +264,7 @@ export class GachaScene extends Phaser.Scene {
       } else {
         const c = App.content.char(r.id);
         const col = RARITY_COLORS[r.rarity];
-        const img = this.add.image(210, 330, 'art_' + c.id).setOrigin(0.5, 1);
+        const img = this.add.image(210, 330, portraitKey(this, c.id)).setOrigin(0.5, 1);
         fitImage(img, 280, 300);
         img.setAlpha(0).setY(350);
         fx.add(img);

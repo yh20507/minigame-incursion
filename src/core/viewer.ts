@@ -1,26 +1,53 @@
 import { App } from './app';
+import { audio } from './audio';
+import { placeholderFull } from './art';
 import { rarityName } from './ui';
 
 /**
- * 초레어 전용 고화질 일러스트 보기.
+ * ★4·★5 고화질 일러스트 보기.
  * 게임 화면(640x360 픽셀)이 아니라 창 해상도 그대로 보여주려고 HTML 위에 띄운다.
- * assets/chars/<id>_full.png 가 없으면 일반 일러스트를 크게 보여준다.
+ * ★4: 금빛 테두리. ★5: 무지개 테두리 + 홀로그램 광택 + 반짝이.
  */
 export function showFullArt(scene: Phaser.Scene, charId: string, onClose?: () => void) {
   const ch = App.content.char(charId);
+  const ultra = ch.rarity >= 5;
   const el = document.createElement('div');
-  el.className = 'viewer';
+  el.className = 'viewer ' + (ultra ? 'ultra' : 'legend');
+
+  const frame = document.createElement('div');
+  frame.className = 'frame';
   const img = document.createElement('img');
   let note = '';
-  if (scene.textures.exists('full_' + charId)) {
+  const key = 'full_' + charId;
+  if (scene.textures.exists(key) && !placeholderFull.has(charId)) {
     img.src = `assets/chars/${charId}_full.png`;
-  } else {
-    const src = scene.textures.get('art_' + charId).getSourceImage() as HTMLCanvasElement | HTMLImageElement;
-    img.src = src instanceof HTMLCanvasElement ? src.toDataURL() : src.src;
+  } else if (scene.textures.exists(key)) {
+    img.src = (scene.textures.get(key).getSourceImage() as HTMLCanvasElement).toDataURL();
     img.className = 'pixel';
     note = `전용 일러스트 자리: assets/chars/${charId}_full.png`;
   }
-  el.appendChild(img);
+  frame.appendChild(img);
+  if (ultra) {
+    const holo = document.createElement('div');
+    holo.className = 'holo';
+    frame.appendChild(holo);
+  }
+  el.appendChild(frame);
+
+  if (ultra) {
+    for (let i = 0; i < 28; i++) {
+      const s = document.createElement('div');
+      s.className = 'spark';
+      s.style.left = `${5 + Math.random() * 90}%`;
+      s.style.top = `${5 + Math.random() * 90}%`;
+      s.style.animationDelay = `${Math.random() * 1.8}s`;
+      s.style.animationDuration = `${1.2 + Math.random() * 1.4}s`;
+      const sc = 0.5 + Math.random() * 1.2;
+      s.style.width = s.style.height = `${14 * sc}px`;
+      el.appendChild(s);
+    }
+  }
+
   const cap = document.createElement('div');
   cap.className = 'cap';
   cap.textContent = ch.name;
@@ -41,6 +68,7 @@ export function showFullArt(scene: Phaser.Scene, charId: string, onClose?: () =>
   el.appendChild(hint);
   document.body.appendChild(el);
   requestAnimationFrame(() => el.classList.add('show'));
+  audio.sfx(ultra ? 'star' : 'legend');
   if (scene.input.keyboard) scene.input.keyboard.enabled = false;
 
   let closed = false;

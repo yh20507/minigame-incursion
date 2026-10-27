@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { App, C, W, hexNum } from '../core/app';
 import { audio } from '../core/audio';
-import { fitImage } from '../core/art';
+import { fitImage, portraitKey } from '../core/art';
 import { T, bg, fadeIn, go, panel, starsRow, toast, topBar } from '../core/ui';
 
 export class DomainScene extends Phaser.Scene {
@@ -62,7 +62,7 @@ export class DomainScene extends Phaser.Scene {
     const gk = App.content.char(d.gatekeeper);
     const bc = this.add.container(bx, by);
     bc.add(panel(this, 0, 0, bw, bh, { border: unlocked ? C.accentN : C.line, fill: 0x120f22 }));
-    const portrait = this.add.image(54, bh / 2, 'art_' + gk.id);
+    const portrait = this.add.image(54, bh / 2, portraitKey(this, gk.id));
     fitImage(portrait, 84, 84);
     if (!unlocked) portrait.setTint(0x333344);
     bc.add(portrait);

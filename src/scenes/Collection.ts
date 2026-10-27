@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { App, C, H, W, hexNum } from '../core/app';
 import { audio } from '../core/audio';
-import { RARITY_COLORS, fitImage } from '../core/art';
+import { RARITY_COLORS, fitImage, portraitKey } from '../core/art';
 import { passiveLabel } from '../core/store';
 import type { CharDef } from '../core/types';
 import { showFullArt } from '../core/viewer';
@@ -110,7 +110,7 @@ export class CollectionScene extends Phaser.Scene {
       h = 288;
     const col = RARITY_COLORS[c.rarity];
     panel(this, x, y, w, h, { border: hexNum(col) });
-    const img = this.add.image(x + w / 2, y + 116, 'art_' + id).setOrigin(0.5, 1);
+    const img = this.add.image(x + w / 2, y + 116, portraitKey(this, id)).setOrigin(0.5, 1);
     fitImage(img, w - 20, 108);
     if (!own) img.setTintFill(0x1a1630);
     T(this, x + 10, y + 120, own ? c.name : '???', { size: c.name.length > 6 ? 12 : 24, color: '#ffffff', bold: true });
@@ -148,7 +148,7 @@ export class CollectionScene extends Phaser.Scene {
           if (r?.levelUp) audio.sfx('legend');
           go(this, 'Collection', { tab, sel: id, page });
         }, '#b48cff');
-      if (c.rarity === 5) addBtn('일러스트', () => showFullArt(this, id), '#ff5fd2');
+      if (c.rarity >= 4) addBtn('일러스트', () => showFullArt(this, id), c.rarity >= 5 ? '#ff5fd2' : '#ffc845');
     } else {
       const how = c.origin === 'special' ? `획득 조건: ${c.unlock ?? '스토리'}` : c.origin === 'world' ? `${App.content.domainName(c.domain)} 한정 균열에서 만날 수 있다.` : '상시 균열에서 만날 수 있다.';
       T(this, x + 10, ty, how, { size: 10, color: C.dim, wrap: w - 20 });

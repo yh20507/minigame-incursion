@@ -28,7 +28,7 @@ export class BootScene extends Phaser.Scene {
     for (const ch of App.content.chars) {
       this.load.image('spr_' + ch.id, `assets/chars/${ch.id}_sprite.png`);
       this.load.image('art_' + ch.id, `assets/chars/${ch.id}_art.png`);
-      if (ch.rarity === 5) this.load.image('full_' + ch.id, `assets/chars/${ch.id}_full.png`);
+      if (ch.rarity >= 4) this.load.image('full_' + ch.id, `assets/chars/${ch.id}_full.png`);
     }
     for (const id of [...App.content.domains.map((d) => d.id), 'rift', ...App.content.worlds.map((w) => w.id)]) this.load.image('bg_' + id, `assets/bg/${id}.png`);
     for (const it of App.content.items) this.load.image('it_' + it.id, `assets/items/${it.id}.png`);

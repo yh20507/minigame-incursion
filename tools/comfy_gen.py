@@ -164,6 +164,8 @@ def fill_workflow(template, values):
 def build_prompts(cfg, existing):
     """characters.json · domains · worlds 에서 프롬프트를 만든다. 사용자가 고친 항목은 유지."""
     chars = game_data("characters")
+    story = load_json(os.path.join(ROOT, "public", "data", "story.json"), {})
+    speakers = {v.get("char") for v in story.get("speakers", {}).values() if v.get("char")}
     domains = game_data("domains")
     worlds = game_data("worlds")
     theme = {d["id"]: d for d in domains}
@@ -189,13 +191,18 @@ def build_prompts(cfg, existing):
             "nebula": "space station in a nebula",
             "rift": "mysterious dimensional rift",
         }.get(group, "")
-        kinds = ["sprite", "art"] + (["full"] if c["rarity"] == 5 else [])
+        # ★1~★3: 게임용만 (스토리에 나오는 캐릭터는 대화용 초상화 art 도)
+        # ★4·★5: 게임용 + 고화질 일러스트
+        kinds = ["sprite"] + (["full"] if c["rarity"] >= 4 else (["art"] if c["id"] in speakers else []))
         for k in kinds:
             parts = [cfg["kinds"][k]["prefix"], look]
             if k == "art" and setting:
                 parts.append(setting + " mood")
-            if k == "full" and setting:
-                parts.append(setting + " background")
+            if k == "full":
+                if c["rarity"] >= 5:
+                    parts.append("radiant, glowing magical particles, iridescent light, special rare card art")
+                if setting:
+                    parts.append(setting + " background")
             put(f"{c['id']}:{k}", {"id": c["id"], "kind": k, "name": c["name"], "group": group, "prompt": ", ".join(p for p in parts if p)})
 
     bg_hint = {
@@ -207,7 +214,9 @@ def build_prompts(cfg, existing):
     for gid in [d["id"] for d in domains] + ["rift"] + [w["id"] for w in worlds]:
         hint = bg_hint.get(gid) or f"{theme[gid].get('name', gid)} themed scenery, {theme[gid].get('subtitle', '')}"
         put(f"{gid}:bg", {"id": gid, "kind": "bg", "name": gid, "group": gid, "prompt": f"{cfg['kinds']['bg']['prefix']}, {hint}"})
-    return out
+    valid = {f"{c['id']}:{k}" for c in chars for k in (["sprite"] + (["full"] if c["rarity"] >= 4 else (["art"] if c["id"] in speakers else [])))}
+    valid |= {f"{g}:bg" for g in [d["id"] for d in domains] + ["rift"] + [w["id"] for w in worlds]}
+    return {k: v for k, v in out.items() if k in valid}
 
 
 def target_path(cfg, entry):
