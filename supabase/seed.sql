@@ -76,14 +76,19 @@ insert into public.mi_characters (id, origin, domain, rarity, pool) values
   ('lol_kaisa', 'world', 'lol', 5, true),
   ('sl_yuni', 'world', 'stellive', 5, true),
   ('sl_huya', 'world', 'stellive', 4, true),
+  ('sl_gangzi', 'world', 'stellive', 4, true),
   ('sl_hina', 'world', 'stellive', 3, true),
   ('sl_mashiro', 'world', 'stellive', 3, true),
+  ('sl_toa', 'world', 'stellive', 3, true),
   ('sl_lize', 'world', 'stellive', 2, true),
   ('sl_tabi', 'world', 'stellive', 2, true),
   ('sl_shibuki', 'world', 'stellive', 2, true),
+  ('sl_rang', 'world', 'stellive', 2, true),
   ('sl_rin', 'world', 'stellive', 1, true),
   ('sl_nana', 'world', 'stellive', 1, true),
-  ('sl_riko', 'world', 'stellive', 1, true)
+  ('sl_riko', 'world', 'stellive', 1, true),
+  ('sl_hiyori', 'world', 'stellive', 1, true),
+  ('sl_meri', 'world', 'stellive', 1, true)
 on conflict (id) do update set origin = excluded.origin, domain = excluded.domain, rarity = excluded.rarity, pool = excluded.pool;
 
 insert into public.mi_config (key, value) values
