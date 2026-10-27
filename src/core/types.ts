@@ -18,6 +18,8 @@ export interface CharDef {
   pool: boolean;
   passives: Passive[];
   desc: string;
+  /** 그림 생성용 영어 외형 설명 (tools/comfy_gen.py 가 사용) */
+  look?: string;
   line: string;
   unlock?: string;
 }

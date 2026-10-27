@@ -35,6 +35,21 @@ python tools/pixelize.py 원본.png public/assets/chars/heim_art.png --size 256 
 python tools/pixelize.py 배경.png public/assets/bg/ashen.png --size 640x360 --keep-bg --fill
 ```
 
+## ComfyUI 로 그림 자동 생성
+
+내 PC에서 ComfyUI 를 켜 두고 `comfy_images.bat` 을 더블클릭하면 메뉴가 뜬다. (Python 3.9+ 와 `pip install pillow` 필요)
+
+1. 메뉴 1번: ComfyUI 연결 확인, 쓸 체크포인트 고르기, 프롬프트 파일 생성
+2. 메뉴 2번: 빠진 그림 전부 생성. 그림마다 후보 4장을 만들고 1번 후보를 게임 규격으로 바꿔 `public/assets` 에 넣는다
+3. 마음에 안 들면 메뉴 5번으로 다른 후보 적용 (`art_raw/<종류>/<id>/` 에서 번호 확인)
+
+- 종류: `sprite`(게임용 48×48), `art`(일러스트 256×256), `full`(★5 고화질, 변환 없이 그대로), `bg`(배경 640×360)
+- 프롬프트는 `tools/comfy/prompts.json` 에서 그림마다 고칠 수 있다. 고친 줄은 다시 생성해도 덮어쓰지 않는다
+- 캐릭터 외형 기본값은 `characters.json` 의 `look` (영어)
+- 공통 스타일, 크기, 후보 수, 서버 주소는 `tools/comfy/config.json`
+- LoRA 등 자기 워크플로를 쓰려면 ComfyUI 에서 'Save (API Format)' 으로 저장한 JSON 의 프롬프트·크기·시드 자리에 `%PROMPT%`, `%NEGATIVE%`, `%WIDTH%`, `%HEIGHT%`, `%SEED%` 를 넣고 config 의 `workflow` 를 그 파일로 바꾼다
+- exe 옆 assets 폴더에 바로 넣으려면 config 의 `assetsDir` 를 그 폴더 경로로 바꾼다
+
 ## 콘텐츠 고치기
 
 전부 `public/data/` 의 JSON 이다. 코드를 건드리지 않고 바꿀 수 있다.

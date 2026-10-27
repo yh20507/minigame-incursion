@@ -1,0 +1,18 @@
+{
+  "server": "http://127.0.0.1:8188",
+  "checkpoint": "",
+  "workflow": "tools/comfy/workflow_default.json",
+  "assetsDir": "public/assets",
+  "rawDir": "art_raw",
+  "candidates": 4,
+  "steps": 28,
+  "cfg": 6.5,
+  "style": "high resolution pixel art, clean outlines, limited palette, game asset",
+  "negative": "lowres, blurry, jpeg artifacts, watermark, signature, text, logo, extra limbs, bad anatomy, cropped, nsfw",
+  "kinds": {
+    "sprite": { "width": 1024, "height": 1024, "prefix": "full body, standing, front view, chibi proportions, centered, plain flat green background" },
+    "art":    { "width": 1024, "height": 1024, "prefix": "character portrait, upper body, detailed, simple background" },
+    "full":   { "width": 832,  "height": 1216, "prefix": "high quality illustration, detailed anime style, dynamic pose, dramatic lighting, full body", "style": "masterpiece, best quality, highly detailed" },
+    "bg":     { "width": 1344, "height": 768,  "prefix": "wide landscape scenery, no characters, game background" }
+  }
+}

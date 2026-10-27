@@ -14,6 +14,7 @@
    }
   ],
   "desc": "균열에서 태어난 작은 정령. 수다스럽고 호기심이 많다. 방랑자의 첫 동료.",
+  "look": "tiny round purple spirit creature, two small horns, pink cheeks, glowing outline, cute mascot",
   "line": "같이 가자, 방랑자!"
  },
  {
@@ -31,6 +32,7 @@
    }
   ],
   "desc": "무너진 성문을 혼자 지켜온 고참 경비병. 의심이 많지만 정이 깊다.",
+  "look": "middle-aged gate guard, bushy beard, worn iron helmet, spear, dented shield",
   "line": "성문은 내가 지킨다."
  },
  {
@@ -48,6 +50,7 @@
    }
   ],
   "desc": "망치 한 자루로 왕국의 무기를 다 고쳐온 대장장이. 목소리가 크다.",
+  "look": "sturdy female blacksmith, scorched leather apron, big hammer, rolled-up sleeves",
   "line": "부러진 건 다 가져와!"
  },
  {
@@ -65,6 +68,7 @@
    }
   ],
   "desc": "몰락한 왕국의 노래를 모으며 떠도는 시인. 박자 감각이 좋다.",
+  "look": "wandering bard, feathered hat, lute, patched cloak",
   "line": "이번 노래의 주인공은 당신이군요."
  },
  {
@@ -83,6 +87,7 @@
    }
   ],
   "desc": "백 걸음 밖의 사과도 맞히는 명궁. 말수가 적고 계산이 빠르다.",
+  "look": "female archer captain, longbow, hood, scar near eye, green-brown leather armor",
   "line": "바람은 읽었다."
  },
  {
@@ -100,6 +105,7 @@
    }
   ],
   "desc": "잿더미에서 금을 만들겠다는 꿈을 버리지 못한 연금술사.",
+  "look": "alchemist, round glasses, singed robe, potion vials on belt",
   "line": "실험은 실패해도 기록은 남지."
  },
  {
@@ -117,6 +123,7 @@
    }
   ],
   "desc": "왕의 곁을 지키던 마법사. 균열을 연구하며 설계자의 정체를 쫓는다.",
+  "look": "court mage woman, long silver hair, star-patterned robe, staff glowing with rift light",
   "line": "균열의 무늬가 바뀌었어요. 흥미롭네요."
  },
  {
@@ -138,6 +145,7 @@
    }
   ],
   "desc": "왕국의 비밀 첩보원. 누구의 편인지는 아무도 모른다.",
+  "look": "shadow spy, black hood and mask, twin daggers, slim agile build",
   "line": "날 본 건 비밀로 해 줘."
  },
  {
@@ -159,6 +167,7 @@
    }
   ],
   "desc": "왕국 최후의 기사단을 이끄는 단장. 왕을 구하기 위해 검을 놓지 않았다.",
+  "look": "knight commander woman, silver plate armor, red cape, golden braided hair, crested sword",
   "line": "잿빛 왕관의 이름으로, 길을 열겠다."
  },
  {
@@ -180,6 +189,7 @@
    }
   ],
   "desc": "마지막 남은 잿빛 용과 함께 하늘을 나는 기수. 자유를 무엇보다 사랑한다.",
+  "look": "dragon rider, flight goggles, scarf blowing in wind, dragon scale armor, lance",
   "line": "꽉 잡아. 하늘로 간다!"
  },
  {
@@ -205,6 +215,7 @@
    }
   ],
   "desc": "균열이 크게 요동친 순간 나타난 또 다른 세라피나. 다른 세계의 기억을 품고 있다.",
+  "look": "alternate version of a knight commander woman, golden braided hair, dark violet armor, glowing magenta rift aura, otherworldly",
   "line": "...이 세계의 나는, 아직 웃고 있구나."
  },
  {
@@ -222,6 +233,7 @@
    }
   ],
   "desc": "빗길 배달로 도시 지도를 머릿속에 다 넣은 라이더. 말이 빠르다.",
+  "look": "delivery rider, neon raincoat, helmet, delivery box on back",
   "line": "30분 안에 못 오면 공짜!"
  },
  {
@@ -239,6 +251,7 @@
    }
   ],
   "desc": "항구 뒷골목 국수 노점의 주인. 비 오는 날 장사가 제일 잘된다.",
+  "look": "street noodle cook, headband, apron, ladle, steaming pot",
   "line": "한 그릇 말아줄까?"
  },
  {
@@ -261,6 +274,7 @@
    }
   ],
   "desc": "지붕 위에서 해적 방송을 트는 DJ. 도시의 박자를 만든다.",
+  "look": "street DJ, big headphones, oversized hoodie, neon sunglasses",
   "line": "볼륨 올려!"
  },
  {
@@ -279,6 +293,7 @@
    }
   ],
   "desc": "방화벽을 장난감처럼 다루는 해커. 사탕을 입에 달고 산다.",
+  "look": "hacker girl, lollipop, screen goggles, cat-ear hoodie, laptop",
   "line": "보안이 너무 허술한데?"
  },
  {
@@ -296,6 +311,7 @@
    }
   ],
   "desc": "망가진 의체라면 뭐든 고치는 수리공. 정작 자기 팔은 고장 난 채로 둔다.",
+  "look": "cyborg repair mechanic, broken mechanical arm, tool belt, oily overalls",
   "line": "나사 하나 빠졌네. 금방 돼."
  },
  {
@@ -313,6 +329,7 @@
    }
   ],
   "desc": "항구에서 가장 빠른 배를 모는 밀수꾼. 화물이 뭔지는 묻지 않는다.",
+  "look": "smuggler ship captain, captain hat, long raincoat, beard, glowing cybernetic eye",
   "line": "운임은 선불이야."
  },
  {
@@ -334,6 +351,7 @@
    }
   ],
   "desc": "대기업 회장을 지키던 경호원. 회사가 사라진 뒤에도 습관처럼 주위를 살핀다.",
+  "look": "corporate bodyguard, black suit, sunglasses, earpiece",
   "line": "제 뒤에 계십시오."
  },
  {
@@ -351,6 +369,7 @@
    }
   ],
   "desc": "네온 고가도로를 지배하는 바이크 갱의 두목. 속도 말고는 관심이 없다.",
+  "look": "biker gang boss woman, leather jacket, neon mohawk, helmet under arm",
   "line": "느린 건 질색이야."
  },
  {
@@ -368,6 +387,7 @@
    }
   ],
   "desc": "도시의 모든 소문이 모이는 곳에 그녀가 있다. 정보값은 비싸다.",
+  "look": "information broker woman, spiderweb pattern shawl, floating holographic screens, long nails",
   "line": "궁금한 게 있으면, 값을 치러."
  },
  {
@@ -389,6 +409,7 @@
    }
   ],
   "desc": "도시 전체 전광판에 얼굴이 걸린 가수. 무대 밖에서는 조용한 사람이다.",
+  "look": "neon pop singer woman, glamorous stage dress, holographic microphone, glowing long hair",
   "line": "오늘 밤 무대는 당신을 위한 거야."
  },
  {
@@ -414,6 +435,7 @@
    }
   ],
   "desc": "균열 너머의 무대에서 노래하던 또 다른 루미에르. 노래가 끝나지 않는다.",
+  "look": "alternate version of a neon pop singer woman, glowing long hair, dark iridescent stage dress, magenta rift aura, otherworldly",
   "line": "앙코르는... 영원히."
  },
  {
@@ -436,6 +458,7 @@
    }
   ],
   "desc": "무중력 화물칸에서 상자를 차곡차곡 쌓는 게 특기인 정리원.",
+  "look": "small cargo handler, work vest, carrying a crate",
   "line": "각 잡아서 쌓아드릴게요!"
  },
  {
@@ -453,6 +476,7 @@
    }
   ],
   "desc": "정거장 배관을 수리하는 구형 로봇. 삐빅 소리로 감정을 표현한다.",
+  "look": "round old maintenance robot, single lens eye, wrench arm",
   "line": "삐빅. 수리 개시."
  },
  {
@@ -470,6 +494,7 @@
    }
   ],
   "desc": "정거장 유일의 식당을 운영하는 주인. 외계인 손님 입맛도 다 외운다.",
+  "look": "plump space diner owner woman, space apron, frying pan",
   "line": "배고프면 일단 먹고 해요!"
  },
  {
@@ -487,6 +512,7 @@
    }
   ],
   "desc": "소행성대를 눈 감고도 빠져나간다는 파일럿. 착륙은 서툴다.",
+  "look": "pilot woman, flight suit, helmet under arm, short hair",
   "line": "벨트 매. 흔들릴 거야."
  },
  {
@@ -504,6 +530,7 @@
    }
   ],
   "desc": "성운에 사는 생물을 연구하는 학자. 연구 대상에게 이름을 붙여준다.",
+  "look": "space biologist, lab coat, holding a small fluffy nebula creature",
   "line": "이 아이 이름은 '뭉치'예요."
  },
  {
@@ -522,6 +549,7 @@
    }
   ],
   "desc": "현상금 붙은 놈은 다 잡는다는 사냥꾼. 지금은 쉬는 중이라고 우긴다.",
+  "look": "bounty hunter, long coat, rifle, wanted poster",
   "line": "현상금이 붙었으면, 내 손님이지."
  },
  {
@@ -543,6 +571,7 @@
    }
   ],
   "desc": "정거장의 질서를 책임지는 경비대장. 규칙을 어기는 사람에게 엄격하다.",
+  "look": "security chief, heavy armored spacesuit, large shield, stern face",
   "line": "질서 유지. 협조 부탁한다."
  },
  {
@@ -560,6 +589,7 @@
    }
   ],
   "desc": "촉수 네 개로 물건 네 개를 동시에 파는 상인. 흥정에 진 적이 없다.",
+  "look": "alien merchant with four tentacles each holding goods, big eyes, merchant vest",
   "line": "특별가! 오늘만! 진짜로!"
  },
  {
@@ -581,6 +611,7 @@
    }
   ],
   "desc": "지도에 없는 곳만 골라 가는 탐험가. 조각세계도 그녀에겐 새 놀이터다.",
+  "look": "galaxy explorer woman, explorer spacesuit, big backpack, star pin, confident smile",
   "line": "가 본 적 없는 곳이라면, 가야지!"
  },
  {
@@ -608,6 +639,7 @@
    }
   ],
   "desc": "설계자에게 사로잡혀 시련의 문지기가 되었던 왕. 해방된 뒤 방랑자에게 검을 맡겼다.",
+  "look": "ash king, ash-covered crown, cracked royal armor, huge greatsword, weary",
   "line": "이 검은 이제 너의 것이다."
  },
  {
@@ -635,6 +667,7 @@
    }
   ],
   "desc": "항구 관리 AI의 인격. 해방된 뒤 방랑자에게 감사를 기록했다.",
+  "look": "holographic AI harbor master, translucent cyan body, harbor uniform, rings of data orbiting",
   "line": "협력 프로토콜을 개시합니다."
  },
  {
@@ -662,6 +695,7 @@
    }
   ],
   "desc": "성운 표류선의 함장. 오랜만에 자기 의지로 키를 잡았다.",
+  "look": "old space captain, huge build, worn captain coat, mechanical prosthetic arm, white beard",
   "line": "항로는 우리가 정한다."
  },
  {
@@ -688,6 +722,7 @@
    }
   ],
   "desc": "텅 빈 세계에 홀로 남아, 함께 놀 누군가를 기다리며 세계를 꿰맸던 존재.",
+  "look": "mysterious figure in dark cloak, face hidden in shadow, glowing pink eyes, threads and needle motif, lonely",
   "line": "이번엔 시련이 아니라, 그냥 놀자."
  },
  {
@@ -705,6 +740,7 @@
    }
   ],
   "desc": "화살 한 통이면 충분하다는 명궁. 초능력은 없지만 누구보다 침착하다.",
+  "look": "Hawkeye (Marvel), archer, purple tactical suit, bow",
   "line": "빗나간 적? 아직 없어."
  },
  {
@@ -722,6 +758,7 @@
    }
   ],
   "desc": "기계 날개로 하늘을 나는 영웅. 동료를 끝까지 챙긴다.",
+  "look": "Falcon (Marvel), mechanical wings, red and grey suit, goggles",
   "line": "공중 지원은 맡겨."
  },
  {
@@ -739,6 +776,7 @@
    }
   ],
   "desc": "몸을 개미만큼 줄였다 키웠다 하는 영웅. 늘 농담이 먼저 나온다.",
+  "look": "Ant-Man (Marvel), red and black suit, helmet",
   "line": "작다고 무시하면 곤란해."
  },
  {
@@ -756,6 +794,7 @@
    }
   ],
   "desc": "어떤 상처도 다시 아무는 용병. 시도 때도 없이 화면 밖을 향해 말을 건다.",
+  "look": "Deadpool (Marvel), red mask and suit, two katanas",
   "line": "이번 뽑기, 나라서 실망했지?"
  },
  {
@@ -773,6 +812,7 @@
    }
   ],
   "desc": "격투와 첩보의 달인. 말보다 행동이 빠르다.",
+  "look": "Black Widow (Marvel), black tactical suit, red hair",
   "line": "계획은 이미 세워뒀어."
  },
  {
@@ -790,6 +830,7 @@
    }
   ],
   "desc": "무기라면 뭐든 개조하는 우주 너구리. 너구리라고 부르면 화낸다.",
+  "look": "Rocket Raccoon (Marvel), raccoon in jumpsuit, big gun",
   "line": "더 큰 총 없어?"
  },
  {
@@ -807,6 +848,7 @@
    }
   ],
   "desc": "손등에서 금속 발톱이 튀어나오는 사나이. 무뚝뚝하지만 정이 깊다.",
+  "look": "Wolverine (Marvel), yellow and blue suit, metal claws",
   "line": "귀찮게 하지 마."
  },
  {
@@ -824,6 +866,7 @@
    }
   ],
   "desc": "둥근 방패 하나로 전장을 지휘하는 리더. 원칙을 굽히지 않는다.",
+  "look": "Captain America (Marvel), star-spangled suit, round shield",
   "line": "모두 내 뒤로."
  },
  {
@@ -841,6 +884,7 @@
    }
   ],
   "desc": "비밀 왕국의 왕이자 전사. 기품과 힘을 함께 지녔다.",
+  "look": "Black Panther (Marvel), black panther suit, silver details",
   "line": "내 왕국은 내가 지킨다."
  },
  {
@@ -862,6 +906,7 @@
    }
   ],
   "desc": "신비한 마법을 다루는 소서러 슈프림. 시간의 흐름까지 엿본다.",
+  "look": "Doctor Strange (Marvel), blue robe, red cloak, magic circles",
   "line": "수많은 미래 중 이길 길은 하나."
  },
  {
@@ -883,6 +928,7 @@
    }
   ],
   "desc": "스스로 만든 강철 슈트를 입는 천재. 자신감이 넘친다.",
+  "look": "Iron Man (Marvel), red and gold armor, arc reactor",
   "line": "슈트 업그레이드는 이미 끝났지."
  },
  {
@@ -904,6 +950,7 @@
    }
   ],
   "desc": "망치를 휘둘러 번개를 부르는 신. 호탕하게 웃는다.",
+  "look": "Thor (Marvel), armor, red cape, hammer, lightning",
   "line": "천둥이 내 편이다!"
  },
  {
@@ -929,6 +976,7 @@
    }
   ],
   "desc": "현실 자체를 바꿔 버리는 힘을 가진 마녀. 균열과 묘하게 공명한다.",
+  "look": "Scarlet Witch (Marvel), red costume, headpiece, red magic",
   "line": "이 세계도... 바꿀 수 있어."
  },
  {
@@ -946,6 +994,7 @@
    }
   ],
   "desc": "새총 한 자루로 버티는 저격수. 겁은 많지만 결정적인 순간엔 물러서지 않는다.",
+  "look": "Usopp (One Piece), long nose, slingshot, overalls",
   "line": "나에겐 부하가 8천 명 있다고!"
  },
  {
@@ -963,6 +1012,7 @@
    }
   ],
   "desc": "몸을 개조한 배 목수. 콜라를 연료 삼아 움직인다.",
+  "look": "Franky (One Piece), cyborg, blue hair, sunglasses, Hawaiian shirt",
   "line": "오늘 컨디션, 슈퍼다!"
  },
  {
@@ -980,6 +1030,7 @@
    }
   ],
   "desc": "한 번 죽었다 살아난 해골 음악가. 바이올린 실력이 일품이다.",
+  "look": "Brook (One Piece), skeleton musician, afro, top hat, violin",
   "line": "요호호, 뼈만 남았지만 기분은 좋아요."
  },
  {
@@ -997,6 +1048,7 @@
    }
   ],
   "desc": "몸이 조각조각 분리되는 광대 선장. 운 하나로 출세한다.",
+  "look": "Buggy (One Piece), clown pirate, red nose, captain hat",
   "line": "내가 바로 대해적이다!"
  },
  {
@@ -1014,6 +1066,7 @@
    }
   ],
   "desc": "날씨를 읽는 천재 항해사. 돈 계산은 누구보다 빠르다.",
+  "look": "Nami (One Piece), navigator, orange hair, staff",
   "line": "항로는 내가 정할게."
  },
  {
@@ -1031,6 +1084,7 @@
    }
   ],
   "desc": "발차기로 싸우는 요리사. 배고픈 사람은 누구든 먹인다.",
+  "look": "Sanji (One Piece), blond chef, black suit, cigarette",
   "line": "배고프면 일단 먹어."
  },
  {
@@ -1048,6 +1102,7 @@
    }
   ],
   "desc": "어인족의 거한이자 조타수. 의리와 침착함의 상징.",
+  "look": "Jinbe (One Piece), fishman, kimono",
   "line": "키는 내가 잡겠다."
  },
  {
@@ -1065,6 +1120,7 @@
    }
   ],
   "desc": "몸 어디서든 손을 피워내는 고고학자. 역사의 비밀을 쫓는다.",
+  "look": "Nico Robin (One Piece), archaeologist, black hair, cowboy hat",
   "line": "이 균열에도 역사가 있겠지."
  },
  {
@@ -1082,6 +1138,7 @@
    }
   ],
   "desc": "공간을 수술대처럼 다루는 의사 선장. 계획에 철저하다.",
+  "look": "Trafalgar Law (One Piece), spotted hat, long nodachi sword",
   "line": "작전대로 움직여."
  },
  {
@@ -1103,6 +1160,7 @@
    }
   ],
   "desc": "여인국을 다스리는 여제. 오만하지만 한 사람 앞에서만 약해진다.",
+  "look": "Boa Hancock (One Piece), pirate empress, long black hair, elegant dress",
   "line": "내가 아름다워서 용서받는 거야."
  },
  {
@@ -1124,6 +1182,7 @@
    }
   ],
   "desc": "검 세 자루를 쓰는 검사. 길은 늘 잃지만 칼끝은 정확하다.",
+  "look": "Roronoa Zoro (One Piece), green hair, three swords, bandana",
   "line": "길은... 이쪽이 맞을 거다."
  },
  {
@@ -1145,6 +1204,7 @@
    }
   ],
   "desc": "온몸이 불꽃이 되는 해적. 동생을 무엇보다 아낀다.",
+  "look": "Portgas D. Ace (One Piece), orange hat, fire",
   "line": "불꽃은 꺼지지 않아."
  },
  {
@@ -1170,6 +1230,7 @@
    }
   ],
   "desc": "몸이 고무처럼 늘어나는 해적 선장. 동료를 위해서라면 무엇이든 한다.",
+  "look": "Monkey D. Luffy (One Piece), straw hat, red vest, big grin",
   "line": "조각세계? 전부 모험이다!"
  },
  {
@@ -1187,6 +1248,7 @@
    }
   ],
   "desc": "거대한 대검을 든 데마시아의 기사. 정의를 의심하지 않는다.",
+  "look": "Garen (League of Legends), big sword, blue and gold armor",
   "line": "데마시아는 물러서지 않는다."
  },
  {
@@ -1204,6 +1266,7 @@
    }
   ],
   "desc": "얼음 화살을 쏘는 프렐요드의 지도자. 차분하게 앞을 내다본다.",
+  "look": "Ashe (League of Legends), ice bow, blue hood",
   "line": "얼음은 길을 막지 않아. 길을 만든다."
  },
  {
@@ -1221,6 +1284,7 @@
    }
   ],
   "desc": "눈을 감고도 적을 베는 검의 달인. 수련을 쉬지 않는다.",
+  "look": "Master Yi (League of Legends), goggles helmet, sword",
   "line": "눈은 마음을 속인다."
  },
  {
@@ -1238,6 +1302,7 @@
    }
   ],
   "desc": "도끼 하나로 군대를 이끄는 장군. 강한 자만 인정한다.",
+  "look": "Darius (League of Legends), axe, dark armor",
   "line": "약한 자는 물러나라."
  },
  {
@@ -1255,6 +1320,7 @@
    }
   ],
   "desc": "빛을 다루는 데마시아의 마법사. 늘 밝고 씩씩하다.",
+  "look": "Lux (League of Legends), blonde girl, light wand, white armor",
   "line": "빛으로 길을 비출게!"
  },
  {
@@ -1272,6 +1338,7 @@
    }
   ],
   "desc": "무엇이든 갈고리로 끌어오는 증기 로봇. 의외로 다정하다.",
+  "look": "Blitzcrank (League of Legends), steam golem robot, big hands",
   "line": "목표 포착. 끌어당긴다."
  },
  {
@@ -1289,6 +1356,7 @@
    }
   ],
   "desc": "춤추듯 칼날을 조종하는 아이오니아의 수호자.",
+  "look": "Irelia (League of Legends), floating blades, dancer",
   "line": "칼날은 내 뜻대로 춤춘다."
  },
  {
@@ -1306,6 +1374,7 @@
    }
   ],
   "desc": "백 미터 밖 표적도 놓치지 않는 저격수. 수사에 집요하다.",
+  "look": "Caitlyn (League of Legends), sheriff, top hat, sniper rifle",
   "line": "단서는 이미 찾았어."
  },
  {
@@ -1323,6 +1392,7 @@
    }
   ],
   "desc": "거대한 강철 주먹을 단 집행자. 문은 부수고 지나간다.",
+  "look": "Vi (League of Legends), pink hair, giant gauntlets",
   "line": "문? 그냥 부수면 되잖아."
  },
  {
@@ -1344,6 +1414,7 @@
    }
   ],
   "desc": "앞을 보지 못하지만 누구보다 정확하게 움직이는 수도승.",
+  "look": "Lee Sin (League of Legends), blind monk, red blindfold",
   "line": "보이지 않아도 느낄 수 있다."
  },
  {
@@ -1365,6 +1436,7 @@
    }
   ],
   "desc": "바람을 다루는 떠돌이 검객. 과거를 짊어지고 걷는다.",
+  "look": "Yasuo (League of Legends), wind swordsman, ponytail",
   "line": "바람이 이끄는 대로."
  },
  {
@@ -1386,6 +1458,7 @@
    }
   ],
   "desc": "아홉 꼬리를 지닌 여우 마법사. 인간을 이해하고 싶어 한다.",
+  "look": "Ahri (League of Legends), nine-tailed fox, fox ears",
   "line": "날 따라와 볼래?"
  },
  {
@@ -1411,6 +1484,7 @@
    }
   ],
   "desc": "공허의 갑피와 하나가 된 사냥꾼. 균열 너머의 위협에 가장 민감하다.",
+  "look": "Kai'Sa (League of Legends), void armor suit, purple glow",
   "line": "공허도 이 균열은 못 넘어."
  },
  {
@@ -1436,6 +1510,7 @@
    }
   ],
   "desc": "지구에서 깨어난 알리콘. 게임과 저스트 채팅 방송을 한다.",
+  "look": "Ayatsuno Yuni (StelLive vtuber), alicorn girl, horn and wings",
   "line": ""
  },
  {
@@ -1457,6 +1532,7 @@
    }
   ],
   "desc": "한때 별이었던 고대의 엘더 드래곤. 스텔라이브의 첫 전학생.",
+  "look": "Sakihane Huya (StelLive vtuber), elder dragon girl, star motif",
   "line": ""
  },
  {
@@ -1478,6 +1554,7 @@
    }
   ],
   "desc": "스텔라이브의 대표. 정식 멤버가 아닌 게스트 멤버로 소개된다.",
+  "look": "Gangzi (StelLive vtuber), company president",
   "line": ""
  },
  {
@@ -1495,6 +1572,7 @@
    }
   ],
   "desc": "아이돌의 꿈을 접은, 차분한 목소리의 가수이자 피아니스트.",
+  "look": "Shirayuki Hina (StelLive vtuber), gentle singer, piano motif",
   "line": ""
  },
  {
@@ -1512,6 +1590,7 @@
    }
   ],
   "desc": "고양이 동료들을 찾아 헤매는 외계인. 공포 게임을 즐긴다.",
+  "look": "Neneko Mashiro (StelLive vtuber), alien girl, cat motif",
   "line": ""
  },
  {
@@ -1532,7 +1611,8 @@
     "value": 5
    }
   ],
-  "desc": "2026년 10월 17일 데뷔한 4기 ABYSS의 첫 번째 별. 상징 이모지는 🪦.",
+  "desc": "대대로 퇴마를 이어온 가문에서 태어난 갸루 엑소시스트. 봉인 사건 이후 시간이 열아홉 살에 멈췄고, 퇴마 중 생긴 균열로 인간 세계에 떨어져 운명에서 벗어난 삶을 꿈꾼다.",
+  "look": "Shizuki Toa (StelLive vtuber), gyaru exorcist, talismans",
   "line": ""
  },
  {
@@ -1550,6 +1630,7 @@
    }
   ],
   "desc": "피보다 음악을 좋아하는 하프 뱀파이어.",
+  "look": "Akane Lize (StelLive vtuber), half-vampire girl, music motif",
   "line": ""
  },
  {
@@ -1567,6 +1648,7 @@
    }
   ],
   "desc": "다른 우주에서 온 보물 사냥꾼.",
+  "look": "Arahashi Tabi (StelLive vtuber), treasure hunter girl",
   "line": ""
  },
  {
@@ -1584,6 +1666,7 @@
    }
   ],
   "desc": "천 년 묵은 여우신이었지만 지금은 게임에 빠진 집순이.",
+  "look": "Tenko Shibuki (StelLive vtuber), fox god girl, fox ears, game controller",
   "line": ""
  },
  {
@@ -1600,7 +1683,8 @@
     "value": 8
    }
   ],
-  "desc": "2026년 10월 17일 데뷔한 4기 ABYSS의 두 번째 별. 데뷔 방송에서 플루트를 연주했다. 상징 이모지는 🐯.",
+  "desc": "산의 결계를 만들어 내는 500년 묵은 영물 호랑이. 결계가 무너진 뒤 처음으로 현대 세상과 마주하며 적응해 가는 중.",
+  "look": "Kogane Rang (StelLive vtuber), tiger spirit girl, tiger ears, flute",
   "line": ""
  },
  {
@@ -1618,6 +1702,7 @@
    }
   ],
   "desc": "진심 어린 서비스를 배우러 온 전직 지하 메이드 콘셉트 아이돌.",
+  "look": "Aokumo Rin (StelLive vtuber), maid-style idol",
   "line": ""
  },
  {
@@ -1635,6 +1720,7 @@
    }
   ],
   "desc": "정체를 숨기고 도망 중인 전직 비밀 요원.",
+  "look": "Hanako Nana (StelLive vtuber), secret agent girl",
   "line": ""
  },
  {
@@ -1652,6 +1738,7 @@
    }
   ],
   "desc": "마왕을 쓰러뜨린 뒤 다시 용사가 되고 싶은 용사.",
+  "look": "Yuzuha Riko (StelLive vtuber), hero girl, sword",
   "line": ""
  },
  {
@@ -1668,7 +1755,8 @@
     "value": 5
    }
   ],
-  "desc": "2026년 10월 18일 데뷔한 4기 ABYSS 멤버. 상징 이모지는 👻.",
+  "desc": "버려진 놀이공원에 홀로 남겨져 기억을 잃은 채 지박령이 된 소녀. 노랫소리에 이끌려 잃어버린 기억과 흔적을 찾아 나선다.",
+  "look": "Hanayo Hiyori (StelLive vtuber), ghost girl, abandoned amusement park motif",
   "line": ""
  },
  {
@@ -1685,7 +1773,8 @@
     "value": 2
    }
   ],
-  "desc": "2026년 10월 18일 데뷔한 4기 ABYSS 멤버. 상징 이모지는 🪡.",
+  "desc": "사람들에게 불운을 가져다주던 저주 인형. 자신의 목소리로 긍정적인 감정을 나눌 수 있다는 것을 깨닫고 합류했다. 두 눈을 가린 모습이 특징.",
+  "look": "Tokino Meri (StelLive vtuber), cursed doll girl, eyes covered, sewing needle motif",
   "line": ""
  }
 ]
