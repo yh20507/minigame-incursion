@@ -208,7 +208,32 @@ export function makeCharTextures(scene: Phaser.Scene, content: Content) {
       drawGrid(g, grid, 3, 3, 3);
       scene.textures.addCanvas(sk, c);
     }
-    // ★4 이상은 고화질 일러스트 자리. 파일이 없으면 임시 카드를 만든다
+    // 기본 일러스트 (전원). 파일이 없으면 임시 그림
+    const ak = 'art_' + ch.id;
+    if (!scene.textures.exists(ak)) {
+      const { c, g } = canvas(256, 256);
+      const dom = content.domain(ch.domain);
+      const sky = dom?.sky ?? [shade(color, -0.65), '#120d22'];
+      const grad = g.createLinearGradient(0, 0, 0, 256);
+      grad.addColorStop(0, sky[0]);
+      grad.addColorStop(1, sky[1]);
+      g.fillStyle = grad;
+      g.fillRect(0, 0, 256, 256);
+      const r = seeded(hashStr(ch.id + 'bg'));
+      g.fillStyle = shade(color, -0.2);
+      g.globalAlpha = 0.25;
+      for (let i = 0; i < 40; i++) g.fillRect(Math.floor(r() * 64) * 4, Math.floor(r() * 64) * 4, 4, 4);
+      g.globalAlpha = 1;
+      drawGrid(g, grid, 32, 24, 12);
+      g.fillStyle = 'rgba(7,6,15,0.7)';
+      g.fillRect(0, 224, 256, 32);
+      g.fillStyle = '#c9c3ef';
+      g.font = '10px Galmuri9';
+      g.textAlign = 'center';
+      g.fillText('임시 그림 · ' + ch.id + '_art.png', 128, 244);
+      scene.textures.addCanvas(ak, c);
+    }
+    // ★4·★5 는 특별 일러스트(고퀄리티)를 하나 더. 파일이 없으면 임시 카드
     const fk = 'full_' + ch.id;
     if (ch.rarity >= 4 && !scene.textures.exists(fk)) {
       const { c, g } = canvas(256, 320);
@@ -240,11 +265,9 @@ export function makeCharTextures(scene: Phaser.Scene, content: Content) {
 /** 임시 카드로 대신한 ★4·★5 일러스트 */
 export const placeholderFull = new Set<string>();
 
-/** 초상화로 쓸 텍스처: 사용자 일러스트(art) → 고화질 일러스트(★4·★5) → 게임용 캐릭터 */
+/** 도감·대화·결과 화면에 쓰는 기본 일러스트 */
 export function portraitKey(scene: Phaser.Scene, id: string) {
-  if (scene.textures.exists('art_' + id)) return 'art_' + id;
-  if (scene.textures.exists('full_' + id)) return 'full_' + id;
-  return 'spr_' + id;
+  return scene.textures.exists('art_' + id) ? 'art_' + id : 'spr_' + id;
 }
 
 function drawSkyline(g: CanvasRenderingContext2D, theme: string, color: string, sky: [string, string], r: () => number) {

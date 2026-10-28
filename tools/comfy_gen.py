@@ -191,9 +191,9 @@ def build_prompts(cfg, existing):
             "nebula": "space station in a nebula",
             "rift": "mysterious dimensional rift",
         }.get(group, "")
-        # ★1~★3: 게임용만 (스토리에 나오는 캐릭터는 대화용 초상화 art 도)
-        # ★4·★5: 게임용 + 고화질 일러스트
-        kinds = ["sprite"] + (["full"] if c["rarity"] >= 4 else (["art"] if c["id"] in speakers else []))
+        # 전원: 게임용(sprite) + 기본 일러스트(art)
+        # ★4·★5: 특별 일러스트(full)를 하나 더, 더 높은 품질로
+        kinds = ["sprite", "art"] + (["full"] if c["rarity"] >= 4 else [])
         for k in kinds:
             parts = [cfg["kinds"][k]["prefix"], look]
             if k == "art" and setting:
@@ -214,7 +214,7 @@ def build_prompts(cfg, existing):
     for gid in [d["id"] for d in domains] + ["rift"] + [w["id"] for w in worlds]:
         hint = bg_hint.get(gid) or f"{theme[gid].get('name', gid)} themed scenery, {theme[gid].get('subtitle', '')}"
         put(f"{gid}:bg", {"id": gid, "kind": "bg", "name": gid, "group": gid, "prompt": f"{cfg['kinds']['bg']['prefix']}, {hint}"})
-    valid = {f"{c['id']}:{k}" for c in chars for k in (["sprite"] + (["full"] if c["rarity"] >= 4 else (["art"] if c["id"] in speakers else [])))}
+    valid = {f"{c['id']}:{k}" for c in chars for k in (["sprite", "art"] + (["full"] if c["rarity"] >= 4 else []))}
     valid |= {f"{g}:bg" for g in [d["id"] for d in domains] + ["rift"] + [w["id"] for w in worlds]}
     return {k: v for k, v in out.items() if k in valid}
 
@@ -332,8 +332,8 @@ def cmd_run(args):
                 "WIDTH": e.get("width", kc["width"]),
                 "HEIGHT": e.get("height", kc["height"]),
                 "SEED": seed,
-                "STEPS": cfg.get("steps", 28),
-                "CFG": cfg.get("cfg", 6.5),
+                "STEPS": kc.get("steps", cfg.get("steps", 28)),
+                "CFG": kc.get("cfg", cfg.get("cfg", 6.5)),
                 "CHECKPOINT": cfg.get("checkpoint", ""),
                 "PREFIX": f"incursion/{e['kind']}_{e['id']}",
             })
