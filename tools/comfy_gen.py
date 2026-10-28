@@ -116,21 +116,26 @@ class Comfy:
             return json.loads(r.read())["name"]
 
     def models_dir(self):
-        """ComfyUI 가 알려주는 실행 정보로 models\\checkpoints 위치를 찾는다"""
+        """ComfyUI 가 실제로 쓰는 checkpoints 폴더 (ComfyUI 에 직접 물어본다)"""
         try:
-            st = json.loads(self._req("/system_stats", timeout=5)).get("system", {})
+            fp = json.loads(self._req("/internal/folder_paths", timeout=5))
+            paths = fp.get("checkpoints")
+            if paths:
+                first = paths[0]
+                return first[0] if isinstance(first, list) else first
         except Exception:
-            return None
-        argv = st.get("argv") or []
-        base = None
-        for flag in ("--base-directory", "--base_directory"):
-            if flag in argv and argv.index(flag) + 1 < len(argv):
-                base = argv[argv.index(flag) + 1]
-        if not base:
+            pass
+        try:
+            argv = json.loads(self._req("/system_stats", timeout=5)).get("system", {}).get("argv") or []
+            for flag in ("--base-directory", "--base_directory"):
+                if flag in argv and argv.index(flag) + 1 < len(argv):
+                    return os.path.join(argv[argv.index(flag) + 1], "models", "checkpoints")
             main = next((a for a in argv if a.endswith("main.py")), None)
-            if main:
-                base = os.path.dirname(os.path.abspath(main))
-        return os.path.join(base, "models", "checkpoints") if base else None
+            if main and os.path.isabs(main):
+                return os.path.join(os.path.dirname(main), "models", "checkpoints")
+        except Exception:
+            pass
+        return None
 
     def checkpoints(self):
         # 1) /models/checkpoints (대부분 버전)
@@ -322,12 +327,11 @@ def apply_ref(wf, image_name, width, height, denoise):
 def show_models_dir(comfy):
     d = comfy.models_dir()
     if not d:
-        print("    ComfyUI 화면의 메뉴에서 models 폴더 열기를 찾아 주세요.")
+        print("    ComfyUI 를 설치(압축 해제)한 폴더 안의 ComfyUI\\models\\checkpoints 에 넣어 주세요.")
         return
     print(f"    모델 넣을 폴더: {d}")
     try:
-        os.makedirs(d, exist_ok=True)
-        if hasattr(os, "startfile"):
+        if os.path.isdir(d) and hasattr(os, "startfile"):
             os.startfile(d)
             print("    (그 폴더를 열어 뒀어요)")
     except Exception:
