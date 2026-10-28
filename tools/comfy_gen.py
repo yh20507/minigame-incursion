@@ -370,13 +370,25 @@ def select(prompts, cfg, args):
 
 def cmd_run(args):
     cfg = load_config()
-    if not cfg.get("checkpoint") and "%CHECKPOINT%" in json.dumps(load_json(rel(cfg["workflow"]), {})):
-        print("체크포인트가 정해지지 않았어요. 먼저: python tools/comfy_gen.py init")
-        return 1
     comfy = find_server(cfg)
     if not comfy:
         print(f"ComfyUI 에 연결할 수 없어요: {cfg['server']}  (ComfyUI 를 켜고 다시 해 주세요)")
         return 1
+    if not cfg.get("checkpoint") and "%CHECKPOINT%" in json.dumps(load_json(rel(cfg["workflow"]), {})):
+        cks = comfy.checkpoints()
+        if not cks:
+            print("[!] ComfyUI 에 그림 모델(체크포인트)이 없어요.")
+            print("    ComfyUI 의 models\\checkpoints 폴더에 .safetensors 모델을 넣고 ComfyUI 를 다시 켜 주세요.")
+            print("    (ComfyUI 데스크탑판 기본 위치: 문서\\ComfyUI\\models\\checkpoints)")
+            return 1
+        print("쓸 그림 모델을 골라 주세요:")
+        for i, c in enumerate(cks, 1):
+            print(f"  {i}. {c}")
+        ans = input("번호 [1]: ").strip() if sys.stdin.isatty() else ""
+        n = int(ans) if ans.isdigit() and 1 <= int(ans) <= len(cks) else 1
+        cfg["checkpoint"] = cks[n - 1]
+        save_json(CONFIG, cfg)
+        print(f"  → {cfg['checkpoint']}")
     prompts = build_prompts(cfg, load_json(PROMPTS, {}))
     save_json(PROMPTS, prompts)
     todo = select(prompts, cfg, args)
