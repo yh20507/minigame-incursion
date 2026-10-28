@@ -10,3 +10,5 @@ tools/comfy/config.json
 ref/
 public/assets/chars/sl_*
 __pycache__/
+public/assets/audio/chars/
+public/assets/audio/worlds/
