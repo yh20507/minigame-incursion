@@ -20,8 +20,12 @@ export function defaultSave(content: Content): SaveData {
       daily: { date: '', cleared: false, best: 0 },
       microBest: 0,
       marathonBest: 0,
-      settings: { sfx: 0.7, bgm: 0.5 },
+      settings: { sfx: 0.7, bgm: 0.5, theme: 0.8 },
       log: [],
+      lobby: { bgs: [{ k: 'bg', id: 'rift' }], interval: 8, walkers: [], bgm: '', accent: '#ff5fd2' },
+      seenNews: [],
+      explore: { shards: 0, landed: [] },
+      expedition: null,
     },
   };
 }
@@ -298,6 +302,12 @@ export class Store {
     }
     if (used.length) await this.commit({ t: 'items', used: used.map((u) => u.id) });
     return used;
+  }
+
+  async addItems(items: Record<string, number>) {
+    if (!Object.keys(items).length) return;
+    for (const [k, n] of Object.entries(items)) this.save.items[k] = (this.save.items[k] ?? 0) + n;
+    await this.commit({ t: 'additems', items });
   }
 
   /** 만능 조각을 ★1~★3 캐릭터의 중복 1개로 쓴다 */

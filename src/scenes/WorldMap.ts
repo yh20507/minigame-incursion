@@ -4,6 +4,7 @@ import { audio } from '../core/audio';
 import { fitImage } from '../core/art';
 import type { DomainDef } from '../core/types';
 import { T, bg, button, fadeIn, go, toast, topBar } from '../core/ui';
+import { exploreOpen, exploreProgress, landed } from '../core/explore';
 
 export class WorldMapScene extends Phaser.Scene {
   constructor() {
@@ -15,7 +16,7 @@ export class WorldMapScene extends Phaser.Scene {
     audio.bgm('map', 50, 'dorian', 92);
     bg(this, 'rift', 0.2);
     const st = App.store;
-    topBar(this, '조각세계');
+    topBar(this, '조각세계', () => go(this, 'Lobby'));
     T(this, W - 120, 6, `★ ${st.totalStars()}`, { color: C.gold, align: 'right' });
 
     const doms = App.content.domains;
@@ -49,29 +50,31 @@ export class WorldMapScene extends Phaser.Scene {
     fitImage(leader, 40, 40);
     this.tweens.add({ targets: leader, y: leader.y - 4, yoyo: true, repeat: -1, duration: 600, ease: 'Sine.InOut' });
 
-    // 하단 메뉴
-    const menu: [string, string, () => void, boolean?][] = [
-      ['차원 균열', '뽑기', () => go(this, 'Gacha'), false],
-      ['도감', `${st.ownedChars().length}/${App.content.chars.length}`, () => go(this, 'Collection')],
-      ['편성', '팀 · 패시브', () => go(this, 'Team')],
-      ['도전', '번개·오늘·마라톤', () => go(this, 'Challenge'), !st.modeUnlocked('micro')],
-      ['가방', '아이템', () => go(this, 'Bag')],
-      ['설정', '', () => go(this, 'Settings')],
-    ];
-    const bw = 100,
-      gap = 8,
-      x0 = (W - (bw * menu.length + gap * (menu.length - 1))) / 2;
-    menu.forEach(([label, sub, fn, locked], i) => {
-      button(this, x0 + i * (bw + gap), H - 40, bw, 32, label, locked ? () => toast(this, '잿빛 왕관을 해방하면 열려요') : fn, {
-        sub,
-        color: i === 0 ? C.accent : undefined,
-      });
-    });
+    if (exploreOpen()) this.frontierNode();
+    button(this, 10, H - 34, 90, 26, '편성', () => go(this, 'Team', { back: { scene: 'WorldMap' } }), { size: 10 });
+    button(this, 104, H - 34, 90, 26, '도전', () => (st.modeUnlocked('micro') ? go(this, 'Challenge') : toast(this, '잿빛 왕관을 해방하면 열려요')), { size: 10 });
+  }
 
-    if (st.save.totalPulls === 0) {
-      const hint = T(this, x0 + bw / 2, H - 58, '▼ 동료를 불러보자', { size: 10, align: 'center', color: C.accent, stroke: true });
-      this.tweens.add({ targets: hint, y: hint.y - 3, yoyo: true, repeat: -1, duration: 350 });
-    }
+  private frontierNode() {
+    const f = App.content.frontier;
+    const p = exploreProgress();
+    const x = 590,
+      y = 300;
+    const c = this.add.container(x, y);
+    const fog = this.add.graphics();
+    fog.fillStyle(0xc9d6ff, 0.18);
+    fog.fillEllipse(0, 0, 90, 46);
+    fog.fillStyle(hexNum(f.color), 0.5);
+    fog.fillEllipse(0, 0, 50, 26);
+    c.add(fog);
+    const q = T(this, 0, -12, landed() ? '◆' : '?', { size: 24, align: 'center', color: f.color, stroke: true });
+    c.add(q);
+    this.tweens.add({ targets: q, alpha: 0.4, yoyo: true, repeat: -1, duration: 700 });
+    c.add(T(this, 0, 16, p >= 0.5 ? f.name : '균열 너머', { size: 10, align: 'center', color: f.color, stroke: true }));
+    c.add(T(this, 0, 28, landed() ? '상륙 완료' : `탐사 ${Math.round(p * 100)}%`, { size: 10, align: 'center', color: C.dim, stroke: true }));
+    const z = this.add.zone(-45, -30, 90, 70).setOrigin(0).setInteractive({ useHandCursor: true });
+    c.add(z);
+    z.on('pointerup', () => go(this, 'Expedition'));
   }
 
   private island(d: DomainDef, i: number) {

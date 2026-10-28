@@ -12,9 +12,9 @@ export class ChallengeScene extends Phaser.Scene {
 
   create() {
     fadeIn(this);
-    audio.bgm('map', 50, 'dorian', 92);
+    audio.bgm('challenge', 50, 'dorian', 92, ['challenge', 'map']);
     bg(this, 'rift', 0.55);
-    topBar(this, '도전', () => go(this, 'WorldMap'));
+    topBar(this, '도전', () => go(this, 'Lobby'));
     const st = App.store;
     const ch = App.content.challenges;
 

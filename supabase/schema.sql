@@ -323,6 +323,28 @@ begin
   return r;
 end $$;
 
+-- 원정 보상 등으로 아이템 받기 (한 번에 최대 10개)
+create or replace function public.mi_add_items(p_items jsonb)
+returns jsonb
+language plpgsql security definer set search_path = '' as $$
+declare
+  k text;
+  n int;
+  total int := 0;
+  r jsonb;
+begin
+  if auth.uid() is null then raise exception 'not signed in'; end if;
+  for k, n in select key, value::int from jsonb_each_text(p_items) loop
+    if not exists (select 1 from public.mi_config c, jsonb_array_elements(c.value) e where c.key = 'items' and e ->> 'id' = k) then continue; end if;
+    n := greatest(0, least(n, 10 - total));
+    total := total + n;
+    update public.mi_profiles set items = jsonb_set(items, array[k], to_jsonb(coalesce((items ->> k)::int, 0) + n))
+    where user_id = auth.uid();
+  end loop;
+  select items into r from public.mi_profiles where user_id = auth.uid();
+  return r;
+end $$;
+
 -- 만능 조각: ★1~★3 캐릭터에 중복 1개로 사용
 create or replace function public.mi_use_shard(p_char text)
 returns jsonb
@@ -354,6 +376,7 @@ revoke execute on function public.mi_save_meta(jsonb, jsonb, jsonb, jsonb) from 
 revoke execute on function public.mi_pull(text, text[], boolean) from public, anon;
 revoke execute on function public.mi_use_items(text[]) from public, anon;
 revoke execute on function public.mi_use_shard(text) from public, anon;
+revoke execute on function public.mi_add_items(jsonb) from public, anon;
 grant execute on function public.mi_ensure_profile(int) to authenticated;
 grant execute on function public.mi_submit_result(text, int, int, int) to authenticated;
 grant execute on function public.mi_add_coins(int) to authenticated;
@@ -362,3 +385,4 @@ grant execute on function public.mi_save_meta(jsonb, jsonb, jsonb, jsonb) to aut
 grant execute on function public.mi_pull(text, text[], boolean) to authenticated;
 grant execute on function public.mi_use_items(text[]) to authenticated;
 grant execute on function public.mi_use_shard(text) to authenticated;
+grant execute on function public.mi_add_items(jsonb) to authenticated;

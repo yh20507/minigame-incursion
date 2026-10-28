@@ -8,7 +8,7 @@ import { T, button, fadeIn, go } from '../core/ui';
 import type { Host, InputState, MiniGame } from '../minigames/base';
 import { GAMES } from '../minigames/registry';
 
-export type Mode = 'normal' | 'boss' | 'final' | 'micro' | 'daily' | 'marathon';
+export type Mode = 'normal' | 'boss' | 'final' | 'landing' | 'micro' | 'daily' | 'marathon';
 
 export interface PlayData {
   mode: Mode;
@@ -135,12 +135,14 @@ export class PlayScene extends Phaser.Scene {
         this.lives = ch.boss.lives;
         break;
       }
-      case 'final': {
+      case 'final':
+      case 'landing': {
+        const cfg = this.rushCfg();
         const per = App.content.domains.map((d) => pick(d.games));
         const rest = shuffle(App.content.games.map((g) => g.id).filter((g) => !per.includes(g)));
-        this.queue = shuffle([...per, ...rest]).slice(0, ch.final.segments);
+        this.queue = shuffle([...per, ...rest]).slice(0, cfg.segments);
         this.bonus = st.bonus(null);
-        this.lives = ch.final.lives;
+        this.lives = cfg.lives;
         break;
       }
       case 'daily': {
@@ -250,10 +252,10 @@ export class PlayScene extends Phaser.Scene {
     this.hudTime = this.add.graphics();
     this.hudExtra = T(this, W / 2 + 108, 4, '', { size: 10, color: C.accent });
     this.hud.add([this.hudName, this.hudScore, this.hudHearts, this.hudTime, this.hudExtra]);
-    if (this.mode === 'boss' || this.mode === 'final') {
+    if (this.isRush()) {
       this.bossBar = this.add.graphics().setDepth(100);
       const gk = this.mode === 'boss' ? App.content.domain(this.domain)!.gatekeeper : 'architect';
-      const img = this.add.image(W - 22, HUD_H + 26, 'spr_' + gk).setDepth(100);
+      const img = this.add.image(W - 22, HUD_H + 26, this.mode === 'landing' ? 'ic_lock' : 'spr_' + gk).setDepth(100);
       fitImage(img, 36, 36);
       this.tweens.add({ targets: img, y: img.y - 3, yoyo: true, repeat: -1, duration: 500 });
     }
@@ -278,7 +280,7 @@ export class PlayScene extends Phaser.Scene {
     if (this.mode === 'micro') extra = `성공 ${this.microCleared} · 속도 x${this.speed.toFixed(2)}`;
     else if (this.mode === 'daily') extra = this.modName;
     else if (this.mode === 'marathon') extra = `${this.segIdx}번째`;
-    else if (this.mode === 'boss' || this.mode === 'final') extra = `시련 ${Math.min(this.segIdx, this.queue.length)}/${this.queue.length}`;
+    else if (this.isRush()) extra = `시련 ${Math.min(this.segIdx, this.queue.length)}/${this.queue.length}`;
     this.hudExtra.setText(extra);
     if (this.bossBar) {
       const n = this.queue.length;
@@ -338,7 +340,10 @@ export class PlayScene extends Phaser.Scene {
     this.microFailed = false;
     const d = App.content.domain(this.gameDef.domain)!;
     this.bgImg.setTexture('bg_' + d.id);
-    if (this.mode !== 'micro') audio.bgm(d.id, d.music.root, d.music.scale, d.music.tempo + (this.mode === 'boss' || this.mode === 'final' ? 16 : 0));
+    if (this.mode !== 'micro') {
+      const boss = this.isRush();
+      audio.bgm(boss ? this.mode + d.id : d.id, d.music.root, d.music.scale, d.music.tempo + (boss ? 16 : 0), boss ? [this.mode, 'boss', d.id] : [d.id]);
+    }
     else audio.bgm('micro', 57, 'major', Math.round(130 * this.speed));
 
     const timeBonus = this.segBonus.time;
@@ -350,7 +355,8 @@ export class PlayScene extends Phaser.Scene {
         this.segDur = ch.boss.duration;
         break;
       case 'final':
-        this.segDur = ch.final.duration;
+      case 'landing':
+        this.segDur = this.rushCfg().duration;
         break;
       case 'daily':
         this.segDur = ch.daily.duration + timeBonus + (this.segIdx === 0 ? this.itemTime : 0);
@@ -364,7 +370,7 @@ export class PlayScene extends Phaser.Scene {
         break;
     }
     const difficulty =
-      this.mode === 'boss' ? ch.boss.difficulty : this.mode === 'final' ? ch.final.difficulty : this.mode === 'marathon' ? 1 + Math.min(1, this.segIdx * 0.1) : 1;
+      this.isRush() ? this.rushCfg().difficulty : this.mode === 'marathon' ? 1 + Math.min(1, this.segIdx * 0.1) : 1;
     let gameSpeed = this.mode === 'micro' ? this.speed : 1;
     if (this.mods.has('fast')) gameSpeed *= 1.5;
 
@@ -447,7 +453,7 @@ export class PlayScene extends Phaser.Scene {
     box.lineStyle(1, hexNum(App.content.domain(g.domain)!.color), 1);
     box.strokeRect(W / 2 - 170 + 0.5, 70.5, 339, 149);
     let label = g.genre;
-    if (this.mode === 'boss' || this.mode === 'final') label = `시련 ${this.segIdx}/${this.queue.length} · ${g.genre}`;
+    if (this.isRush()) label = `시련 ${this.segIdx}/${this.queue.length} · ${g.genre}`;
     if (this.mode === 'daily') label = `오늘의 도전 ${this.segIdx}/${this.queue.length} · ${this.modName}`;
     if (this.mode === 'marathon') label = `마라톤 ${this.segIdx}번째`;
     const l1 = T(this, W / 2, 82, label, { size: 10, align: 'center', color: C.accent });
@@ -455,8 +461,8 @@ export class PlayScene extends Phaser.Scene {
     const l3 = T(this, W / 2, 132, g.rule, { size: 10, align: 'center', color: C.dim, wrap: 310 });
     const l4 = T(this, W / 2, 166, g.controls, { size: 10, align: 'center', color: C.cyan, wrap: 310 });
     let need = '';
-    if (this.mode === 'boss' || this.mode === 'final') {
-      const ratio = this.mode === 'boss' ? App.content.challenges.boss.passRatio : App.content.challenges.final.passRatio;
+    if (this.isRush()) {
+      const ratio = this.rushCfg().passRatio;
       need = `통과 기준: ${this.passScore(g, ratio).toLocaleString()}점 이상`;
     }
     const l5 = T(this, W / 2, 196, need, { size: 10, align: 'center', color: C.gold });
@@ -476,9 +482,18 @@ export class PlayScene extends Phaser.Scene {
     });
   }
 
+  isRush() {
+    return this.mode === 'boss' || this.mode === 'final' || this.mode === 'landing';
+  }
+  rushCfg() {
+    const ch = App.content.challenges;
+    return this.mode === 'boss' ? ch.boss : this.mode === 'landing' ? ch.landing : ch.final;
+  }
+
   passScore(g: GameDef, ratio: number) {
     const ch = App.content.challenges;
-    const dur = this.mode === 'boss' ? ch.boss.duration : ch.final.duration;
+    void ch;
+    const dur = this.rushCfg().duration;
     return Math.round((g.stars[0] * ratio * (dur / 45)) / 10) * 10;
   }
 
@@ -589,8 +604,8 @@ export class PlayScene extends Phaser.Scene {
           audio.sfx('bad');
         }
       }
-    } else if (this.mode === 'boss' || this.mode === 'final') {
-      const ratio = this.mode === 'boss' ? ch.boss.passRatio : ch.final.passRatio;
+    } else if (this.isRush()) {
+      const ratio = this.rushCfg().passRatio;
       passed = survived && this.segScore >= this.passScore(g, ratio);
       label = !survived ? '쓰러졌다...' : passed ? '시련 통과!' : '점수 부족...';
       color = passed ? C.good : C.bad;
@@ -628,6 +643,7 @@ export class PlayScene extends Phaser.Scene {
           break;
         case 'boss':
         case 'final':
+        case 'landing':
           if (!passed) over = true;
           else if (this.segIdx >= this.queue.length) {
             over = true;
@@ -701,6 +717,8 @@ export class PlayScene extends Phaser.Scene {
             ? { key: 'Domain', data: { id: App.content.game(this.queue[0] ?? this.lastGame).domain } }
             : this.mode === 'final'
               ? { key: 'WorldMap', data: {} }
+              : this.mode === 'landing'
+                ? { key: 'Expedition', data: {} }
               : { key: 'Challenge', data: {} };
         go(this, back.key, back.data);
       }),

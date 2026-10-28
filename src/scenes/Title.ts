@@ -150,11 +150,11 @@ export class TitleScene extends Phaser.Scene {
 
   private enterGame() {
     const s = App.store.save.extra.settings;
-    audio.setVolumes(s.sfx, s.bgm);
+    audio.setVolumes(s.sfx, s.bgm, s.theme ?? 0.8);
     if (!App.store.save.story['prologue']) {
-      go(this, 'Story', { id: 'prologue', next: 'WorldMap' });
+      go(this, 'Story', { id: 'prologue', next: 'Lobby' });
     } else {
-      go(this, 'WorldMap');
+      go(this, 'Lobby');
     }
   }
 

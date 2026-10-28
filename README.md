@@ -50,6 +50,27 @@ python tools/pixelize.py 배경.png public/assets/bg/ashen.png --size 640x360 --
 - LoRA 등 자기 워크플로를 쓰려면 ComfyUI 에서 'Save (API Format)' 으로 저장한 JSON 의 프롬프트·크기·시드 자리에 `%PROMPT%`, `%NEGATIVE%`, `%WIDTH%`, `%HEIGHT%`, `%SEED%` 를 넣고 config 의 `workflow` 를 그 파일로 바꾼다
 - exe 옆 assets 폴더에 바로 넣으려면 config 의 `assetsDir` 를 그 폴더 경로로 바꾼다
 
+## 음원 넣기와 자르기
+
+`assets/audio` 아래에 mp3 를 넣으면 기본 칩튠 대신 재생된다.
+
+| 파일 | 쓰이는 곳 |
+| --- | --- |
+| `bgm/<화면>.mp3` (title, lobby, map, gacha, boss, final, result, challenge, micro, story, expedition, 영역·세계관 id) | 화면 배경음 |
+| `sfx/<이름>.mp3` (select, confirm, coin, star, jump, hit, tear, flip, pack 등) | 효과음 |
+| `chars/<캐릭터id>.mp3` | ★4·★5 뽑기 연출, 도감 일러스트, 로비 주크박스 |
+| `worlds/<세계관id>.mp3` | 캐릭터 곡이 없을 때 대신 |
+
+통곡을 자르는 도구 (ffmpeg 필요):
+
+```
+python tools/audio_cut.py highlight 원곡.mp3 --to chars/mv_ironman            # 하이라이트 30초 자동
+python tools/audio_cut.py highlight 원곡.mp3 --to chars/sl_yuni --start 1:05  # 시작 지점 직접
+python tools/audio_cut.py loop 원곡.mp3 --to bgm/lobby                        # 반복용
+python tools/audio_cut.py split 앨범.mp3 --out 나눈곡                          # 무음 기준으로 나누기
+python tools/audio_cut.py batch 목록.json                                     # 여러 곡 한꺼번에
+```
+
 ## 콘텐츠 고치기
 
 전부 `public/data/` 의 JSON 이다. 코드를 건드리지 않고 바꿀 수 있다.
@@ -64,6 +85,8 @@ python tools/pixelize.py 배경.png public/assets/bg/ashen.png --size 640x360 --
 | `synergies.json` | 세트·크로스오버 보너스 |
 | `challenges.json` | 보스·번개·오늘의 도전·마라톤 규칙 |
 | `story.json` | 스토리 대본 |
+| `updates.json` | 시즌 (새 소식 창, 한정 균열 묶음) |
+| `frontier.json` | 새 대륙 탐사 단계, 좌표 조각 규칙, 원정 보상 |
 
 exe 로 플레이 중이면 exe 옆에 `data/` 폴더를 만들고 바꾼 JSON 을 넣어도 반영된다.
 캐릭터나 뽑기 설정을 바꿨고 온라인 저장을 쓰면 `npm run db:characters` 로 `supabase/seed.sql` 을 다시 만들어 Supabase 에서 실행한다.

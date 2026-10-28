@@ -15,7 +15,7 @@ export class TeamScene extends Phaser.Scene {
     fadeIn(this);
     bg(this, 'rift', 0.6);
     const st = App.store;
-    const back = data?.back ?? { scene: 'WorldMap' };
+    const back = data?.back ?? { scene: 'Lobby' };
     const slot: Slot = data?.slot ?? 'leader';
     const page = data?.page ?? 0;
     const reopen = (o: Partial<typeof data> = {}) => go(this, 'Team', { back, slot, page, ...o });

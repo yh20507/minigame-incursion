@@ -37,7 +37,7 @@ export class CollectionScene extends Phaser.Scene {
     const st = App.store;
     const total = App.content.chars.length;
     const owned = st.ownedChars().length;
-    topBar(this, `도감  ${owned}/${total}`, () => go(this, 'WorldMap'));
+    topBar(this, `도감  ${owned}/${total}`, () => go(this, 'Lobby'));
 
     const tabs = this.tabs();
     const tab = tabs.find((t) => t.id === data?.tab) ?? tabs[0];

@@ -8,6 +8,8 @@ import type {
   ItemDef,
   StoryData,
   WorldDef,
+  Season,
+  Frontier,
   Synergies,
 } from './types';
 
@@ -23,6 +25,8 @@ export class Content {
   story!: StoryData;
   worlds: WorldDef[] = [];
   items: ItemDef[] = [];
+  updates: Season[] = [];
+  frontier!: Frontier;
 
   private charMap = new Map<string, CharDef>();
   private gameMap = new Map<string, GameDef>();
@@ -40,6 +44,8 @@ export class Content {
     c.story = cache.get('story');
     c.worlds = cache.get('worlds');
     c.items = cache.get('items');
+    c.updates = cache.get('updates') ?? [];
+    c.frontier = cache.get('frontier');
     c.index();
     return c;
   }

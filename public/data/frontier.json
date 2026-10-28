@@ -1,0 +1,49 @@
+{
+ "id": "frost",
+ "name": "서리 시계탑",
+ "subtitle": "시간이 얼어붙은 탑 도시",
+ "color": "#9fe0ff",
+ "need": 100,
+ "unlockAfter": "final",
+ "stages": [
+  {
+   "at": 0,
+   "text": "균열 너머 해역에서 희미한 신호가 잡혔다. 좌표 조각을 모아 위치를 좁혀 가자."
+  },
+  {
+   "at": 25,
+   "text": "안개 사이로 얼어붙은 실루엣이 보인다. 하늘을 찌르는 탑 같은 것."
+  },
+  {
+   "at": 50,
+   "text": "대륙의 이름이 드러났다. 시간이 얼어붙은 탑 도시, '서리 시계탑'."
+  },
+  {
+   "at": 75,
+   "text": "탑 꼭대기에서 커다란 시계 소리가 들린다. 누군가 탑을 지키고 있다."
+  },
+  {
+   "at": 100,
+   "text": "좌표 확정! 경계의 수호자를 넘으면 상륙할 수 있다."
+  }
+ ],
+ "landed": "상륙 성공! 서리 시계탑의 미니게임과 이야기는 다음 대륙 시즌에 열린다.",
+ "shards": {
+  "normalPerStar": 1,
+  "normalClear": 1,
+  "boss": 5,
+  "daily": 3,
+  "microPer": 3,
+  "marathonPerSeg": 1
+ },
+ "expedition": {
+  "hours": [
+   1,
+   4,
+   8
+  ],
+  "shardsPerHour": 2,
+  "coinsPerHour": 120,
+  "itemEvery": 4
+ }
+}

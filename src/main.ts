@@ -15,6 +15,9 @@ import { TeamScene } from './scenes/Team';
 import { ChallengeScene } from './scenes/Challenge';
 import { SettingsScene } from './scenes/Settings';
 import { BagScene } from './scenes/Bag';
+import { LobbyScene } from './scenes/Lobby';
+import { DecorScene } from './scenes/Decor';
+import { ExpeditionScene } from './scenes/Expedition';
 
 async function start() {
   try {
@@ -32,7 +35,7 @@ async function start() {
     parent: 'game',
     width: W,
     height: H,
-    backgroundColor: '#0b0918',
+    transparent: true,
     pixelArt: true,
     roundPixels: true,
     scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
@@ -52,6 +55,9 @@ async function start() {
       ChallengeScene,
       SettingsScene,
       BagScene,
+      LobbyScene,
+      DecorScene,
+      ExpeditionScene,
     ],
   });
   (window as any).__game = game;

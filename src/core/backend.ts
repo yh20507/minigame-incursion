@@ -6,6 +6,7 @@ export type SaveEvent =
   | { t: 'coins'; n: number }
   | { t: 'grant'; id: string }
   | { t: 'items'; used: string[] }
+  | { t: 'additems'; items: Record<string, number> }
   | { t: 'shard'; char: string }
   | { t: 'meta' };
 
@@ -67,6 +68,8 @@ export function mergeSave(def: SaveData, raw: Partial<SaveData>): SaveData {
     ...(raw.extra ?? {}),
     daily: { ...def.extra.daily, ...(raw.extra?.daily ?? {}) },
     settings: { ...def.extra.settings, ...(raw.extra?.settings ?? {}) },
+    lobby: { ...def.extra.lobby, ...(raw.extra?.lobby ?? {}) },
+    explore: { ...def.extra.explore, ...(raw.extra?.explore ?? {}) },
   };
   s.extra.log = raw.extra?.log ?? [];
   s.owned = { ...def.owned, ...(raw.owned ?? {}) };
@@ -199,6 +202,9 @@ export class SupabaseBackend implements Backend {
         break;
       case 'items':
         r = await this.sb.rpc('mi_use_items', { p_items: ev.used });
+        break;
+      case 'additems':
+        r = await this.sb.rpc('mi_add_items', { p_items: ev.items });
         break;
       case 'shard':
         r = await this.sb.rpc('mi_use_shard', { p_char: ev.char });

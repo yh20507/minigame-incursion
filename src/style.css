@@ -50,3 +50,27 @@ html, body { margin: 0; padding: 0; height: 100%; background: #07060f; overflow:
 @keyframes mi-border { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
 @keyframes mi-sheen { 0% { left: -60%; } 60%, 100% { left: 130%; } }
 @keyframes mi-twinkle { 0%, 100% { opacity: 0; transform: scale(0.3) rotate(0deg); } 50% { opacity: 1; transform: scale(1) rotate(45deg); } }
+
+/* 로비 배경 (게임 화면 뒤, 창 해상도 그대로) */
+#game { position: relative; z-index: 1; }
+#backdrop { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: #07060f; display: none; }
+#backdrop.show { display: block; }
+#backdrop .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s ease; }
+#backdrop .slide.on { opacity: 1; }
+#backdrop .blur { position: absolute; inset: -40px; background-size: cover; background-position: center; filter: blur(28px) brightness(0.45) saturate(1.2); }
+#backdrop .pic { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+#backdrop .pic .frame { position: relative; line-height: 0; height: 92vh; }
+#backdrop .pic img { height: 100%; width: auto; max-width: 96vw; object-fit: contain; display: block; }
+#backdrop .pic.cover .frame { height: 100%; width: 100%; }
+#backdrop .pic.cover img { width: 100%; height: 100%; max-width: none; object-fit: cover; }
+#backdrop img.pixel { image-rendering: pixelated; }
+#backdrop .pic.left { justify-content: flex-start; padding-left: 6vw; }
+#backdrop .ultra .frame { padding: 3px; background: linear-gradient(120deg, #ff5fd2, #ffd84b, #5fd3e0, #b06cff, #ff5fd2); background-size: 300% 300%; animation: mi-border 3s linear infinite; box-shadow: 0 0 70px rgba(255, 95, 210, 0.5); }
+#backdrop .ultra .holo { position: absolute; inset: 3px; pointer-events: none; overflow: hidden; }
+#backdrop .ultra .holo::before { content: ''; position: absolute; top: -50%; left: -60%; width: 45%; height: 200%; transform: rotate(18deg); background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent); mix-blend-mode: overlay; animation: mi-sheen 3.4s ease-in-out infinite; }
+#backdrop .ultra .holo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, rgba(255,95,210,0.16), rgba(255,216,75,0.1), rgba(95,211,224,0.16), rgba(176,108,255,0.16)); background-size: 250% 250%; mix-blend-mode: color-dodge; animation: mi-border 4s linear infinite; }
+#backdrop .legend .frame { box-shadow: 0 0 0 2px #ffc845, 0 0 40px rgba(255, 200, 69, 0.4); }
+#backdrop .spark { position: absolute; width: 14px; height: 14px; pointer-events: none; opacity: 0; animation: mi-twinkle 1.8s ease-in-out infinite; }
+#backdrop .spark::before, #backdrop .spark::after { content: ''; position: absolute; left: 50%; top: 50%; background: #fff; transform: translate(-50%, -50%); box-shadow: 0 0 6px #fff, 0 0 12px rgba(255, 216, 75, 0.9); }
+#backdrop .spark::before { width: 2px; height: 14px; }
+#backdrop .spark::after { width: 14px; height: 2px; }

@@ -68,7 +68,9 @@ export function showFullArt(scene: Phaser.Scene, charId: string, onClose?: () =>
   el.appendChild(hint);
   document.body.appendChild(el);
   requestAnimationFrame(() => el.classList.add('show'));
-  audio.sfx(ultra ? 'star' : 'legend');
+  const world = App.content.world(ch.domain);
+  const played = audio.playTheme(audio.themeUrl(charId, world?.id), ch.themeStart ?? (audio.files.chars.has(charId) ? 0 : world?.themeStart ?? 0));
+  if (!played) audio.sfx(ultra ? 'ultra' : 'legend');
   if (scene.input.keyboard) scene.input.keyboard.enabled = false;
 
   let closed = false;
@@ -77,6 +79,7 @@ export function showFullArt(scene: Phaser.Scene, charId: string, onClose?: () =>
     closed = true;
     document.removeEventListener('keydown', onKey);
     el.classList.remove('show');
+    audio.stopTheme();
     setTimeout(() => {
       el.remove();
       if (scene.input.keyboard) scene.input.keyboard.enabled = true;

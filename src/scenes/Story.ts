@@ -16,8 +16,8 @@ export class StoryScene extends Phaser.Scene {
     const bgKey = sc?.bg ?? 'rift';
     bg(this, bgKey, 0.25);
     const d = App.content.domain(bgKey);
-    if (d) audio.bgm(d.id, d.music.root, d.music.scale, d.music.tempo);
-    else audio.bgm('rift', 50, 'minor', 80);
+    if (d) audio.bgm(d.id, d.music.root, d.music.scale, d.music.tempo, ['story', d.id]);
+    else audio.bgm('rift', 50, 'minor', 80, ['story', 'rift']);
     playDialogue(this, data.id, () => go(this, data.next, data.nextData));
   }
 }

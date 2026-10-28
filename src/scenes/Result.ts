@@ -3,6 +3,7 @@ import { App, C, H, W } from '../core/app';
 import { audio } from '../core/audio';
 import { fitImage, portraitKey } from '../core/art';
 import { T, bg, button, fadeIn, go, panel, starsRow } from '../core/ui';
+import { addShards, exploreProgress, landed, shardsFor } from '../core/explore';
 import type { RunResult } from './Play';
 
 export class ResultScene extends Phaser.Scene {
@@ -88,6 +89,34 @@ export class ResultScene extends Phaser.Scene {
         });
         break;
       }
+      case 'landing': {
+        const f = App.content.frontier;
+        const cfg = ch.landing;
+        if (r.success) {
+          const first = !landed();
+          if (first) {
+            st.save.extra.explore.landed.push(f.id);
+            await st.saveMeta();
+          }
+          title = '상륙 성공!';
+          titleColor = C.gold;
+          coins = boost(first ? cfg.reward : Math.round(cfg.reward * 0.1));
+          await st.addCoins(coins);
+          if (first) lines.push({ t: f.landed, c: C.accent });
+        } else {
+          title = '상륙 실패...';
+          titleColor = C.bad;
+          coins = boost(Math.floor(r.score * 0.03));
+          await st.addCoins(coins);
+        }
+        r.segments.forEach((sg, i) => {
+          const g = App.content.game(sg.game);
+          lines.push({ t: `${i + 1}. ${g.name}  ${sg.score.toLocaleString()}점  ${sg.passed ? '통과' : '실패'}`, c: sg.passed ? C.text : C.bad });
+        });
+        next = { key: 'Expedition' };
+        retry = { key: 'Prep', data: { mode: 'landing', domain: 'rift' } };
+        break;
+      }
       case 'micro': {
         title = '번개 모드 종료';
         scoreLabel = '성공한 게임';
@@ -123,6 +152,11 @@ export class ResultScene extends Phaser.Scene {
       }
     }
 
+    const shards = shardsFor(r, Math.max(0, stars));
+    if (shards > 0) {
+      await addShards(shards);
+      lines.push({ t: `좌표 조각 +${shards}  (탐사 ${Math.round(exploreProgress() * 100)}%)`, c: App.content.frontier.color });
+    }
     if (r.items?.length) lines.push({ t: '사용한 아이템: ' + r.items.map((i) => App.content.item(i)?.name ?? i).join(', '), c: C.cyan });
     // ---- 화면 ----
     panel(this, 120, 40, 400, 250);

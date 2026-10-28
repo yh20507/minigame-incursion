@@ -1,4 +1,11 @@
-/** 효과음과 배경음을 코드로 합성한다 (칩튠 느낌). 파일이 필요 없다. */
+/**
+ * 효과음과 배경음.
+ * 기본은 코드로 합성한 칩튠이고, assets/audio 에 파일을 넣으면 그 파일이 우선이다.
+ *   audio/bgm/<화면 또는 영역 id>.mp3   화면 배경음 (반복)
+ *   audio/sfx/<효과음 이름>.mp3         효과음
+ *   audio/chars/<캐릭터 id>.mp3         캐릭터 테마곡 (★4·★5 뽑기, 도감, 로비 주크박스)
+ *   audio/worlds/<세계관 id>.mp3        세계관 테마곡 (캐릭터 곡이 없을 때, 한정 균열 화면)
+ */
 
 type Wave = OscillatorType;
 
@@ -11,12 +18,23 @@ const SCALES: Record<string, number[]> = {
 
 const midi = (n: number) => 440 * Math.pow(2, (n - 69) / 12);
 
+export const BGM_KEYS = ['title', 'lobby', 'map', 'gacha', 'boss', 'final', 'result', 'challenge', 'micro', 'story', 'expedition', 'rift'];
+export const SFX_KEYS = ['select', 'confirm', 'cancel', 'jump', 'hit', 'shield', 'score', 'good', 'bad', 'coin', 'tick', 'go', 'throw', 'stack', 'shoot', 'pull', 'rare', 'hero', 'legend', 'ultra', 'win', 'lose', 'star', 'text', 'tear', 'flip', 'pack'];
+
 class Synth {
   ctx: AudioContext | null = null;
   sfxGain!: GainNode;
   bgmGain!: GainNode;
   sfxVol = 0.7;
   bgmVol = 0.5;
+  themeVol = 0.8;
+  /** 실제로 있는 음원 파일 */
+  files = { bgm: new Set<string>(), sfx: new Map<string, ArrayBuffer>(), chars: new Set<string>(), worlds: new Set<string>() };
+  private sfxBuf = new Map<string, AudioBuffer>();
+  private bgmEl: HTMLAudioElement | null = null;
+  private bgmElKey = '';
+  private themeEl: HTMLAudioElement | null = null;
+  private resumeBgm: (() => void) | null = null;
   private bgmTimer: number | null = null;
   private bgmKey = '';
   private nextTime = 0;
@@ -40,12 +58,117 @@ class Synth {
     return this.ctx;
   }
 
-  setVolumes(sfx: number, bgm: number) {
+  setVolumes(sfx: number, bgm: number, theme = this.themeVol) {
     this.sfxVol = sfx;
     this.bgmVol = bgm;
+    this.themeVol = theme;
+    if (this.bgmEl) this.bgmEl.volume = Math.min(1, bgm * 0.7);
+    if (this.themeEl) this.themeEl.volume = Math.min(1, theme);
     if (!this.ctx) return;
     this.sfxGain.gain.value = sfx * 0.35;
     this.bgmGain.gain.value = bgm * 0.12;
+  }
+
+  /** 어떤 음원 파일이 있는지 확인한다 (부팅 때 한 번) */
+  async scan(bgmKeys: string[], charIds: string[], worldIds: string[]) {
+    const exists = async (url: string) => {
+      try {
+        const r = await fetch(url, { method: 'HEAD' });
+        return r.ok && !(r.headers.get('content-type') ?? '').includes('text/html');
+      } catch {
+        return false;
+      }
+    };
+    const jobs: Promise<void>[] = [];
+    for (const k of [...BGM_KEYS, ...bgmKeys]) jobs.push(exists(`assets/audio/bgm/${k}.mp3`).then((ok) => void (ok && this.files.bgm.add(k))));
+    for (const id of charIds) jobs.push(exists(`assets/audio/chars/${id}.mp3`).then((ok) => void (ok && this.files.chars.add(id))));
+    for (const id of worldIds) jobs.push(exists(`assets/audio/worlds/${id}.mp3`).then((ok) => void (ok && this.files.worlds.add(id))));
+    for (const k of SFX_KEYS)
+      jobs.push(
+        (async () => {
+          if (!(await exists(`assets/audio/sfx/${k}.mp3`))) return;
+          try {
+            const r = await fetch(`assets/audio/sfx/${k}.mp3`);
+            this.files.sfx.set(k, await r.arrayBuffer());
+          } catch {
+            /* 무시 */
+          }
+        })(),
+      );
+    await Promise.all(jobs);
+  }
+
+  private playFileSfx(name: string) {
+    const ctx = this.ctx!;
+    const buf = this.sfxBuf.get(name);
+    if (buf) {
+      const s = ctx.createBufferSource();
+      s.buffer = buf;
+      s.connect(this.sfxGain);
+      s.start();
+      return true;
+    }
+    const raw = this.files.sfx.get(name);
+    if (!raw) return false;
+    this.files.sfx.delete(name);
+    ctx.decodeAudioData(raw.slice(0)).then((b) => {
+      this.sfxBuf.set(name, b);
+      this.playFileSfx(name);
+    }).catch(() => {});
+    return true;
+  }
+
+  /** 캐릭터 테마곡 주소 (캐릭터 곡 → 세계관 곡 → 없음) */
+  themeUrl(charId: string, worldId?: string) {
+    if (this.files.chars.has(charId)) return `assets/audio/chars/${charId}.mp3`;
+    if (worldId && this.files.worlds.has(worldId)) return `assets/audio/worlds/${worldId}.mp3`;
+    return null;
+  }
+
+  /** 테마곡 재생. 배경음은 잠시 멈췄다가 stopTheme 때 다시 튼다. 곡이 없으면 false */
+  playTheme(url: string | null, start = 0, loop = false) {
+    if (!url) return false;
+    this.stopTheme(true);
+    this.ensure();
+    const prevKey = this.bgmKey || this.bgmElKey;
+    const prev = this.bgmLast;
+    this.stopBgm();
+    this.resumeBgm = prevKey && prev ? () => this.bgm(prev.key, prev.root, prev.scale, prev.tempo, prev.files) : null;
+    const el = new Audio(url);
+    el.loop = loop;
+    el.volume = 0;
+    el.currentTime = start;
+    const target = Math.min(1, this.themeVol);
+    el.play().catch(() => {});
+    let v = 0;
+    const fade = window.setInterval(() => {
+      v = Math.min(target, v + target / 20);
+      el.volume = v;
+      if (v >= target) clearInterval(fade);
+    }, 50);
+    this.themeEl = el;
+    return true;
+  }
+
+  stopTheme(immediate = false) {
+    const el = this.themeEl;
+    if (!el) return;
+    this.themeEl = null;
+    const resume = this.resumeBgm;
+    this.resumeBgm = null;
+    const end = () => {
+      el.pause();
+      el.src = '';
+      if (!immediate) resume?.();
+    };
+    if (immediate) return end();
+    const fade = window.setInterval(() => {
+      el.volume = Math.max(0, el.volume - 0.08);
+      if (el.volume <= 0.01) {
+        clearInterval(fade);
+        end();
+      }
+    }, 40);
   }
 
   private tone(freq: number, dur: number, wave: Wave, vol = 1, at = 0, slide = 0, dest?: AudioNode) {
@@ -85,8 +208,21 @@ class Synth {
   sfx(name: string) {
     const ctx = this.ensure();
     if (!ctx || this.sfxVol <= 0) return;
+    if ((this.files.sfx.has(name) || this.sfxBuf.has(name)) && this.playFileSfx(name)) return;
     const t = ctx.currentTime;
     switch (name) {
+      case 'tear':
+        this.noise(0.35, 0.7);
+        this.tone(1800, 0.25, 'sawtooth', 0.15, 0, 0.3);
+        break;
+      case 'flip':
+        this.noise(0.06, 0.4);
+        this.tone(700, 0.06, 'triangle', 0.3, 0, 1.6);
+        break;
+      case 'pack':
+        this.tone(180, 0.18, 'square', 0.5, 0, 0.5);
+        this.noise(0.1, 0.5);
+        break;
       case 'select':
         this.tone(880, 0.05, 'square', 0.4);
         break;
@@ -179,9 +315,33 @@ class Synth {
   }
 
   /** 영역 분위기의 짧은 반복 배경음. key 가 같으면 이어서 재생. */
-  bgm(key: string, root = 57, scale = 'minor', tempo = 100) {
+  private bgmLast: { key: string; root: number; scale: string; tempo: number; files?: string[] } | null = null;
+
+  /** 배경음. files 순서대로 음원 파일을 찾고, 없으면 key 로 칩튠을 합성한다 */
+  bgm(key: string, root = 57, scale = 'minor', tempo = 100, files?: string[]) {
     const ctx = this.ensure();
     if (!ctx) return;
+    if (this.themeEl) {
+      // 테마곡이 끝나면 이 곡으로
+      this.resumeBgm = () => this.bgm(key, root, scale, tempo, files);
+      return;
+    }
+    this.bgmLast = { key, root, scale, tempo, files };
+    // files 항목: bgm 키 또는 'assets/...' 로 시작하는 주소 (있는지 이미 확인된 것)
+    const pickFile = (files ?? [key]).find((k) => k.startsWith('assets/') || this.files.bgm.has(k));
+    const fileUrl = pickFile ? (pickFile.startsWith('assets/') ? pickFile : `assets/audio/bgm/${pickFile}.mp3`) : null;
+    const url = key === 'lobby' && this.lobbyOverride ? this.lobbyOverride : fileUrl;
+    if (url) {
+      if (this.bgmElKey === url && this.bgmEl) return;
+      this.stopBgm();
+      const el = new Audio(url);
+      el.loop = true;
+      el.volume = Math.min(1, this.bgmVol * 0.7);
+      el.play().catch(() => {});
+      this.bgmEl = el;
+      this.bgmElKey = url;
+      return;
+    }
     if (this.bgmKey === key && this.bgmTimer) return;
     this.stopBgm();
     this.bgmKey = key;
@@ -215,10 +375,19 @@ class Synth {
     this.bgmTimer = window.setInterval(schedule, 60);
   }
 
+  /** 로비에서 고른 곡 (설정되면 로비 배경음을 대신) */
+  lobbyOverride: string | null = null;
+
   stopBgm() {
     if (this.bgmTimer) clearInterval(this.bgmTimer);
     this.bgmTimer = null;
     this.bgmKey = '';
+    if (this.bgmEl) {
+      this.bgmEl.pause();
+      this.bgmEl.src = '';
+    }
+    this.bgmEl = null;
+    this.bgmElKey = '';
   }
 }
 

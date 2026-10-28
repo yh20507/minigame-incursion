@@ -11,29 +11,31 @@ export class SettingsScene extends Phaser.Scene {
   create(data: { confirmReset?: boolean }) {
     fadeIn(this);
     bg(this, 'rift', 0.6);
-    topBar(this, '설정', () => go(this, 'WorldMap'));
+    topBar(this, '설정', () => go(this, 'Lobby'));
     const st = App.store;
     const s = st.save.extra.settings;
 
     panel(this, 20, 40, 290, 150);
     T(this, 32, 50, '소리', { bold: true, color: C.accent });
-    const row = (y: number, label: string, key: 'sfx' | 'bgm') => {
+    const row = (y: number, label: string, key: 'sfx' | 'bgm' | 'theme') => {
+      if (s[key] === undefined) s[key] = 0.8;
       T(this, 32, y + 4, label, {});
       const val = T(this, 210, y + 4, Math.round(s[key] * 10) + '', { align: 'center', color: C.gold });
       const set = (v: number) => {
         s[key] = Math.max(0, Math.min(1, Math.round(v * 10) / 10));
         val.setText(Math.round(s[key] * 10) + '');
-        audio.setVolumes(s.sfx, s.bgm);
+        audio.setVolumes(s.sfx, s.bgm, s.theme);
         audio.sfx('select');
         st.setSettings({});
       };
       button(this, 160, y, 30, 22, '-', () => set(s[key] - 0.1), { silent: true });
       button(this, 230, y, 30, 22, '+', () => set(s[key] + 0.1), { silent: true });
     };
-    row(72, '효과음', 'sfx');
-    row(102, '배경음', 'bgm');
-    T(this, 32, 136, '전체화면', {});
-    button(this, 160, 132, 100, 22, '전환 (F11)', () => {
+    row(68, '효과음', 'sfx');
+    row(94, '배경음', 'bgm');
+    row(120, '테마곡', 'theme');
+    T(this, 32, 154, '전체화면', {});
+    button(this, 160, 150, 100, 22, '전환 (F11)', () => {
       if (this.scale.isFullscreen) this.scale.stopFullscreen();
       else this.scale.startFullscreen();
     }, { size: 10 });
@@ -65,7 +67,7 @@ export class SettingsScene extends Phaser.Scene {
       this,
       32,
       232,
-      '방향키 · 스페이스(또는 Z) · 마우스로 모든 게임을 할 수 있어요.\nESC: 게임 중 일시정지 / 메뉴에서 뒤로 가기\n그림은 게임 폴더의 assets/chars, assets/bg 에 넣으면 다음 실행 때 바뀌어요.',
+      '방향키 · 스페이스(또는 Z) · 마우스로 모든 게임을 할 수 있어요.\nESC: 게임 중 일시정지 / 메뉴에서 뒤로 가기\n그림은 assets/chars · assets/bg, 음원은 assets/audio 에 넣으면 다음 실행 때 바뀌어요.',
       { size: 10, color: C.text, wrap: W - 70 },
     );
     T(this, 32, 300, '미니게임-인커젼 v0.1 · 글꼴: 갈무리 (SIL Open Font License)', { size: 10, color: C.faint });

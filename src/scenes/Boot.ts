@@ -5,8 +5,9 @@ import { makeBgTextures, makeCharTextures, makeIconTextures, makeItemTextures } 
 import { LocalBackend, SupabaseBackend, loadOnlineConfig } from '../core/backend';
 import { Store } from '../core/store';
 import { T } from '../core/ui';
+import { audio } from '../core/audio';
 
-const DATA = ['domains', 'minigames', 'characters', 'gacha', 'banners', 'synergies', 'challenges', 'story', 'worlds', 'items'];
+const DATA = ['domains', 'minigames', 'characters', 'gacha', 'banners', 'synergies', 'challenges', 'story', 'worlds', 'items', 'updates', 'frontier'];
 
 export class BootScene extends Phaser.Scene {
   constructor() {
@@ -43,6 +44,11 @@ export class BootScene extends Phaser.Scene {
     makeBgTextures(this, App.content);
     makeItemTextures(this, App.content);
 
+    await audio.scan(
+      [...App.content.domains.map((d) => d.id), ...App.content.worlds.map((w) => w.id)],
+      App.content.chars.map((c) => c.id),
+      App.content.worlds.map((w) => w.id),
+    );
     const cfg = await loadOnlineConfig();
     if (cfg) {
       const be = new SupabaseBackend(cfg);

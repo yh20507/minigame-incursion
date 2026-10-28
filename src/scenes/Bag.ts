@@ -12,7 +12,7 @@ export class BagScene extends Phaser.Scene {
   create(data: { back?: string }) {
     fadeIn(this);
     bg(this, 'rift', 0.6);
-    const back = data?.back ?? 'WorldMap';
+    const back = data?.back ?? 'Lobby';
     topBar(this, '가방', () => go(this, back));
     const st = App.store;
     const items = App.content.items.filter((i) => i.effect !== 'instant');

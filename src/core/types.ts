@@ -20,6 +20,8 @@ export interface CharDef {
   desc: string;
   /** 그림 생성용 영어 외형 설명 (tools/comfy_gen.py 가 사용) */
   look?: string;
+  /** 테마곡 하이라이트 시작 위치 (초) */
+  themeStart?: number;
   line: string;
   unlock?: string;
 }
@@ -90,6 +92,7 @@ export interface WorldDef {
   subtitle: string;
   color: string;
   desc: string;
+  themeStart?: number;
 }
 
 export type ItemEffect = 'instant' | 'shield' | 'time' | 'score' | 'coin' | 'revive' | 'shard';
@@ -130,6 +133,7 @@ export interface Challenges {
   marathon: { duration: number; lives: number; coinRate: number };
   boss: { segments: number; duration: number; lives: number; difficulty: number; reward: number; passRatio: number };
   final: { segments: number; duration: number; lives: number; difficulty: number; reward: number; passRatio: number };
+  landing: { segments: number; duration: number; lives: number; difficulty: number; reward: number; passRatio: number };
   unlock: { micro: string; daily: string; marathon: string };
 }
 
@@ -170,8 +174,12 @@ export interface SaveData {
     daily: { date: string; cleared: boolean; best: number };
     microBest: number;
     marathonBest: number;
-    settings: { sfx: number; bgm: number };
+    settings: { sfx: number; bgm: number; theme: number };
     log: GachaLogEntry[];
+    lobby: LobbyConfig;
+    seenNews: string[];
+    explore: { shards: number; landed: string[] };
+    expedition: { members: string[]; start: number; hours: number } | null;
   };
 }
 
@@ -204,4 +212,37 @@ export interface Bonus {
   time: number; // 초
   shield: number;
   notes: string[];
+}
+
+export interface LobbyConfig {
+  bgs: { k: 'art' | 'full' | 'bg'; id: string }[];
+  interval: number;
+  walkers: string[];
+  /** '' = 기본, 'bgm:<키>', 'char:<id>', 'world:<id>' */
+  bgm: string;
+  accent: string;
+}
+
+export interface Season {
+  id: string;
+  name: string;
+  start: string;
+  end: string | null;
+  desc: string;
+  highlight?: string;
+  banners: string[];
+  notes: string[];
+}
+
+export interface Frontier {
+  id: string;
+  name: string;
+  subtitle: string;
+  color: string;
+  need: number;
+  unlockAfter: string;
+  stages: { at: number; text: string }[];
+  landed: string;
+  shards: { normalPerStar: number; normalClear: number; boss: number; daily: number; microPer: number; marathonPerSeg: number };
+  expedition: { hours: number[]; shardsPerHour: number; coinsPerHour: number; itemEvery: number };
 }
