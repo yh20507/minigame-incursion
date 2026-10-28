@@ -7,7 +7,7 @@ import { Store } from '../core/store';
 import { T } from '../core/ui';
 import { audio } from '../core/audio';
 
-const DATA = ['domains', 'minigames', 'characters', 'gacha', 'banners', 'synergies', 'challenges', 'story', 'worlds', 'items', 'updates', 'frontier'];
+const DATA = ['domains', 'minigames', 'characters', 'gacha', 'banners', 'synergies', 'challenges', 'story', 'worlds', 'items', 'updates', 'frontier', 'rewards'];
 
 export class BootScene extends Phaser.Scene {
   constructor() {
@@ -44,6 +44,7 @@ export class BootScene extends Phaser.Scene {
     makeBgTextures(this, App.content);
     makeItemTextures(this, App.content);
 
+    for (const c of App.content.chars) if (c.voice) audio.voices.set(c.id, c.voice);
     await audio.scan(
       [
         ...App.content.domains.map((d) => d.id),

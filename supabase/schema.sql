@@ -27,6 +27,7 @@ create table if not exists public.mi_profiles (
   extra jsonb,
   items jsonb not null default '{}'::jsonb,
   first_multi text[] not null default '{}',
+  tickets text[] not null default '{}',
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -395,3 +396,41 @@ grant execute on function public.mi_pull(text, text[], boolean) to authenticated
 grant execute on function public.mi_use_items(text[]) to authenticated;
 grant execute on function public.mi_use_shard(text) to authenticated;
 grant execute on function public.mi_add_items(jsonb) to authenticated;
+
+-- ★5 선택권
+alter table public.mi_profiles add column if not exists tickets text[] not null default '{}';
+
+create or replace function public.mi_claim_ticket(p_ticket text, p_char text)
+returns jsonb
+language plpgsql security definer set search_path = '' as $$
+declare
+  uid uuid := auth.uid();
+  cfg jsonb;
+  rar int;
+  dom text;
+  prof public.mi_profiles;
+  d record;
+  is_new boolean;
+begin
+  if uid is null then raise exception 'not signed in'; end if;
+  select value into cfg from public.mi_config where key = 'gacha';
+  select c.rarity, c.domain into rar, dom from public.mi_characters c where c.id = p_char and c.pool;
+  if rar is distinct from 5 or p_ticket <> 'tk_' || dom then raise exception 'not allowed'; end if;
+  select * into prof from public.mi_profiles where user_id = uid for update;
+  if prof is null then raise exception 'profile missing'; end if;
+  if p_ticket = any (prof.tickets) then raise exception '이미 쓴 선택권이에요'; end if;
+  is_new := not exists (select 1 from public.mi_owned_characters where user_id = uid and character_id = p_char);
+  if is_new then
+    insert into public.mi_owned_characters (user_id, character_id) values (uid, p_char);
+    select 0 as o_level, 0 as o_dupes, false as o_level_up, 0 as o_refund into d;
+  else
+    select * into d from public.mi__add_dupe(uid, p_char, rar, cfg);
+  end if;
+  update public.mi_profiles set tickets = array_append(tickets, p_ticket), updated_at = now() where user_id = uid;
+  insert into public.mi_gacha_log (user_id, banner_id, character_id, kind, rarity, pity_legend, pity_ultra)
+  values (uid, p_ticket, p_char, 'ticket', rar, prof.pity_legend, prof.pity_ultra);
+  return jsonb_build_object('isNew', is_new, 'b', d.o_level, 'd', d.o_dupes, 'levelUp', d.o_level_up, 'refund', d.o_refund);
+end $$;
+
+revoke execute on function public.mi_claim_ticket(text, text) from public, anon;
+grant execute on function public.mi_claim_ticket(text, text) to authenticated;

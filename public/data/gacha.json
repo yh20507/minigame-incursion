@@ -38,11 +38,11 @@
  ],
  "itemRate": 45,
  "pity": {
-  "legend": 500,
-  "ultra": 2000
+  "legend": 300,
+  "ultra": 1000
  },
  "multiGuarantee": 2,
-  "firstMultiGuarantee": 4,
+ "firstMultiGuarantee": 4,
  "cost": {
   "single": 200,
   "multi": 1900,

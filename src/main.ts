@@ -18,6 +18,7 @@ import { BagScene } from './scenes/Bag';
 import { LobbyScene } from './scenes/Lobby';
 import { DecorScene } from './scenes/Decor';
 import { ExpeditionScene } from './scenes/Expedition';
+import { RewardsScene } from './scenes/Rewards';
 
 async function start() {
   try {
@@ -58,6 +59,7 @@ async function start() {
       LobbyScene,
       DecorScene,
       ExpeditionScene,
+      RewardsScene,
     ],
   });
   (window as any).__game = game;

@@ -32,11 +32,20 @@ export class LobbyScene extends Phaser.Scene {
 
     T(this, 10, 6, '미니게임-인커젼', { bold: true, color: C.accent, stroke: true });
     const season = currentSeason();
-    if (season) T(this, 132, 7, season.name, { size: 10, color: C.text, stroke: true });
+    if (season) {
+      const sn = T(this, 132, 7, `${season.name}  [소식]`, { size: 10, color: C.text, stroke: true }).setInteractive({ useHandCursor: true });
+      sn.on('pointerup', () => showNews(this, true));
+    }
+    const title = st.equippedTitle();
+    if (title) T(this, W - 140, 7, `「${title.name}」`, { size: 10, align: 'right', color: C.gold, stroke: true });
     coinLabel(this, W - 10, 6);
 
     // 메뉴
     const explore = st.save.cleared['final'];
+    const nTitle = st.claimableTitles().length;
+    const nTicket = st.availableTickets().filter((t) => !st.save.extra.tickets.includes(t.id)).length;
+    const rewardSub = nTicket ? `★5 선택권 ${nTicket}장!` : nTitle ? `받을 칭호 ${nTitle}개` : '출석 · 칭호';
+    const rewardTab = nTicket ? 'tickets' : nTitle ? 'titles' : 'attend';
     const menu: [string, string, () => void, boolean?][] = [
       ['모험', '조각세계 지도', () => go(this, 'WorldMap')],
       ['차원 균열', '뽑기', () => go(this, 'Gacha')],
@@ -44,9 +53,9 @@ export class LobbyScene extends Phaser.Scene {
       ['편성', '팀 · 패시브', () => go(this, 'Team', { back: { scene: 'Lobby' } })],
       ['도전', '번개·오늘·마라톤', () => go(this, 'Challenge'), !st.modeUnlocked('micro')],
       ['원정대', explore ? '탐사 · 파견' : '최종장 이후', () => go(this, 'Expedition'), !explore],
+      ['보상', rewardSub, () => go(this, 'Rewards', { tab: rewardTab })],
       ['가방', '아이템', () => go(this, 'Bag', { back: 'Lobby' })],
       ['꾸미기', '배경 · 음악', () => go(this, 'Decor')],
-      ['소식', season ? season.name : '', () => showNews(this, true)],
       ['설정', '', () => go(this, 'Settings')],
     ];
     const bx = W - 132,
@@ -56,7 +65,7 @@ export class LobbyScene extends Phaser.Scene {
       button(this, bx, 34 + i * (bh + 3), bw, bh, label, locked ? () => toast(this, label === '도전' ? '잿빛 왕관을 해방하면 열려요' : '최종장을 깨면 열려요') : fn, {
         sub,
         size: 10,
-        color: i === 0 || i === 1 ? C.accent : undefined,
+        color: i === 0 || i === 1 ? C.accent : label === '보상' && (nTitle || nTicket) ? C.gold : undefined,
         disabled: false,
       });
     });
@@ -72,9 +81,40 @@ export class LobbyScene extends Phaser.Scene {
     const walkers = (lb.walkers.length ? lb.walkers : st.teamIds()).filter((id) => st.owns(id)).slice(0, 3);
     walkers.forEach((id, i) => this.walker(id, 60 + i * 130));
 
-    // 새 소식
-    if (unseenNews()) this.time.delayedCall(500, () => showNews(this, false));
+    // 출석 → 새 소식
+    st.checkAttendance().then((r) => {
+      if (r) this.attendPopup(r);
+      else if (unseenNews()) this.time.delayedCall(500, () => showNews(this, false));
+    });
     void hexNum;
+  }
+
+  attendPopup(r: { day: number; coins: number; items: Record<string, number> }) {
+    audio.sfx('coin');
+    const ov = this.add.container(0, 0).setDepth(600);
+    ov.add(this.add.rectangle(0, 0, W, H, 0x07060f, 0.75).setOrigin(0).setInteractive());
+    const x = W / 2 - 150,
+      y = H / 2 - 70;
+    const g = this.add.graphics();
+    g.fillStyle(0x07060f, 1);
+    g.fillRect(x - 1, y - 1, 302, 142);
+    g.fillStyle(C.panel, 1);
+    g.fillRect(x, y, 300, 140);
+    g.lineStyle(2, hexNum(C.gold), 1);
+    g.strokeRect(x + 1, y + 1, 298, 138);
+    ov.add(g);
+    ov.add(T(this, W / 2, y + 12, '출석 보상', { size: 10, align: 'center', color: C.gold }));
+    ov.add(T(this, W / 2, y + 28, `${r.day}일째`, { size: 24, align: 'center', color: '#ffffff' }));
+    const parts = [r.coins ? `코인 ${r.coins.toLocaleString()}` : '', ...Object.entries(r.items).map(([k, n]) => `${App.content.item(k)?.name ?? k}${n > 1 ? ' ×' + n : ''}`)].filter(Boolean);
+    ov.add(T(this, W / 2, y + 62, parts.join(' · '), { align: 'center', color: C.text }));
+    const left = 28 - r.day;
+    ov.add(T(this, W / 2, y + 82, left ? `28일 보상까지 ${left}일` : '이번 주기 개근!', { size: 10, align: 'center', color: C.dim }));
+    const close = () => {
+      ov.destroy();
+      if (unseenNews()) this.time.delayedCall(200, () => showNews(this, false));
+    };
+    ov.add(button(this, W / 2 - 110, y + 104, 104, 26, '달력 보기', () => go(this, 'Rewards', { tab: 'attend' }), { size: 10 }));
+    ov.add(button(this, W / 2 + 6, y + 104, 104, 26, '확인', close, { size: 10, color: C.gold }));
   }
 
   walker(id: string, x0: number) {
@@ -110,7 +150,8 @@ export class LobbyScene extends Phaser.Scene {
       },
     });
     img.on('pointerup', () => {
-      audio.sfx('text');
+      if (ch.line) audio.voice(id, ch.line);
+      else audio.sfx('text');
       img.setScale(base * 1.2, base * 0.8);
       this.tweens.add({ targets: img, scaleX: base, scaleY: base, duration: 200, ease: 'Back.Out' });
       bubble?.destroy();

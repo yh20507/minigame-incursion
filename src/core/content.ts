@@ -11,6 +11,7 @@ import type {
   Season,
   Frontier,
   Synergies,
+  RewardsDef,
 } from './types';
 
 /** 게임 콘텐츠(데이터 파일). public/data/*.json 에서 불러온다. */
@@ -27,6 +28,7 @@ export class Content {
   items: ItemDef[] = [];
   updates: Season[] = [];
   frontier!: Frontier;
+  rewards!: RewardsDef;
 
   private charMap = new Map<string, CharDef>();
   private gameMap = new Map<string, GameDef>();
@@ -46,6 +48,7 @@ export class Content {
     c.items = cache.get('items');
     c.updates = cache.get('updates') ?? [];
     c.frontier = cache.get('frontier');
+    c.rewards = cache.get('rewards') ?? { attendance: [], titles: [], tickets: [] };
     c.index();
     return c;
   }

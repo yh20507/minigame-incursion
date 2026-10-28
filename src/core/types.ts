@@ -24,6 +24,8 @@ export interface CharDef {
   themeStart?: number;
   line: string;
   unlock?: string;
+  /** 목소리: 기본 음높이(Hz), 빠르기, 음색, 포먼트 배율 */
+  voice?: { pitch: number; speed?: number; wave?: OscillatorType; formant?: number };
 }
 
 export interface DomainDef {
@@ -85,7 +87,23 @@ export interface BannerDef {
   world?: string;
   start?: string | null;
   end?: string | null;
+  /** 복각 기간. event 는 그 기간에 열리는 이벤트 스토리 id */
+  reruns?: { start: string; end: string; event?: string }[];
   desc: string;
+}
+
+export interface TitleDef {
+  id: string;
+  name: string;
+  desc: string;
+  cond: { type: 'pulls' | 'owned' | 'rarity' | 'enhance' | 'world' | 'stars' | 'cleared' | 'attend'; n?: number; min?: number; world?: string; key?: string };
+  coins: number;
+}
+
+export interface RewardsDef {
+  attendance: { day: number; coins?: number; items?: Record<string, number> }[];
+  titles: TitleDef[];
+  tickets: { id: string; world: string }[];
 }
 
 export interface WorldDef {
@@ -184,6 +202,11 @@ export interface SaveData {
     seenNews: string[];
     explore: { shards: number; landed: string[] };
     expedition: { members: string[]; start: number; hours: number } | null;
+    /** 출석: 이번 주기 시작일, 마지막 출석일, 이번 주기 출석 수, 누적 */
+    attend: { start: string; last: string; days: number; total: number };
+    titles: { claimed: string[]; equipped: string };
+    tickets: string[];
+    eventRewards: string[];
   };
 }
 

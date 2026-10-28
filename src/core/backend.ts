@@ -8,6 +8,7 @@ export type SaveEvent =
   | { t: 'items'; used: string[] }
   | { t: 'additems'; items: Record<string, number> }
   | { t: 'shard'; char: string }
+  | { t: 'ticket'; ticket: string; char: string }
   | { t: 'meta' };
 
 export interface PullResponse {
@@ -71,6 +72,10 @@ export function mergeSave(def: SaveData, raw: Partial<SaveData>): SaveData {
     settings: { ...def.extra.settings, ...(raw.extra?.settings ?? {}) },
     lobby: { ...def.extra.lobby, ...(raw.extra?.lobby ?? {}) },
     explore: { ...def.extra.explore, ...(raw.extra?.explore ?? {}) },
+    attend: { ...def.extra.attend, ...(raw.extra?.attend ?? {}) },
+    titles: { ...def.extra.titles, ...(raw.extra?.titles ?? {}) },
+    tickets: [...(raw.extra?.tickets ?? [])],
+    eventRewards: [...(raw.extra?.eventRewards ?? [])],
   };
   s.extra.log = raw.extra?.log ?? [];
   s.owned = { ...def.owned, ...(raw.owned ?? {}) };
@@ -167,6 +172,7 @@ export class SupabaseBackend implements Backend {
         extra: prof.extra ?? def.extra,
         items: prof.items ?? {},
       });
+      s.extra.tickets = [...new Set([...(s.extra.tickets ?? []), ...((prof.tickets as string[] | null) ?? [])])];
       s.scores = {};
       for (const r of scores.data ?? []) s.scores[r.game_id] = { best: r.best_score, stars: r.stars, plays: r.plays };
       s.owned = {};
@@ -211,6 +217,9 @@ export class SupabaseBackend implements Backend {
         break;
       case 'shard':
         r = await this.sb.rpc('mi_use_shard', { p_char: ev.char });
+        break;
+      case 'ticket':
+        r = await this.sb.rpc('mi_claim_ticket', { p_ticket: ev.ticket, p_char: ev.char });
         break;
       case 'meta':
         r = await this.sb.rpc('mi_save_meta', {

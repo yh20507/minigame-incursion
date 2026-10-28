@@ -30,6 +30,7 @@ html, body { margin: 0; padding: 0; height: 100%; background: #07060f; overflow:
 .viewer .cap { margin-top: 18px; font-family: 'Galmuri11Bold', monospace; font-size: 24px; }
 .viewer .sub { margin-top: 6px; font-size: 12px; color: #c9c3ef; }
 .viewer .hint { position: absolute; bottom: 18px; font-size: 12px; color: #8a83b8; }
+.viewer .line { margin-top: 8px; min-height: 18px; font-size: 14px; color: #ffffff; text-shadow: 0 0 8px rgba(255,255,255,0.4); }
 .viewer .note { margin-top: 10px; font-size: 12px; color: #ffd84b; }
 
 /* ★4 전설: 금빛 테두리와 은은한 빛 */

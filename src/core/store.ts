@@ -1,7 +1,7 @@
 import type { Backend, SaveEvent } from './backend';
 import type { Content } from './content';
 import { addDupe, rollPulls } from './gacha';
-import type { BannerDef, Bonus, CharDef, DomainDef, ItemDef, PullResult, SaveData } from './types';
+import type { BannerDef, Bonus, CharDef, DomainDef, ItemDef, PullResult, SaveData, TitleDef } from './types';
 import { todayKey } from './rng';
 
 export function defaultSave(content: Content): SaveData {
@@ -27,6 +27,10 @@ export function defaultSave(content: Content): SaveData {
       seenNews: [],
       explore: { shards: 0, landed: [] },
       expedition: null,
+      attend: { start: '', last: '', days: 0, total: 0 },
+      titles: { claimed: [], equipped: '' },
+      tickets: [],
+      eventRewards: [],
     },
   };
 }
@@ -114,11 +118,15 @@ export class Store {
     if (b.type === 'world') return this.content.chars.filter((c) => c.pool && c.origin === 'world' && c.domain === b.world);
     return this.content.chars.filter((c) => c.pool && c.origin === 'original');
   }
-  bannerActive(b: BannerDef) {
+  /** 지금 열려 있는 기간 (첫 기간 또는 복각). 닫혀 있으면 null */
+  bannerPeriod(b: BannerDef): { start?: string | null; end?: string | null; rerun: boolean; event?: string } | null {
     const today = todayKey();
-    if (b.start && today < b.start) return false;
-    if (b.end && today > b.end) return false;
-    return true;
+    if ((!b.start || today >= b.start) && (!b.end || today <= b.end)) return { start: b.start, end: b.end, rerun: false };
+    const r = (b.reruns ?? []).find((x) => today >= x.start && today <= x.end);
+    return r ? { start: r.start, end: r.end, rerun: true, event: r.event } : null;
+  }
+  bannerActive(b: BannerDef) {
+    return !!this.bannerPeriod(b);
   }
   availableBanners() {
     return this.content.banners.filter((b) => this.bannerActive(b));
@@ -231,6 +239,114 @@ export class Store {
     if (this.save.owned[charId]) return false;
     this.save.owned[charId] = { b: 0, d: 0, at: Date.now() };
     await this.commit({ t: 'grant', id: charId });
+    return true;
+  }
+
+  // ---------- 출석 ----------
+  /** 오늘 첫 접속이면 도장을 찍고 보상을 준다. 28일이 지나면 새 주기 */
+  async checkAttendance(): Promise<{ day: number; coins: number; items: Record<string, number> } | null> {
+    const a = this.save.extra.attend;
+    const today = todayKey();
+    const daysSince = (from: string) => Math.floor((Date.parse(today) - Date.parse(from)) / 86400000);
+    if (!a.start || daysSince(a.start) >= 28 || a.days >= 28 && a.last !== today) {
+      a.start = today;
+      a.days = 0;
+    }
+    if (a.last === today) return null;
+    a.days = Math.min(28, a.days + 1);
+    a.total += 1;
+    a.last = today;
+    const r = this.content.rewards.attendance[a.days - 1] ?? { day: a.days };
+    await this.saveMeta();
+    if (r.coins) await this.addCoins(r.coins);
+    if (r.items) await this.addItems(r.items);
+    return { day: a.days, coins: r.coins ?? 0, items: r.items ?? {} };
+  }
+
+  // ---------- 칭호 ----------
+  titleProgress(t: TitleDef): { cur: number; need: number } {
+    const c = t.cond;
+    const owned = this.ownedChars();
+    switch (c.type) {
+      case 'pulls':
+        return { cur: this.save.totalPulls, need: c.n! };
+      case 'owned':
+        return { cur: owned.length, need: c.n! };
+      case 'rarity':
+        return { cur: owned.filter((x) => x.rarity >= (c.min ?? 5)).length, need: c.n! };
+      case 'enhance':
+        return { cur: Math.max(0, ...Object.values(this.save.owned).map((o) => o.b)), need: c.n! };
+      case 'world': {
+        const all = this.content.chars.filter((x) => x.domain === c.world && x.pool);
+        return { cur: all.filter((x) => this.owns(x.id)).length, need: all.length };
+      }
+      case 'stars':
+        return { cur: this.totalStars(), need: c.n! };
+      case 'cleared':
+        return { cur: this.save.cleared[c.key!] ? 1 : 0, need: 1 };
+      case 'attend':
+        return { cur: this.save.extra.attend.total, need: c.n! };
+    }
+    return { cur: 0, need: 1 };
+  }
+  titleDone(t: TitleDef) {
+    const p = this.titleProgress(t);
+    return p.cur >= p.need;
+  }
+  claimableTitles() {
+    return this.content.rewards.titles.filter((t) => this.titleDone(t) && !this.save.extra.titles.claimed.includes(t.id));
+  }
+  async claimTitle(id: string) {
+    const t = this.content.rewards.titles.find((x) => x.id === id);
+    if (!t || !this.titleDone(t) || this.save.extra.titles.claimed.includes(id)) return 0;
+    this.save.extra.titles.claimed.push(id);
+    if (!this.save.extra.titles.equipped) this.save.extra.titles.equipped = id;
+    await this.saveMeta();
+    await this.addCoins(t.coins);
+    return t.coins;
+  }
+  async equipTitle(id: string) {
+    this.save.extra.titles.equipped = id;
+    await this.saveMeta();
+  }
+  equippedTitle() {
+    const id = this.save.extra.titles.equipped;
+    return this.content.rewards.titles.find((t) => t.id === id) ?? null;
+  }
+
+  // ---------- ★5 선택권 ----------
+  ticketChoices(ticketId: string) {
+    const tk = this.content.rewards.tickets.find((t) => t.id === ticketId);
+    if (!tk) return [];
+    return this.content.chars.filter((c) => c.domain === tk.world && c.rarity === 5 && c.pool);
+  }
+  /** 선택권을 쓸 수 있는 세계관 = 균열이 한 번이라도 열린 곳 */
+  availableTickets() {
+    const seen = new Set(this.visibleWorlds().map((w) => w.id));
+    return this.content.rewards.tickets.filter((t) => seen.has(t.world));
+  }
+  async claimTicket(ticketId: string, charId: string) {
+    if (this.save.extra.tickets.includes(ticketId)) throw new Error('이미 쓴 선택권이에요');
+    const ch = this.ticketChoices(ticketId).find((c) => c.id === charId);
+    if (!ch) throw new Error('고를 수 없는 캐릭터예요');
+    let isNew = false;
+    let r = { levelUp: false, refund: 0 };
+    if (!this.save.owned[charId]) {
+      this.save.owned[charId] = { b: 0, d: 0, at: Date.now() };
+      isNew = true;
+    } else r = addDupe(this.save, this.content.gacha, ch);
+    this.save.extra.tickets.push(ticketId);
+    await this.commit({ t: 'ticket', ticket: ticketId, char: charId });
+    await this.saveMeta();
+    return { isNew, ...r };
+  }
+
+  // ---------- 이벤트 ----------
+  async claimEventReward(eventId: string, coins: number) {
+    if (this.save.extra.eventRewards.includes(eventId)) return false;
+    this.save.extra.eventRewards.push(eventId);
+    await this.saveMeta();
+    await this.addCoins(coins);
     return true;
   }
 

@@ -10,6 +10,9 @@ tools/comfy/config.json
 ref/
 public/assets/chars/sl_*
 __pycache__/
-public/assets/audio/chars/
+public/assets/audio/chars/mv_*
+public/assets/audio/chars/op_*
+public/assets/audio/chars/lol_*
+public/assets/audio/chars/sl_*
 public/assets/audio/worlds/
 public/assets/audio/bgm/gacha_*

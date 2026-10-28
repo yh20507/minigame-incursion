@@ -168,7 +168,13 @@
   ],
   "desc": "왕국 최후의 기사단을 이끄는 단장. 왕을 구하기 위해 검을 놓지 않았다.",
   "look": "knight commander woman, silver plate armor, red cape, golden braided hair, crested sword",
-  "line": "잿빛 왕관의 이름으로, 길을 열겠다."
+  "line": "잿빛 왕관의 이름으로, 길을 열겠다.",
+  "voice": {
+   "pitch": 300,
+   "speed": 0.9,
+   "wave": "sawtooth",
+   "formant": 1.0
+  }
  },
  {
   "id": "cassian",
@@ -190,7 +196,13 @@
   ],
   "desc": "마지막 남은 잿빛 용과 함께 하늘을 나는 기수. 자유를 무엇보다 사랑한다.",
   "look": "dragon rider, flight goggles, scarf blowing in wind, dragon scale armor, lance",
-  "line": "꽉 잡아. 하늘로 간다!"
+  "line": "꽉 잡아. 하늘로 간다!",
+  "voice": {
+   "pitch": 150,
+   "speed": 1.25,
+   "wave": "sawtooth",
+   "formant": 0.85
+  }
  },
  {
   "id": "seraphina_x",
@@ -216,7 +228,13 @@
   ],
   "desc": "균열이 크게 요동친 순간 나타난 또 다른 세라피나. 다른 세계의 기억을 품고 있다.",
   "look": "alternate version of a knight commander woman, golden braided hair, dark violet armor, glowing magenta rift aura, otherworldly",
-  "line": "...이 세계의 나는, 아직 웃고 있구나."
+  "line": "...이 세계의 나는, 아직 웃고 있구나.",
+  "voice": {
+   "pitch": 280,
+   "speed": 0.75,
+   "wave": "triangle",
+   "formant": 1.1
+  }
  },
  {
   "id": "gino",
@@ -410,7 +428,13 @@
   ],
   "desc": "도시 전체 전광판에 얼굴이 걸린 가수. 무대 밖에서는 조용한 사람이다.",
   "look": "neon pop singer woman, glamorous stage dress, holographic microphone, glowing long hair",
-  "line": "오늘 밤 무대는 당신을 위한 거야."
+  "line": "오늘 밤 무대는 당신을 위한 거야.",
+  "voice": {
+   "pitch": 390,
+   "speed": 1.05,
+   "wave": "square",
+   "formant": 1.2
+  }
  },
  {
   "id": "lumiere_x",
@@ -436,7 +460,13 @@
   ],
   "desc": "균열 너머의 무대에서 노래하던 또 다른 루미에르. 노래가 끝나지 않는다.",
   "look": "alternate version of a neon pop singer woman, glowing long hair, dark iridescent stage dress, magenta rift aura, otherworldly",
-  "line": "앙코르는... 영원히."
+  "line": "앙코르는... 영원히.",
+  "voice": {
+   "pitch": 360,
+   "speed": 0.8,
+   "wave": "triangle",
+   "formant": 1.25
+  }
  },
  {
   "id": "fip",
@@ -612,7 +642,13 @@
   ],
   "desc": "지도에 없는 곳만 골라 가는 탐험가. 조각세계도 그녀에겐 새 놀이터다.",
   "look": "galaxy explorer woman, explorer spacesuit, big backpack, star pin, confident smile",
-  "line": "가 본 적 없는 곳이라면, 가야지!"
+  "line": "가 본 적 없는 곳이라면, 가야지!",
+  "voice": {
+   "pitch": 340,
+   "speed": 1.3,
+   "wave": "square",
+   "formant": 1.1
+  }
  },
  {
   "id": "orden",
@@ -640,7 +676,13 @@
   ],
   "desc": "설계자에게 사로잡혀 시련의 문지기가 되었던 왕. 해방된 뒤 방랑자에게 검을 맡겼다.",
   "look": "ash king, ash-covered crown, cracked royal armor, huge greatsword, weary",
-  "line": "이 검은 이제 너의 것이다."
+  "line": "이 검은 이제 너의 것이다.",
+  "voice": {
+   "pitch": 95,
+   "speed": 0.7,
+   "wave": "sawtooth",
+   "formant": 0.7
+  }
  },
  {
   "id": "adel",
@@ -668,7 +710,13 @@
   ],
   "desc": "항구 관리 AI의 인격. 해방된 뒤 방랑자에게 감사를 기록했다.",
   "look": "holographic AI harbor master, translucent cyan body, harbor uniform, rings of data orbiting",
-  "line": "협력 프로토콜을 개시합니다."
+  "line": "협력 프로토콜을 개시합니다.",
+  "voice": {
+   "pitch": 230,
+   "speed": 1.0,
+   "wave": "square",
+   "formant": 1.4
+  }
  },
  {
   "id": "vorex",
@@ -696,7 +744,13 @@
   ],
   "desc": "성운 표류선의 함장. 오랜만에 자기 의지로 키를 잡았다.",
   "look": "old space captain, huge build, worn captain coat, mechanical prosthetic arm, white beard",
-  "line": "항로는 우리가 정한다."
+  "line": "항로는 우리가 정한다.",
+  "voice": {
+   "pitch": 110,
+   "speed": 0.85,
+   "wave": "sawtooth",
+   "formant": 0.75
+  }
  },
  {
   "id": "architect",
@@ -723,7 +777,13 @@
   ],
   "desc": "텅 빈 세계에 홀로 남아, 함께 놀 누군가를 기다리며 세계를 꿰맸던 존재.",
   "look": "mysterious figure in dark cloak, face hidden in shadow, glowing pink eyes, threads and needle motif, lonely",
-  "line": "이번엔 시련이 아니라, 그냥 놀자."
+  "line": "이번엔 시련이 아니라, 그냥 놀자.",
+  "voice": {
+   "pitch": 130,
+   "speed": 0.65,
+   "wave": "triangle",
+   "formant": 0.9
+  }
  },
  {
   "id": "mv_hawkeye",

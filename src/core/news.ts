@@ -9,7 +9,7 @@ import { T, button, go } from './ui';
 export function currentSeason(): Season | null {
   const today = todayKey();
   const live = App.content.updates.filter((s) => s.start <= today && (!s.end || s.end >= today));
-  return live.sort((a, b) => (a.start < b.start ? 1 : -1))[0] ?? null;
+  return live.sort((a, b) => b.start.localeCompare(a.start))[0] ?? null;
 }
 
 export function unseenNews() {

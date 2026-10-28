@@ -29,7 +29,10 @@ class Synth {
   bgmVol = 0.5;
   themeVol = 0.8;
   /** 실제로 있는 음원 파일 */
-  files = { bgm: new Set<string>(), sfx: new Map<string, ArrayBuffer>(), chars: new Set<string>(), worlds: new Set<string>() };
+  files = { bgm: new Set<string>(), sfx: new Map<string, ArrayBuffer>(), chars: new Set<string>(), worlds: new Set<string>(), voice: new Set<string>() };
+  /** 캐릭터 목소리 설정 (characters.json 의 voice) */
+  voices = new Map<string, { pitch: number; speed?: number; wave?: OscillatorType; formant?: number }>();
+  private voiceEl: HTMLAudioElement | null = null;
   private sfxBuf = new Map<string, AudioBuffer>();
   private bgmEl: HTMLAudioElement | null = null;
   private bgmElKey = '';
@@ -82,6 +85,7 @@ class Synth {
     const jobs: Promise<void>[] = [];
     for (const k of [...BGM_KEYS, ...bgmKeys]) jobs.push(exists(`assets/audio/bgm/${k}.mp3`).then((ok) => void (ok && this.files.bgm.add(k))));
     for (const id of charIds) jobs.push(exists(`assets/audio/chars/${id}.mp3`).then((ok) => void (ok && this.files.chars.add(id))));
+    for (const id of charIds) jobs.push(exists(`assets/audio/voice/${id}.mp3`).then((ok) => void (ok && this.files.voice.add(id))));
     for (const id of worldIds) jobs.push(exists(`assets/audio/worlds/${id}.mp3`).then((ok) => void (ok && this.files.worlds.add(id))));
     for (const k of SFX_KEYS)
       jobs.push(
@@ -188,6 +192,63 @@ class Synth {
     g.connect(dest ?? this.sfxGain);
     o.start(t);
     o.stop(t + dur + 0.02);
+  }
+
+  /**
+   * 캐릭터 목소리. assets/audio/voice/<id>.mp3 가 있으면 그것을, 없으면 글자마다 짧은 음절 소리를 합성한다.
+   * 음높이·빠르기·음색은 characters.json 의 voice 로 캐릭터마다 다르다.
+   */
+  voice(charId: string, text: string) {
+    const ctx = this.ensure();
+    if (!ctx || this.sfxVol <= 0 || !text) return;
+    this.voiceEl?.pause();
+    if (this.files.voice.has(charId)) {
+      const el = new Audio(`assets/audio/voice/${charId}.mp3`);
+      el.volume = Math.min(1, this.sfxVol);
+      el.play().catch(() => {});
+      this.voiceEl = el;
+      return;
+    }
+    let h = 0;
+    for (const c of charId) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+    const v = this.voices.get(charId) ?? { pitch: 180 + (h % 200) };
+    const step = 0.055 / (v.speed ?? 1);
+    const out = ctx.createGain();
+    out.gain.value = 0.9;
+    out.connect(this.sfxGain);
+    let t = ctx.currentTime + 0.05;
+    let seed = h || 1;
+    const rnd = () => ((seed = (seed * 1103515245 + 12345) >>> 0) / 4294967296);
+    const glyphs = [...text];
+    glyphs.forEach((g, i) => {
+      if (/[\s]/.test(g)) return void (t += step * 0.8);
+      if (/[.,!?…~·]/.test(g)) return void (t += step * (g === ',' ? 2 : 3));
+      const code = g.charCodeAt(0);
+      // 한글은 모음에 따라 소리 색을 조금씩 바꾼다
+      const vowel = code >= 0xac00 && code <= 0xd7a3 ? Math.floor(((code - 0xac00) % 588) / 28) : code % 21;
+      const end = i >= glyphs.length - 3;
+      const f0 = v.pitch * (1 + (rnd() - 0.5) * 0.18) * (end && text.endsWith('?') ? 1.25 : end ? 0.92 : 1);
+      const dur = step * (0.75 + rnd() * 0.4);
+      const o = ctx.createOscillator();
+      o.type = v.wave ?? 'sawtooth';
+      o.frequency.setValueAtTime(f0, t);
+      o.frequency.linearRampToValueAtTime(f0 * (0.94 + rnd() * 0.1), t + dur);
+      const bp = ctx.createBiquadFilter();
+      bp.type = 'bandpass';
+      bp.Q.value = 3;
+      bp.frequency.value = (v.formant ?? 1) * (500 + (vowel % 7) * 170);
+      const lp = ctx.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.value = 2600;
+      const g2 = ctx.createGain();
+      g2.gain.setValueAtTime(0.0001, t);
+      g2.gain.exponentialRampToValueAtTime(0.5, t + 0.008);
+      g2.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(bp).connect(lp).connect(g2).connect(out);
+      o.start(t);
+      o.stop(t + dur + 0.02);
+      t += step;
+    });
   }
 
   private noise(dur: number, vol = 1, at = 0, dest?: AudioNode) {

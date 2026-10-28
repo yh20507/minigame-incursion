@@ -29,7 +29,7 @@ export class GachaScene extends Phaser.Scene {
       const col = this.bannerColor(b);
       button(this, 10, 34 + i * 38, 124, 34, b.name, () => go(this, 'Gacha', { banner: b.id }), {
         color: col,
-        sub: (b.type === 'standard' ? '상시' : '한정') + (App.store.isFirstMulti(b.id) ? ' · 첫 확정' : ''),
+        sub: (b.type === 'standard' ? '상시' : App.store.bannerPeriod(b)?.rerun ? '복각' : '한정') + (App.store.isFirstMulti(b.id) ? ' · 첫 확정' : ''),
         size: 10,
       });
       if (b.id === this.banner.id) {
@@ -38,6 +38,21 @@ export class GachaScene extends Phaser.Scene {
         g.strokeRect(9, 33 + i * 38, 126, 36);
       }
     });
+    // 복각 이벤트 스토리
+    const pr = App.store.bannerPeriod(this.banner);
+    if (pr?.event && App.content.story.scenes[pr.event]) {
+      const ev = pr.event;
+      const seen = !!App.store.save.story[ev];
+      const got = App.store.save.extra.eventRewards.includes(ev);
+      const eb = button(this, 10, H - 74, 124, 32, '이벤트 스토리', () => go(this, 'Story', { id: ev, next: 'Gacha', nextData: { banner: this.banner.id } }), {
+        size: 10,
+        color: '#7dffb0',
+        sub: got ? '다시 보기' : '처음 보면 코인 1,000',
+      });
+      if (!seen) this.tweens.add({ targets: eb, alpha: 0.75, yoyo: true, repeat: -1, duration: 600 });
+      if (seen && !got)
+        App.store.claimEventReward(ev, 1000).then((ok) => ok && toast(this, '이벤트 스토리 보상 · 코인 +1,000', C.gold));
+    }
     button(this, 10, H - 36, 60, 26, '기록', () => this.history(), { size: 10 });
     button(this, 74, H - 36, 60, 26, '가방', () => go(this, 'Bag', { back: 'Gacha' }), { size: 10 });
     this.drawBanner();
@@ -61,8 +76,9 @@ export class GachaScene extends Phaser.Scene {
     this.add.image(x + 1, y + 1, 'bg_' + bgKey).setOrigin(0).setDisplaySize(w - 2, h - 2).setAlpha(0.45);
     T(this, x + 12, y + 8, b.name, { size: 24, color: col, stroke: true });
     if (b.type === 'world') {
-      const period = b.end ? `${b.start ?? ''} ~ ${b.end} 한정` : '한정 · 종료일 미정';
-      T(this, x + 12, y + 38, period, { size: 10, color: C.gold, stroke: true });
+      const pr = st.bannerPeriod(b);
+      const period = pr?.end ? `${pr.start ?? ''} ~ ${pr.end} ${pr.rerun ? '복각' : '한정'}` : '한정 · 종료일 미정';
+      T(this, x + 12, y + 38, period, { size: 10, color: pr?.rerun ? '#7dffb0' : C.gold, stroke: true });
     }
     T(this, x + 12, y + 52, b.desc, { size: 10, color: C.text, stroke: true, wrap: 250 });
 

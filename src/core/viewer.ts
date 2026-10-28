@@ -8,7 +8,7 @@ import { rarityName } from './ui';
  * 게임 화면(640x360 픽셀)이 아니라 창 해상도 그대로 보여주려고 HTML 위에 띄운다.
  * ★4: 금빛 테두리. ★5: 무지개 테두리 + 홀로그램 광택 + 반짝이.
  */
-export function showFullArt(scene: Phaser.Scene, charId: string, onClose?: () => void) {
+export function showFullArt(scene: Phaser.Scene, charId: string, onClose?: () => void, extra?: string) {
   const ch = App.content.char(charId);
   const ultra = ch.rarity >= 5;
   const el = document.createElement('div');
@@ -56,6 +56,21 @@ export function showFullArt(scene: Phaser.Scene, charId: string, onClose?: () =>
   sub.className = 'sub';
   sub.textContent = `${rarityName(ch.rarity)} · ${ch.title} · ${App.content.domainName(ch.domain)}`;
   el.appendChild(sub);
+  if (ch.line) {
+    const ln = document.createElement('div');
+    ln.className = 'line';
+    el.appendChild(ln);
+    // 대사를 한 글자씩 + 캐릭터 목소리
+    const chars = [...`“${ch.line}”`];
+    let i = 0;
+    const tick = window.setInterval(() => {
+      if (!ln.isConnected && i > 0) return clearInterval(tick);
+      ln.textContent = chars.slice(0, ++i).join('');
+      if (i >= chars.length) clearInterval(tick);
+    }, 55);
+    setTimeout(() => audio.voice(charId, ch.line), 50);
+  }
+  if (extra) note = note ? `${extra} · ${note}` : extra;
   if (note) {
     const n = document.createElement('div');
     n.className = 'note';
