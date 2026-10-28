@@ -1,1 +1,4 @@
-{ "supabaseUrl": "", "supabaseAnonKey": "" }
+{
+  "supabaseUrl": "https://gxvfyoildacrsukyuvgv.supabase.co",
+  "supabaseAnonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4dmZ5b2lsZGFjcnN1a3l1dmd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMxMDIxMzgsImV4cCI6MjEwODY3ODEzOH0.1J2DvpcTOFjS0K0Zb-mqO_u9l94E9NP5HRGjiLqUhWQ"
+}
