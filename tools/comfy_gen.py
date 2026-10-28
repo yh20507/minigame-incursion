@@ -101,6 +101,20 @@ class Comfy:
         except Exception:
             return False
 
+    def upload(self, path):
+        """참고 그림을 ComfyUI input 폴더에 올린다. 올라간 이름을 돌려준다."""
+        boundary = "----mi" + uuid.uuid4().hex
+        name = "incursion_ref_" + os.path.basename(path)
+        with open(path, "rb") as f:
+            data = f.read()
+        body = (f"--{boundary}\r\nContent-Disposition: form-data; name=\"image\"; filename=\"{name}\"\r\n"
+                f"Content-Type: image/png\r\n\r\n").encode() + data + \
+               f"\r\n--{boundary}\r\nContent-Disposition: form-data; name=\"overwrite\"\r\n\r\ntrue\r\n--{boundary}--\r\n".encode()
+        req = urllib.request.Request(self.base + "/upload/image", data=body,
+                                     headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
+        with self.opener.open(req, timeout=60) as r:
+            return json.loads(r.read())["name"]
+
     def checkpoints(self):
         try:
             info = json.loads(self._req("/object_info/CheckpointLoaderSimple"))
@@ -247,6 +261,33 @@ def convert(cfg, src, entry):
     return dst
 
 
+REF_DENOISE = {"sprite": 0.85, "full": 0.6, "art": 0.55}
+
+
+def find_ref(cid):
+    """ref/<캐릭터id>.png 가 있으면 그 경로"""
+    for ext in (".png", ".jpg", ".jpeg", ".webp"):
+        p = os.path.join(ROOT, "ref", cid + ext)
+        if os.path.exists(p):
+            return p
+    return None
+
+
+def apply_ref(wf, image_name, width, height, denoise):
+    """빈 latent 대신 참고 그림에서 시작하게 워크플로를 바꾼다 (img2img)."""
+    ks = next((k for k, n in wf.items() if n.get("class_type", "").startswith("KSampler")), None)
+    ck = next((k for k, n in wf.items() if n.get("class_type") == "CheckpointLoaderSimple"), None)
+    if not ks or not ck:
+        return wf
+    wf["900"] = {"class_type": "LoadImage", "inputs": {"image": image_name}}
+    wf["901"] = {"class_type": "ImageScale", "inputs": {"image": ["900", 0], "upscale_method": "lanczos",
+                                                         "width": width, "height": height, "crop": "center"}}
+    wf["902"] = {"class_type": "VAEEncode", "inputs": {"pixels": ["901", 0], "vae": [ck, 2]}}
+    wf[ks]["inputs"]["latent_image"] = ["902", 0]
+    wf[ks]["inputs"]["denoise"] = denoise
+    return wf
+
+
 def find_server(cfg):
     """설정 주소가 안 되면 내 PC의 흔한 포트(8188 일반판, 8000 데스크탑판)를 차례로 찾아본다."""
     tried = [cfg["server"]] + [f"http://127.0.0.1:{p}" for p in (8188, 8000, 8189, 8001)]
@@ -335,7 +376,14 @@ def cmd_run(args):
         negative = e.get("negative") or cfg["negative"]
         folder = os.path.join(raw_root, e["kind"], e["id"])
         os.makedirs(folder, exist_ok=True)
-        print(f"[{i}/{len(todo)}] {e['name']} ({e['kind']})")
+        ref = find_ref(e["id"]) if e["kind"] in REF_DENOISE else None
+        ref_name = None
+        if ref:
+            try:
+                ref_name = comfy.upload(ref)
+            except Exception as err:
+                print(f"    참고 그림 올리기 실패, 참고 없이 만들어요: {err}")
+        print(f"[{i}/{len(todo)}] {e['name']} ({e['kind']}){'  · 참고 그림 사용' if ref_name else ''}")
         saved = []
         for j in range(n):
             seed = random.randint(1, 2**31 - 1) if e.get("seed") is None else e["seed"] + j
@@ -350,6 +398,9 @@ def cmd_run(args):
                 "CHECKPOINT": cfg.get("checkpoint", ""),
                 "PREFIX": f"incursion/{e['kind']}_{e['id']}",
             })
+            if ref_name:
+                dn = cfg.get("refDenoise", {}).get(e["kind"], REF_DENOISE[e["kind"]])
+                wf = apply_ref(wf, ref_name, e.get("width", kc["width"]), e.get("height", kc["height"]), dn)
             try:
                 pid = comfy.queue(wf)
                 images = comfy.wait(pid)
