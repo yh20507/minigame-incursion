@@ -247,14 +247,27 @@ def convert(cfg, src, entry):
     return dst
 
 
+def find_server(cfg):
+    """설정 주소가 안 되면 내 PC의 흔한 포트(8188 일반판, 8000 데스크탑판)를 차례로 찾아본다."""
+    tried = [cfg["server"]] + [f"http://127.0.0.1:{p}" for p in (8188, 8000, 8189, 8001)]
+    for url in dict.fromkeys(tried):
+        if Comfy(url).ok():
+            if url != cfg["server"]:
+                print(f"  ComfyUI 를 {url} 에서 찾았어요")
+                cfg["server"] = url
+                save_json(CONFIG, cfg)
+            return Comfy(url)
+    return None
+
+
 # ---------------------------------------------------------------- 명령
 def cmd_init(args):
     cfg = load_config()
     if args.server:
         cfg["server"] = args.server
-    comfy = Comfy(cfg["server"])
     print(f"ComfyUI 연결 확인: {cfg['server']}")
-    if not comfy.ok():
+    comfy = Comfy(cfg["server"]) if args.server else find_server(cfg)
+    if not comfy or not comfy.ok():
         print("  연결 실패. ComfyUI 가 켜져 있는지, 주소가 맞는지 확인하세요.")
         print("  (다른 주소면: python tools/comfy_gen.py init --server http://주소:포트)")
         save_json(CONFIG, cfg)
@@ -301,8 +314,8 @@ def cmd_run(args):
     if not cfg.get("checkpoint") and "%CHECKPOINT%" in json.dumps(load_json(rel(cfg["workflow"]), {})):
         print("체크포인트가 정해지지 않았어요. 먼저: python tools/comfy_gen.py init")
         return 1
-    comfy = Comfy(cfg["server"])
-    if not comfy.ok():
+    comfy = find_server(cfg)
+    if not comfy:
         print(f"ComfyUI 에 연결할 수 없어요: {cfg['server']}  (ComfyUI 를 켜고 다시 해 주세요)")
         return 1
     prompts = build_prompts(cfg, load_json(PROMPTS, {}))
