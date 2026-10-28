@@ -16,13 +16,15 @@
     "db:characters": "node tools/characters-sql.mjs"
   },
   "devDependencies": {
+    "@supabase/supabase-js": "^2.118.0",
     "electron": "^38.8.6",
     "electron-builder": "^26.18.0",
-    "typescript": "^7.0.2",
-    "vite": "^8.3.5",
-    "@supabase/supabase-js": "^2.118.0",
     "galmuri": "^2.40.3",
-    "phaser": "3.90.0"
+    "pe-library": "^2.0.1",
+    "phaser": "3.90.0",
+    "resedit": "^3.1.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
   },
   "author": "yh20507",
   "build": {
@@ -72,6 +74,7 @@
           "**/*"
         ]
       }
-    ]
+    ],
+    "afterPack": "build/after-pack.mjs"
   }
 }
