@@ -261,7 +261,8 @@ def convert(cfg, src, entry):
     return dst
 
 
-REF_DENOISE = {"sprite": 0.85, "full": 0.6, "art": 0.55}
+# 참고 그림은 기본으로 도트 캐릭터(sprite)에만 쓴다. 일러스트도 참고하려면 config 의 "refKinds" 에 "art", "full" 추가
+REF_DENOISE = {"sprite": 0.8, "full": 0.6, "art": 0.55}
 
 
 def find_ref(cid):
@@ -376,7 +377,7 @@ def cmd_run(args):
         negative = e.get("negative") or cfg["negative"]
         folder = os.path.join(raw_root, e["kind"], e["id"])
         os.makedirs(folder, exist_ok=True)
-        ref = find_ref(e["id"]) if e["kind"] in REF_DENOISE else None
+        ref = find_ref(e["id"]) if e["kind"] in cfg.get("refKinds", ["sprite"]) else None
         ref_name = None
         if ref:
             try:
