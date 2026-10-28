@@ -70,6 +70,8 @@ export interface GachaConfig {
   pity: { legend: number; ultra: number };
   /** 10+1회에서 보장하는 최소 별 */
   multiGuarantee: number;
+  /** 균열마다 첫 10+1회에서 보장하는 최소 별 */
+  firstMultiGuarantee?: number;
   cost: { single: number; multi: number; multiCount: number };
   /** need[i] = i강 → i+1강에 필요한 중복 수 */
   enhance: { max: number; need: number[]; bonusPerLevel: number };
@@ -164,6 +166,8 @@ export interface SaveData {
   coins: number;
   pity: { legend: number; ultra: number };
   totalPulls: number;
+  /** 첫 10+1회 확정을 이미 쓴 균열 id */
+  firstMulti: string[];
   owned: Record<string, OwnedChar>;
   items: Record<string, number>;
   scores: Record<string, ScoreRec>;

@@ -26,9 +26,13 @@ create table if not exists public.mi_profiles (
   cleared jsonb not null default '{}'::jsonb,
   extra jsonb,
   items jsonb not null default '{}'::jsonb,
+  first_multi text[] not null default '{}',
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+-- 예전 버전에서 올릴 때
+alter table public.mi_profiles add column if not exists first_multi text[] not null default '{}';
 
 create table if not exists public.mi_scores (
   user_id uuid not null references auth.users on delete cascade,
@@ -212,6 +216,7 @@ declare
   total_w numeric;
   d record;
   is_new boolean;
+  first boolean;
   i int;
 begin
   if uid is null then raise exception 'not signed in'; end if;
@@ -225,6 +230,8 @@ begin
   select * into prof from public.mi_profiles where user_id = uid for update;
   if prof is null then raise exception 'profile missing'; end if;
   if prof.coins < cost then raise exception '코인이 부족해요'; end if;
+  first := p_multi and not (p_banner = any (prof.first_multi));
+  if first then guarantee := greatest(guarantee, coalesce((cfg ->> 'firstMultiGuarantee')::int, 4)); end if;
   update public.mi_profiles set coins = coins - cost where user_id = uid;
   select sum((e ->> 'weight')::numeric) into total_w from jsonb_array_elements(items_cfg) e;
 
@@ -246,8 +253,8 @@ begin
         if x < rr.rate then rar := rr.id; exit; end if;
         x := x - rr.rate;
       end loop;
-      if p_multi and i = cnt and not got_g and rar < guarantee then rar := guarantee; end if;
     end if;
+    if p_multi and i = cnt and not got_g and rar < guarantee then rar := guarantee; end if;
     while rar > 0 and not exists (select 1 from public.mi_characters c where c.id = any (p_pool) and c.pool and c.rarity = rar) loop
       rar := rar - 1;
     end loop;
@@ -298,12 +305,14 @@ begin
     pity_legend = prof.pity_legend,
     pity_ultra = prof.pity_ultra,
     total_pulls = total_pulls + cnt,
+    first_multi = case when first then array_append(first_multi, p_banner) else first_multi end,
     updated_at = now()
   where user_id = uid
   returning * into prof;
 
   return jsonb_build_object('results', results, 'coins', prof.coins, 'pity_legend', prof.pity_legend,
-    'pity_ultra', prof.pity_ultra, 'total_pulls', prof.total_pulls, 'items', prof.items);
+    'pity_ultra', prof.pity_ultra, 'total_pulls', prof.total_pulls, 'items', prof.items,
+    'first_multi', to_jsonb(prof.first_multi));
 end $$;
 
 -- 출전 전 아이템 사용

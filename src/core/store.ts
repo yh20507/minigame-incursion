@@ -10,6 +10,7 @@ export function defaultSave(content: Content): SaveData {
     coins: content.gacha.startCoins,
     pity: { legend: 0, ultra: 0 },
     totalPulls: 0,
+    firstMulti: [],
     owned: { teumsae: { b: 0, d: 0, at: Date.now() } },
     items: {},
     scores: {},
@@ -253,6 +254,11 @@ export class Store {
     return first;
   }
 
+  /** 이 균열의 첫 10+1회 확정이 아직 남았나 */
+  isFirstMulti(bannerId: string) {
+    return !(this.save.firstMulti ?? []).includes(bannerId);
+  }
+
   async pull(bannerId: string, multi: boolean): Promise<PullResult[]> {
     const cfg = this.content.gacha;
     const cost = multi ? cfg.cost.multi : cfg.cost.single;
@@ -270,6 +276,7 @@ export class Store {
       this.save.pity = online.pity;
       this.save.totalPulls = online.totalPulls;
       this.save.items = online.items;
+      this.save.firstMulti = online.firstMulti;
       for (const r of results) {
         if (r.kind !== 'char') continue;
         const o = this.save.owned[r.id];
@@ -280,7 +287,9 @@ export class Store {
       }
     } else {
       this.save.coins -= cost;
-      results = rollPulls(this.save, pool, cfg, this.content.items, count);
+      const first = this.isFirstMulti(bannerId) && multi;
+      results = rollPulls(this.save, pool, cfg, this.content.items, count, Math.random, first);
+      if (first) this.save.firstMulti = [...this.save.firstMulti, bannerId];
     }
     const now = Date.now();
     this.save.extra.log = [

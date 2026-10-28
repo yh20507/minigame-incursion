@@ -16,6 +16,7 @@ export interface PullResponse {
   pity: { legend: number; ultra: number };
   totalPulls: number;
   items: Record<string, number>;
+  firstMulti: string[];
 }
 
 export interface Backend {
@@ -74,6 +75,7 @@ export function mergeSave(def: SaveData, raw: Partial<SaveData>): SaveData {
   s.extra.log = raw.extra?.log ?? [];
   s.owned = { ...def.owned, ...(raw.owned ?? {}) };
   s.items = { ...(raw.items ?? {}) };
+  s.firstMulti = Array.isArray(raw.firstMulti) ? [...raw.firstMulti] : [];
   return s;
 }
 
@@ -158,6 +160,7 @@ export class SupabaseBackend implements Backend {
         coins: prof.coins,
         pity: { legend: prof.pity_legend, ultra: prof.pity_ultra },
         totalPulls: prof.total_pulls,
+        firstMulti: prof.first_multi ?? [],
         team: prof.team ?? def.team,
         story: prof.story ?? {},
         cleared: prof.cleared ?? {},
@@ -259,6 +262,7 @@ export class SupabaseBackend implements Backend {
       pity: { legend: data.pity_legend, ultra: data.pity_ultra },
       totalPulls: data.total_pulls,
       items: data.items ?? {},
+      firstMulti: data.first_multi ?? [],
     };
   }
 }

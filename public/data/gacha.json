@@ -42,6 +42,7 @@
   "ultra": 2000
  },
  "multiGuarantee": 2,
+  "firstMultiGuarantee": 4,
  "cost": {
   "single": 200,
   "multi": 1900,

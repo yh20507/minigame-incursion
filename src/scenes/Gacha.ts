@@ -27,7 +27,7 @@ export class GachaScene extends Phaser.Scene {
       const col = this.bannerColor(b);
       button(this, 10, 34 + i * 38, 124, 34, b.name, () => go(this, 'Gacha', { banner: b.id }), {
         color: col,
-        sub: b.type === 'standard' ? '상시' : '한정',
+        sub: (b.type === 'standard' ? '상시' : '한정') + (App.store.isFirstMulti(b.id) ? ' · 첫 확정' : ''),
         size: 10,
       });
       if (b.id === this.banner.id) {
@@ -94,10 +94,16 @@ export class GachaScene extends Phaser.Scene {
 
     const by = H - 46;
     const one = button(this, W - 336, by, 160, 36, '1회 소환', () => this.doPull(false), { sub: `${cfg.cost.single} 코인`, color: col });
+    const first = st.isFirstMulti(b.id);
+    const fg = Math.max(cfg.multiGuarantee, cfg.firstMultiGuarantee ?? 4);
     const multi = button(this, W - 168, by, 160, 36, `${cfg.cost.multiCount - 1}+1회 소환`, () => this.doPull(true), {
-      sub: `${cfg.cost.multi} 코인 · ★${cfg.multiGuarantee} 이상 1개 보장`,
-      color: C.accent,
+      sub: first ? `${cfg.cost.multi} 코인 · ★${fg} 이상 확정!` : `${cfg.cost.multi} 코인 · ★${cfg.multiGuarantee} 이상 1개 보장`,
+      color: first ? C.gold : C.accent,
     });
+    if (first) {
+      const tag = T(this, W - 88, by - 16, `첫 ${cfg.cost.multiCount - 1}+1 ★${fg} 확정`, { size: 10, align: 'center', color: '#ffffff', stroke: true });
+      this.tweens.add({ targets: tag, y: tag.y - 3, yoyo: true, repeat: -1, duration: 500 });
+    }
     if (st.coins < cfg.cost.single || !pool.length) one.setEnabled(false);
     if (st.coins < cfg.cost.multi || !pool.length) multi.setEnabled(false);
   }

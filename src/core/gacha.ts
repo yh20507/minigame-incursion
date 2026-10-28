@@ -34,7 +34,7 @@ export function rollItem(items: ItemDef[], rng: () => number) {
  * 뽑기 판정 (로컬 모드). 온라인 모드에서는 같은 규칙을 Supabase 의 mi_pull() 이 처리한다.
  * - 한 번 뽑을 때 별1~5 캐릭터 또는 아이템이 나온다.
  * - 천장(전설 = ★4, 초레어 = ★5) 카운터는 모든 균열 공통이고, 아이템이 나와도 쌓인다.
- * - 10+1회는 마지막 칸에서 ★2 이상 캐릭터 1개 보장.
+ * - 10+1회는 마지막 칸에서 ★2 이상 캐릭터 1개 보장. 균열마다 첫 10+1회는 ★4 이상 1개 확정(first).
  * - 중복 캐릭터는 강화 재료가 되고, 최대 강화 뒤의 중복은 코인으로 환급.
  */
 export function rollPulls(
@@ -44,11 +44,13 @@ export function rollPulls(
   items: ItemDef[],
   count: number,
   rng: () => number = Math.random,
+  first = false,
 ): PullResult[] {
   const results: PullResult[] = [];
   const byRarity = (r: number) => pool.filter((c) => c.rarity === r);
   const multi = count > 1;
   let gotGuarantee = false;
+  const guarantee = first ? Math.max(cfg.multiGuarantee, cfg.firstMultiGuarantee ?? 4) : cfg.multiGuarantee;
 
   for (let i = 0; i < count; i++) {
     save.pity.legend += 1;
@@ -71,10 +73,10 @@ export function rollPulls(
         }
         x -= r.rate;
       }
-      if (multi && i === count - 1 && !gotGuarantee && rarity < cfg.multiGuarantee) rarity = cfg.multiGuarantee;
     }
+    if (multi && i === count - 1 && !gotGuarantee && rarity < guarantee) rarity = guarantee;
     while (rarity > 0 && byRarity(rarity).length === 0) rarity--;
-    if (rarity >= cfg.multiGuarantee) gotGuarantee = true;
+    if (rarity >= guarantee) gotGuarantee = true;
     if (rarity === 5) save.pity.ultra = 0;
     if (rarity === 4) save.pity.legend = 0;
     save.totalPulls += 1;
