@@ -115,6 +115,23 @@ class Comfy:
         with self.opener.open(req, timeout=60) as r:
             return json.loads(r.read())["name"]
 
+    def models_dir(self):
+        """ComfyUI 가 알려주는 실행 정보로 models\\checkpoints 위치를 찾는다"""
+        try:
+            st = json.loads(self._req("/system_stats", timeout=5)).get("system", {})
+        except Exception:
+            return None
+        argv = st.get("argv") or []
+        base = None
+        for flag in ("--base-directory", "--base_directory"):
+            if flag in argv and argv.index(flag) + 1 < len(argv):
+                base = argv[argv.index(flag) + 1]
+        if not base:
+            main = next((a for a in argv if a.endswith("main.py")), None)
+            if main:
+                base = os.path.dirname(os.path.abspath(main))
+        return os.path.join(base, "models", "checkpoints") if base else None
+
     def checkpoints(self):
         # 1) /models/checkpoints (대부분 버전)
         try:
@@ -302,6 +319,21 @@ def apply_ref(wf, image_name, width, height, denoise):
     return wf
 
 
+def show_models_dir(comfy):
+    d = comfy.models_dir()
+    if not d:
+        print("    ComfyUI 화면의 메뉴에서 models 폴더 열기를 찾아 주세요.")
+        return
+    print(f"    모델 넣을 폴더: {d}")
+    try:
+        os.makedirs(d, exist_ok=True)
+        if hasattr(os, "startfile"):
+            os.startfile(d)
+            print("    (그 폴더를 열어 뒀어요)")
+    except Exception:
+        pass
+
+
 def find_server(cfg):
     """설정 주소가 안 되면 내 PC의 흔한 포트(8188 일반판, 8000 데스크탑판)를 차례로 찾아본다."""
     tried = [cfg["server"]] + [f"http://127.0.0.1:{p}" for p in (8188, 8000, 8189, 8001)]
@@ -343,6 +375,7 @@ def cmd_init(args):
         print("  [!] 체크포인트(그림 모델)를 하나도 못 찾았어요.")
         print("      ComfyUI 의 models\\checkpoints 폴더에 .safetensors 모델을 넣고 ComfyUI 를 다시 켠 뒤 1번을 다시 하세요.")
         print("      또는 tools\\comfy\\config.json 의 \"checkpoint\" 에 모델 파일 이름을 직접 적어도 돼요.")
+        show_models_dir(comfy)
     save_json(CONFIG, cfg)
     prompts = build_prompts(cfg, load_json(PROMPTS, {}))
     save_json(PROMPTS, prompts)
@@ -379,7 +412,7 @@ def cmd_run(args):
         if not cks:
             print("[!] ComfyUI 에 그림 모델(체크포인트)이 없어요.")
             print("    ComfyUI 의 models\\checkpoints 폴더에 .safetensors 모델을 넣고 ComfyUI 를 다시 켜 주세요.")
-            print("    (ComfyUI 데스크탑판 기본 위치: 문서\\ComfyUI\\models\\checkpoints)")
+            show_models_dir(comfy)
             return 1
         print("쓸 그림 모델을 골라 주세요:")
         for i, c in enumerate(cks, 1):
