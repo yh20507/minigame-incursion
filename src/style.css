@@ -75,3 +75,8 @@ html, body { margin: 0; padding: 0; height: 100%; background: #07060f; overflow:
 #backdrop .spark::before, #backdrop .spark::after { content: ''; position: absolute; left: 50%; top: 50%; background: #fff; transform: translate(-50%, -50%); box-shadow: 0 0 6px #fff, 0 0 12px rgba(255, 216, 75, 0.9); }
 #backdrop .spark::before { width: 2px; height: 14px; }
 #backdrop .spark::after { width: 14px; height: 2px; }
+
+/* 휴대폰 세로 화면 안내 */
+#rotate { display: none; position: fixed; inset: 0; z-index: 9999; background: #07060f; color: #f2eefc; flex-direction: column; align-items: center; justify-content: center; font-family: 'Galmuri11', sans-serif; text-align: center; }
+#rotate div { font-size: 48px; margin-bottom: 12px; }
+@media (orientation: portrait) and (pointer: coarse) { #rotate { display: flex; } }
