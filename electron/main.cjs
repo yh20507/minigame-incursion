@@ -8,7 +8,7 @@ const fs = require('node:fs');
 const { pathToFileURL } = require('node:url');
 
 protocol.registerSchemesAsPrivileged([
-  { scheme: 'app', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true } },
+  { scheme: 'app', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
 ]);
 
 const distDir = path.join(__dirname, '..', 'dist');
@@ -70,6 +70,25 @@ app.whenReady().then(() => {
     if (!rel) rel = 'index.html';
     const file = resolveFile(rel);
     if (!file) return new Response('not found', { status: 404 });
+    // 음원·영상은 직접 응답 (구간 요청을 지원해야 재생·이어듣기가 된다)
+    const ext = path.extname(file).toLowerCase();
+    const MEDIA = { '.mp3': 'audio/mpeg', '.ogg': 'audio/ogg', '.wav': 'audio/wav', '.m4a': 'audio/mp4', '.mp4': 'video/mp4', '.webm': 'video/webm' };
+    if (MEDIA[ext]) {
+      const size = fs.statSync(file).size;
+      const headers = { 'Content-Type': MEDIA[ext], 'Accept-Ranges': 'bytes' };
+      if (req.method === 'HEAD') return new Response(null, { status: 200, headers: { ...headers, 'Content-Length': String(size) } });
+      const m = /bytes=(\d*)-(\d*)/.exec(req.headers.get('range') || '');
+      if (m) {
+        const start = m[1] ? Number(m[1]) : 0;
+        const end = m[2] ? Math.min(Number(m[2]), size - 1) : size - 1;
+        const buf = Buffer.alloc(end - start + 1);
+        const fd = fs.openSync(file, 'r');
+        fs.readSync(fd, buf, 0, buf.length, start);
+        fs.closeSync(fd);
+        return new Response(buf, { status: 206, headers: { ...headers, 'Content-Length': String(buf.length), 'Content-Range': `bytes ${start}-${end}/${size}` } });
+      }
+      return new Response(fs.readFileSync(file), { status: 200, headers: { ...headers, 'Content-Length': String(size) } });
+    }
     return net.fetch(pathToFileURL(file).toString());
   });
   createWindow();
