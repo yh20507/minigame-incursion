@@ -116,11 +116,24 @@ class Comfy:
             return json.loads(r.read())["name"]
 
     def checkpoints(self):
+        # 1) /models/checkpoints (대부분 버전)
+        try:
+            lst = json.loads(self._req("/models/checkpoints"))
+            if isinstance(lst, list) and lst:
+                return [x for x in lst if isinstance(x, str)]
+        except Exception:
+            pass
+        # 2) object_info: 예전 형식 [[...]] / 새 형식 ["COMBO", {"options": [...]}]
         try:
             info = json.loads(self._req("/object_info/CheckpointLoaderSimple"))
-            return info["CheckpointLoaderSimple"]["input"]["required"]["ckpt_name"][0]
+            spec = info["CheckpointLoaderSimple"]["input"]["required"]["ckpt_name"]
+            if isinstance(spec[0], list):
+                return spec[0]
+            if len(spec) > 1 and isinstance(spec[1], dict):
+                return spec[1].get("options", [])
         except Exception:
-            return []
+            pass
+        return []
 
     def queue(self, workflow):
         try:
@@ -326,6 +339,10 @@ def cmd_init(args):
         n = int(ans) if ans.isdigit() and 1 <= int(ans) <= len(cks) else default
         cfg["checkpoint"] = cks[n - 1]
         print(f"  → {cfg['checkpoint']}")
+    else:
+        print("  [!] 체크포인트(그림 모델)를 하나도 못 찾았어요.")
+        print("      ComfyUI 의 models\\checkpoints 폴더에 .safetensors 모델을 넣고 ComfyUI 를 다시 켠 뒤 1번을 다시 하세요.")
+        print("      또는 tools\\comfy\\config.json 의 \"checkpoint\" 에 모델 파일 이름을 직접 적어도 돼요.")
     save_json(CONFIG, cfg)
     prompts = build_prompts(cfg, load_json(PROMPTS, {}))
     save_json(PROMPTS, prompts)
