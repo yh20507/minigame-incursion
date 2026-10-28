@@ -132,6 +132,8 @@ class Synth {
     this.ensure();
     const prevKey = this.bgmKey || this.bgmElKey;
     const prev = this.bgmLast;
+    // 음원 배경음은 테마곡이 끝나면 멈춘 자리부터 이어서
+    this.pausedBgm = this.bgmEl && this.bgmElKey ? { url: this.bgmElKey, time: this.bgmEl.currentTime } : null;
     this.stopBgm();
     this.resumeBgm = prevKey && prev ? () => this.bgm(prev.key, prev.root, prev.scale, prev.tempo, prev.files) : null;
     const el = new Audio(url);
@@ -315,6 +317,7 @@ class Synth {
   }
 
   /** 영역 분위기의 짧은 반복 배경음. key 가 같으면 이어서 재생. */
+  private pausedBgm: { url: string; time: number } | null = null;
   private bgmLast: { key: string; root: number; scale: string; tempo: number; files?: string[] } | null = null;
 
   /** 배경음. files 순서대로 음원 파일을 찾고, 없으면 key 로 칩튠을 합성한다 */
@@ -337,6 +340,8 @@ class Synth {
       const el = new Audio(url);
       el.loop = true;
       el.volume = Math.min(1, this.bgmVol * 0.7);
+      if (this.pausedBgm?.url === url) el.currentTime = this.pausedBgm.time;
+      this.pausedBgm = null;
       el.play().catch(() => {});
       this.bgmEl = el;
       this.bgmElKey = url;

@@ -45,7 +45,12 @@ export class BootScene extends Phaser.Scene {
     makeItemTextures(this, App.content);
 
     await audio.scan(
-      [...App.content.domains.map((d) => d.id), ...App.content.worlds.map((w) => w.id)],
+      [
+        ...App.content.domains.map((d) => d.id),
+        ...App.content.worlds.map((w) => w.id),
+        ...App.content.banners.map((b) => 'gacha_' + b.id),
+        ...App.content.worlds.map((w) => 'gacha_' + w.id),
+      ],
       App.content.chars.map((c) => c.id),
       App.content.worlds.map((w) => w.id),
     );

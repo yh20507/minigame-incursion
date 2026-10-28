@@ -17,11 +17,13 @@ export class GachaScene extends Phaser.Scene {
   create(data: { banner?: string }) {
     fadeIn(this);
     this.busy = false;
-    audio.bgm('gacha', 55, 'lydian', 100);
     bg(this, 'rift', 0.35);
     topBar(this, '차원 균열', () => !this.busy && go(this, 'Lobby'));
     const banners = App.store.availableBanners();
     this.banner = banners.find((b) => b.id === data?.banner) ?? banners[0];
+    // 균열마다 그 세계관 곡 (bgm/gacha_<균열id>.mp3 → bgm/gacha_<세계관id>.mp3 → 기본)
+    const bf = ['gacha_' + this.banner.id, ...(this.banner.world ? ['gacha_' + this.banner.world] : []), 'gacha'];
+    audio.bgm('gacha', 55, 'lydian', 100, bf);
 
     banners.forEach((b, i) => {
       const col = this.bannerColor(b);
