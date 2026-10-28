@@ -29,7 +29,8 @@
     "appId": "com.yh20507.minigame-incursion",
     "productName": "미니게임-인커젼",
     "directories": {
-      "output": "release"
+      "output": "release",
+      "buildResources": "build"
     },
     "files": [
       "dist/**/*",
@@ -53,7 +54,8 @@
         }
       ],
       "signAndEditExecutable": false,
-      "artifactName": "MinigameIncursion-${version}-${arch}.${ext}"
+      "artifactName": "MinigameIncursion-${version}-${arch}.${ext}",
+      "icon": "build/icon.ico"
     },
     "portable": {
       "artifactName": "MinigameIncursion-${version}-portable.exe"

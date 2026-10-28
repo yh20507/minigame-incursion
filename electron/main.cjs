@@ -38,6 +38,7 @@ function createWindow() {
     height: 720,
     minWidth: 640,
     minHeight: 360,
+    icon: require('path').join(__dirname, '..', 'dist', 'icon.png'),
     useContentSize: true,
     backgroundColor: '#07060f',
     title: '미니게임-인커젼',
