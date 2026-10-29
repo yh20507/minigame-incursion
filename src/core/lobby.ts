@@ -31,6 +31,7 @@ export function lobbyMusicName(sel: string) {
 export function playLobbyMusic() {
   const sel = App.store.save.extra.lobby.bgm;
   audio.lobbyOverride = lobbyMusicUrl(sel);
+  audio.lobbyOverrideDone = false;
   audio.stopBgm();
   audio.bgm('lobby', 52, 'major', 96, ['lobby', 'title']);
 }

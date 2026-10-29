@@ -394,12 +394,29 @@ class Synth {
     // files 항목: bgm 키 또는 'assets/...' 로 시작하는 주소 (있는지 이미 확인된 것)
     const pickFile = (files ?? [key]).find((k) => k.startsWith('assets/') || this.files.bgm.has(k));
     const fileUrl = pickFile ? (pickFile.startsWith('assets/') ? pickFile : `assets/audio/bgm/${pickFile}.mp3`) : null;
-    const url = key === 'lobby' && this.lobbyOverride ? this.lobbyOverride : fileUrl;
+    const useOverride = key === 'lobby' && !!this.lobbyOverride && !this.lobbyOverrideDone;
+    const url = useOverride ? this.lobbyOverride : fileUrl;
     if (url) {
       if (this.bgmElKey === url && this.bgmEl) return;
       this.stopBgm();
       const el = new Audio(url);
       el.loop = true;
+      // 로비에 고른 캐릭터·세계관 테마: 30초 미만(대사 등)은 한 번만 틀고 기본 로비 곡으로
+      if (useOverride && /\/(chars|worlds)\//.test(url!)) {
+        el.loop = false;
+        el.onended = () => {
+          if (this.bgmEl !== el) return;
+          if (el.duration >= 30) {
+            el.currentTime = 0;
+            el.play().catch(() => {});
+            return;
+          }
+          this.lobbyOverrideDone = true;
+          this.bgmEl = null;
+          this.bgmElKey = '';
+          this.bgm(key, root, scale, tempo, files);
+        };
+      }
       el.volume = Math.min(1, this.bgmVol * 0.7);
       if (this.pausedBgm?.url === url) el.currentTime = this.pausedBgm.time;
       this.pausedBgm = null;
@@ -443,6 +460,8 @@ class Synth {
 
   /** 로비에서 고른 곡 (설정되면 로비 배경음을 대신) */
   lobbyOverride: string | null = null;
+  /** 짧은 로비 테마를 한 번 다 틀었으면 true (로비에 다시 들어오면 초기화) */
+  lobbyOverrideDone = false;
 
   stopBgm() {
     if (this.bgmTimer) clearInterval(this.bgmTimer);

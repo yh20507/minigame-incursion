@@ -2,7 +2,7 @@
 // - 게임 파일은 app://game/ 주소로 제공한다.
 // - exe 옆의 assets 폴더와 config.json 이 있으면 그것을 먼저 쓴다.
 //   → 그림을 바꿀 때 다시 빌드할 필요 없이 exe 옆 폴더에 넣기만 하면 된다.
-const { app, BrowserWindow, Menu, protocol, net, shell } = require('electron');
+const { app, BrowserWindow, Menu, protocol, net, shell, session } = require('electron');
 const path = require('node:path');
 const fs = require('node:fs');
 const { pathToFileURL } = require('node:url');
@@ -63,7 +63,9 @@ function createWindow() {
   });
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+  // 음원·그림을 바꿔 넣어도 예전 것이 나오지 않게, 켤 때마다 캐시를 비운다
+  await session.defaultSession.clearCache().catch(() => {});
   protocol.handle('app', (req) => {
     const u = new URL(req.url);
     let rel = decodeURIComponent(u.pathname).replace(/^\/+/, '');
@@ -75,7 +77,7 @@ app.whenReady().then(() => {
     const MEDIA = { '.mp3': 'audio/mpeg', '.ogg': 'audio/ogg', '.wav': 'audio/wav', '.m4a': 'audio/mp4', '.mp4': 'video/mp4', '.webm': 'video/webm' };
     if (MEDIA[ext]) {
       const size = fs.statSync(file).size;
-      const headers = { 'Content-Type': MEDIA[ext], 'Accept-Ranges': 'bytes' };
+      const headers = { 'Content-Type': MEDIA[ext], 'Accept-Ranges': 'bytes', 'Cache-Control': 'no-store' };
       if (req.method === 'HEAD') return new Response(null, { status: 200, headers: { ...headers, 'Content-Length': String(size) } });
       const m = /bytes=(\d*)-(\d*)/.exec(req.headers.get('range') || '');
       if (m) {
