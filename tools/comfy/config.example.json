@@ -1,18 +1,46 @@
 {
-  "server": "http://127.0.0.1:8188",
-  "checkpoint": "",
-  "workflow": "tools/comfy/workflow_default.json",
-  "assetsDir": "public/assets",
-  "rawDir": "art_raw",
-  "candidates": 4,
-  "steps": 28,
-  "cfg": 6.5,
-  "style": "high resolution pixel art, clean outlines, limited palette, game asset",
-  "negative": "lowres, blurry, jpeg artifacts, watermark, signature, text, logo, extra limbs, bad anatomy, cropped, nsfw",
-  "kinds": {
-    "sprite": { "width": 1024, "height": 1024, "prefix": "full body, standing, front view, chibi proportions, centered, plain flat green background" },
-    "art":    { "width": 1024, "height": 1024, "steps": 32, "prefix": "character portrait, upper body, looking at viewer, detailed anime style, soft lighting, simple gradient background", "style": "masterpiece, best quality, highly detailed" },
-    "full":   { "width": 896,  "height": 1344, "steps": 40, "prefix": "special rare card illustration, high quality, detailed anime style, dynamic pose, dramatic lighting, full body", "style": "masterpiece, best quality, highly detailed, intricate details" },
-    "bg":     { "width": 1344, "height": 768,  "prefix": "wide landscape scenery, no characters, game background", "style": "masterpiece, best quality, highly detailed, cinematic lighting" }
+ "server": "http://127.0.0.1:8188",
+ "checkpoint": "animagine-xl-4.0-opt.safetensors",
+ "workflow": "tools/comfy/workflow_default.json",
+ "assetsDir": "public/assets",
+ "rawDir": "art_raw",
+ "candidates": 2,
+ "steps": 28,
+ "cfg": 6.5,
+ "style": "masterpiece, best quality, anime style, clean lineart, vibrant colors, detailed",
+ "negative": "lowres, blurry, jpeg artifacts, watermark, signature, text, logo, speech bubble, extra limbs, extra fingers, bad hands, bad anatomy, cropped, multiple views, multiple characters, 2girls, 2boys, nsfw, nude, revealing clothes",
+ "kinds": {
+  "sprite": {
+   "width": 768,
+   "height": 768,
+   "candidates": 2,
+   "prefix": "1 character, chibi, super deformed, full body, standing straight, front view, arms slightly out, simple flat colors, thick clean outlines, plain white background, no shadow, no text, solo",
+   "style": "best quality, anime chibi character design, flat shading"
+  },
+  "art": {
+   "width": 1024,
+   "height": 1024,
+   "candidates": 2,
+   "prefix": "1 character, solo, character portrait, upper body, looking at viewer, detailed face, soft lighting, simple gradient background"
+  },
+  "full": {
+   "width": 896,
+   "height": 1344,
+   "steps": 40,
+   "candidates": 3,
+   "prefix": "special rare card illustration, 1 character, solo, high quality, detailed anime style, dynamic pose, dramatic lighting, full body",
+   "style": "masterpiece, best quality, highly detailed, intricate details"
+  },
+  "bg": {
+   "width": 1344,
+   "height": 768,
+   "candidates": 2,
+   "prefix": "wide landscape scenery, no characters, no people, game background, anime background art, detailed environment"
   }
+ },
+ "refKinds": [
+  "sprite",
+  "art",
+  "full"
+ ]
 }

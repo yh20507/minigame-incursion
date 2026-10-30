@@ -239,6 +239,12 @@ def build_prompts(cfg, existing):
             "neon": "rainy cyberpunk harbor city",
             "nebula": "space station in a nebula",
             "rift": "mysterious dimensional rift",
+            "frost": "frozen clocktower city, snow and brass gears, pale blue light",
+            "abyss": "deep sea lighthouse village, bioluminescence, dark teal water",
+            "sky": "floating garden islands above clouds, warm sunlight, wind",
+            "glass": "mirror desert of glass sand, violet dusk, reflections",
+            "paper": "origami paper theater city, warm stage lights, red curtains",
+            "library": "endless library of floating books and lanterns, golden dust",
         }.get(group, "")
         # 전원: 게임용(sprite) + 기본 일러스트(art)
         # ★4·★5: 특별 일러스트(full)를 하나 더, 더 높은 품질로
@@ -259,6 +265,12 @@ def build_prompts(cfg, existing):
         "neon": "rainy cyberpunk harbor city at night, neon signs reflected in puddles, pink and cyan glow",
         "nebula": "space station drifting through a colorful nebula, ring structure, starfield, teal and violet",
         "rift": "mysterious dimensional rift, fragments of different worlds floating in violet void, magenta cracks",
+        "frost": "frozen clocktower city under snow, giant stopped clock face, brass gears, pale blue twilight",
+        "abyss": "underwater lighthouse on the sea floor, small glowing village, bioluminescent plants, dark teal",
+        "sky": "floating garden islands chained by ribbons of wind above sunlit clouds, flowers falling",
+        "glass": "desert of glass sand reflecting a starry violet sky like a mirror, two moons",
+        "paper": "city folded from paper, small stages on every street, warm lanterns, red velvet curtains",
+        "library": "endless library, towering shelves fading into golden mist, floating open books and lanterns",
     }
     for gid in [d["id"] for d in domains] + ["rift"] + [w["id"] for w in worlds]:
         hint = bg_hint.get(gid) or f"{theme[gid].get('name', gid)} themed scenery, {theme[gid].get('subtitle', '')}"
@@ -291,7 +303,25 @@ def convert(cfg, src, entry):
     import pixelize
 
     if k == "sprite":
-        pixelize.process(src, dst, (48, 48), 32, False, 60, False, 0)
+        # 치비 일러스트(흰 배경)를 48px 도트로: 배경 제거 → 부드럽게 축소 → 32색 양자화
+        im = Image.open(src).convert("RGBA")
+        im = pixelize.remove_bg(im, 70)
+        bbox = im.getbbox()
+        if bbox:
+            im = im.crop(bbox)
+        scale = min(46 / im.width, 46 / im.height)
+        im = im.resize((max(1, round(im.width * scale)), max(1, round(im.height * scale))), Image.LANCZOS)
+        from PIL import ImageEnhance
+        alpha = im.getchannel("A").point(lambda a: 255 if a > 110 else 0)
+        rgb = im.convert("RGB")
+        rgb = ImageEnhance.Contrast(rgb).enhance(1.15)
+        rgb = ImageEnhance.Sharpness(rgb).enhance(1.6)
+        rgb = rgb.quantize(colors=32, method=Image.Quantize.MEDIANCUT).convert("RGB")
+        out = Image.new("RGBA", (48, 48), (0, 0, 0, 0))
+        rgb = rgb.convert("RGBA")
+        rgb.putalpha(alpha)
+        out.paste(rgb, ((48 - rgb.width) // 2, 48 - rgb.height), rgb)
+        out.save(dst)
     elif k == "bg":
         # 미니게임용 픽셀 배경 + 메뉴 화면용 고해상도 배경(_hd) 둘 다
         pixelize.process(src, dst, (640, 360), 64, True, 60, True, 0)
@@ -438,11 +468,12 @@ def cmd_run(args):
         print("만들 그림이 없어요. (이미 다 있으면 --redo)")
         return 0
     n = args.count or cfg.get("candidates", 4)
-    print(f"그림 {len(todo)}종 × 후보 {n}장 생성 시작")
+    print(f"그림 {len(todo)}종 생성 시작 (후보 {n}장, 종류별 설정이 있으면 그걸 따름)")
     template = load_json(rel(cfg["workflow"]))
     raw_root = rel(cfg["rawDir"])
     for i, (key, e) in enumerate(todo, 1):
         kc = cfg["kinds"][e["kind"]]
+        n = args.count or kc.get("candidates") or cfg.get("candidates", 4)
         style = kc.get("style", cfg["style"])
         prompt = f"{e['prompt']}, {style}"
         negative = e.get("negative") or cfg["negative"]

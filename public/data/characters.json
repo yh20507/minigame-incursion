@@ -882,7 +882,7 @@
    }
   ],
   "desc": "화살 한 통이면 충분하다는 명궁. 초능력은 없지만 누구보다 침착하다.",
-  "look": "Hawkeye (Marvel), archer, purple tactical suit, bow",
+  "look": "hawkeye (marvel), clint barton, 1boy, short blond hair, purple and black tactical suit, sleeveless, archery bow and quiver, arm guard, serious face",
   "line": "빗나간 적? 아직 없어."
  },
  {
@@ -900,7 +900,7 @@
    }
   ],
   "desc": "기계 날개로 하늘을 나는 영웅. 동료를 끝까지 챙긴다.",
-  "look": "Falcon (Marvel), mechanical wings, red and grey suit, goggles",
+  "look": "falcon (marvel), sam wilson, 1boy, dark skin, short black hair, red and silver winged flight suit, mechanical metal wings spread, red goggles",
   "line": "공중 지원은 맡겨."
  },
  {
@@ -918,7 +918,7 @@
    }
   ],
   "desc": "몸을 개미만큼 줄였다 키웠다 하는 영웅. 늘 농담이 먼저 나온다.",
-  "look": "Ant-Man (Marvel), red and black suit, helmet",
+  "look": "ant-man (marvel), scott lang, 1boy, red and black suit with silver details, full helmet with red lenses, antenna, shrinking particles",
   "line": "작다고 무시하면 곤란해."
  },
  {
@@ -936,7 +936,7 @@
    }
   ],
   "desc": "어떤 상처도 다시 아무는 용병. 시도 때도 없이 화면 밖을 향해 말을 건다.",
-  "look": "Deadpool (Marvel), red mask and suit, two katanas",
+  "look": "deadpool (marvel), 1boy, full red and black mask with white eye patches, red and black bodysuit, two katanas on back, pouches, playful pose",
   "line": "이번 뽑기, 나라서 실망했지?"
  },
  {
@@ -954,7 +954,7 @@
    }
   ],
   "desc": "격투와 첩보의 달인. 말보다 행동이 빠르다.",
-  "look": "Black Widow (Marvel), black tactical suit, red hair",
+  "look": "black widow (marvel), natasha romanoff, 1girl, red hair, wavy bob, black tactical bodysuit zipped up, utility belt, wrist gauntlets, confident",
   "line": "계획은 이미 세워뒀어."
  },
  {
@@ -972,7 +972,7 @@
    }
   ],
   "desc": "무기라면 뭐든 개조하는 우주 너구리. 너구리라고 부르면 화낸다.",
-  "look": "Rocket Raccoon (Marvel), raccoon in jumpsuit, big gun",
+  "look": "rocket raccoon (marvel), anthropomorphic raccoon, brown fur, orange jumpsuit, oversized futuristic rifle, smirk",
   "line": "더 큰 총 없어?"
  },
  {
@@ -990,7 +990,7 @@
    }
   ],
   "desc": "손등에서 금속 발톱이 튀어나오는 사나이. 무뚝뚝하지만 정이 깊다.",
-  "look": "Wolverine (Marvel), yellow and blue suit, metal claws",
+  "look": "wolverine (x-men), logan, 1boy, yellow and blue costume, black mask with pointed ears, adamantium claws out, muscular, sideburns",
   "line": "귀찮게 하지 마."
  },
  {
@@ -1008,7 +1008,7 @@
    }
   ],
   "desc": "둥근 방패 하나로 전장을 지휘하는 리더. 원칙을 굽히지 않는다.",
-  "look": "Captain America (Marvel), star-spangled suit, round shield",
+  "look": "captain america (marvel), steve rogers, 1boy, blue star-spangled suit, white star on chest, red and white stripes, round vibranium shield, blue helmet with A",
   "line": "모두 내 뒤로."
  },
  {
@@ -1026,7 +1026,7 @@
    }
   ],
   "desc": "비밀 왕국의 왕이자 전사. 기품과 힘을 함께 지녔다.",
-  "look": "Black Panther (Marvel), black panther suit, silver details",
+  "look": "black panther (marvel), t'challa, 1boy, sleek black vibranium suit, silver claw necklace, panther mask with pointed ears, purple energy lines",
   "line": "내 왕국은 내가 지킨다."
  },
  {
@@ -1048,7 +1048,7 @@
    }
   ],
   "desc": "신비한 마법을 다루는 소서러 슈프림. 시간의 흐름까지 엿본다.",
-  "look": "Doctor Strange (Marvel), blue robe, red cloak, magic circles",
+  "look": "doctor strange (marvel), stephen strange, 1boy, grey streaks in black hair, goatee, blue tunic, red cloak of levitation, eye of agamotto amulet, glowing orange magic circles",
   "line": "수많은 미래 중 이길 길은 하나."
  },
  {
@@ -1070,7 +1070,7 @@
    }
   ],
   "desc": "스스로 만든 강철 슈트를 입는 천재. 자신감이 넘친다.",
-  "look": "Iron Man (Marvel), red and gold armor, arc reactor",
+  "look": "iron man (marvel), tony stark, red and gold powered armor, glowing blue arc reactor on chest, glowing eye slits, repulsor hand, sleek metallic",
   "line": "슈트 업그레이드는 이미 끝났지.",
   "skill": {
    "id": "reserve",
@@ -1100,7 +1100,7 @@
    }
   ],
   "desc": "망치를 휘둘러 번개를 부르는 신. 호탕하게 웃는다.",
-  "look": "Thor (Marvel), armor, red cape, hammer, lightning",
+  "look": "thor (marvel), 1boy, long blond hair, beard, silver scale armor with six circular discs, red cape, hammer mjolnir, lightning",
   "line": "천둥이 내 편이다!",
   "skill": {
    "id": "thunder",
@@ -1137,7 +1137,7 @@
    }
   ],
   "desc": "현실 자체를 바꿔 버리는 힘을 가진 마녀. 균열과 묘하게 공명한다.",
-  "look": "Scarlet Witch (Marvel), red costume, headpiece, red magic",
+  "look": "scarlet witch (marvel), wanda maximoff, 1girl, auburn hair, red tiara crown headpiece, red corset costume, red cape, glowing red chaos magic in hands",
   "line": "이 세계도... 바꿀 수 있어.",
   "skill": {
    "id": "reality",
@@ -1164,7 +1164,7 @@
    }
   ],
   "desc": "새총 한 자루로 버티는 저격수. 겁은 많지만 결정적인 순간엔 물러서지 않는다.",
-  "look": "Usopp (One Piece), long nose, slingshot, overalls",
+  "look": "usopp (one piece), 1boy, very long nose, black curly hair, bandana, goggles on forehead, brown overalls, slingshot, grin",
   "line": "나에겐 부하가 8천 명 있다고!"
  },
  {
@@ -1182,7 +1182,7 @@
    }
   ],
   "desc": "몸을 개조한 배 목수. 콜라를 연료 삼아 움직인다.",
-  "look": "Franky (One Piece), cyborg, blue hair, sunglasses, Hawaiian shirt",
+  "look": "franky (one piece), 1boy, cyborg, blue pompadour hair, sunglasses, open hawaiian shirt, speedo, huge metal forearms, star tattoo",
   "line": "오늘 컨디션, 슈퍼다!"
  },
  {
@@ -1200,7 +1200,7 @@
    }
   ],
   "desc": "한 번 죽었다 살아난 해골 음악가. 바이올린 실력이 일품이다.",
-  "look": "Brook (One Piece), skeleton musician, afro, top hat, violin",
+  "look": "brook (one piece), skeleton, black afro, top hat, black suit with cravat, cane sword, violin, cheerful",
   "line": "요호호, 뼈만 남았지만 기분은 좋아요."
  },
  {
@@ -1218,7 +1218,7 @@
    }
   ],
   "desc": "몸이 조각조각 분리되는 광대 선장. 운 하나로 출세한다.",
-  "look": "Buggy (One Piece), clown pirate, red nose, captain hat",
+  "look": "buggy the clown (one piece), 1boy, big red round nose, blue hair, clown makeup, pirate captain coat, striped hat with skull",
   "line": "내가 바로 대해적이다!"
  },
  {
@@ -1236,7 +1236,7 @@
    }
   ],
   "desc": "날씨를 읽는 천재 항해사. 돈 계산은 누구보다 빠르다.",
-  "look": "Nami (One Piece), navigator, orange hair, staff",
+  "look": "nami (one piece), 1girl, long orange hair, brown eyes, blue tattoo on left shoulder, clima-tact staff, white and blue striped shirt, jeans, navigator, cheerful",
   "line": "항로는 내가 정할게."
  },
  {
@@ -1254,7 +1254,7 @@
    }
   ],
   "desc": "발차기로 싸우는 요리사. 배고픈 사람은 누구든 먹인다.",
-  "look": "Sanji (One Piece), blond chef, black suit, cigarette",
+  "look": "sanji (one piece), 1boy, blond hair covering one eye, curly eyebrow, goatee, black suit, blue dress shirt, cigarette, chef",
   "line": "배고프면 일단 먹어."
  },
  {
@@ -1272,7 +1272,7 @@
    }
   ],
   "desc": "어인족의 거한이자 조타수. 의리와 침착함의 상징.",
-  "look": "Jinbe (One Piece), fishman, kimono",
+  "look": "jinbe (one piece), fishman, blue skin, whale shark features, yellow kimono with wave pattern, topknot, large build, calm",
   "line": "키는 내가 잡겠다."
  },
  {
@@ -1290,7 +1290,7 @@
    }
   ],
   "desc": "몸 어디서든 손을 피워내는 고고학자. 역사의 비밀을 쫓는다.",
-  "look": "Nico Robin (One Piece), archaeologist, black hair, cowboy hat",
+  "look": "nico robin (one piece), 1girl, long black hair, blue eyes, purple top, sarong, sunglasses on head, archaeologist, elegant, many blooming arms",
   "line": "이 균열에도 역사가 있겠지."
  },
  {
@@ -1308,7 +1308,7 @@
    }
   ],
   "desc": "공간을 수술대처럼 다루는 의사 선장. 계획에 철저하다.",
-  "look": "Trafalgar Law (One Piece), spotted hat, long nodachi sword",
+  "look": "trafalgar law (one piece), 1boy, white spotted fur hat, goatee, tattoos on hands, yellow and black hoodie, long nodachi sword kikoku, calm",
   "line": "작전대로 움직여."
  },
  {
@@ -1330,7 +1330,7 @@
    }
   ],
   "desc": "여인국을 다스리는 여제. 오만하지만 한 사람 앞에서만 약해진다.",
-  "look": "Boa Hancock (One Piece), pirate empress, long black hair, elegant dress",
+  "look": "boa hancock (one piece), 1girl, very long black hair, large earrings, red qipao-style long dress (modest), snake salome, pirate empress, haughty",
   "line": "내가 아름다워서 용서받는 거야."
  },
  {
@@ -1352,7 +1352,7 @@
    }
   ],
   "desc": "검 세 자루를 쓰는 검사. 길은 늘 잃지만 칼끝은 정확하다.",
-  "look": "Roronoa Zoro (One Piece), green hair, three swords, bandana",
+  "look": "roronoa zoro (one piece), 1boy, short green hair, scar over left eye, three katanas, dark green coat, red sash, black bandana on arm",
   "line": "길은... 이쪽이 맞을 거다.",
   "skill": {
    "id": "three_worlds",
@@ -1383,7 +1383,7 @@
    }
   ],
   "desc": "온몸이 불꽃이 되는 해적. 동생을 무엇보다 아낀다.",
-  "look": "Portgas D. Ace (One Piece), orange hat, fire",
+  "look": "portgas d. ace (one piece), 1boy, black wavy hair, freckles, orange cowboy hat with smiley badges, shirtless with black shorts, red bead necklace, fire fist flames",
   "line": "불꽃은 꺼지지 않아.",
   "skill": {
    "id": "flame",
@@ -1418,7 +1418,7 @@
    }
   ],
   "desc": "몸이 고무처럼 늘어나는 해적 선장. 동료를 위해서라면 무엇이든 한다.",
-  "look": "Monkey D. Luffy (One Piece), straw hat, red vest, big grin",
+  "look": "monkey d. luffy (one piece), 1boy, black messy hair, straw hat, scar under left eye, red open vest, blue shorts, sandals, huge grin",
   "line": "조각세계? 전부 모험이다!",
   "skill": {
    "id": "gear2",
@@ -1445,7 +1445,7 @@
    }
   ],
   "desc": "거대한 대검을 든 데마시아의 기사. 정의를 의심하지 않는다.",
-  "look": "Garen (League of Legends), big sword, blue and gold armor",
+  "look": "garen (league of legends), 1boy, short brown hair, massive two-handed greatsword, blue and gold heavy plate armor, demacia crest",
   "line": "데마시아는 물러서지 않는다."
  },
  {
@@ -1463,7 +1463,7 @@
    }
   ],
   "desc": "얼음 화살을 쏘는 프렐요드의 지도자. 차분하게 앞을 내다본다.",
-  "look": "Ashe (League of Legends), ice bow, blue hood",
+  "look": "ashe (league of legends), 1girl, long white hair, blue hooded cape, ice bow, frost arrow, freljord",
   "line": "얼음은 길을 막지 않아. 길을 만든다."
  },
  {
@@ -1481,7 +1481,7 @@
    }
   ],
   "desc": "눈을 감고도 적을 베는 검의 달인. 수련을 쉬지 않는다.",
-  "look": "Master Yi (League of Legends), goggles helmet, sword",
+  "look": "master yi (league of legends), 1boy, seven-lens goggles helmet, long sword, green and gold wuju armor, meditating stance",
   "line": "눈은 마음을 속인다."
  },
  {
@@ -1499,7 +1499,7 @@
    }
   ],
   "desc": "도끼 하나로 군대를 이끄는 장군. 강한 자만 인정한다.",
-  "look": "Darius (League of Legends), axe, dark armor",
+  "look": "darius (league of legends), 1boy, black hair, beard, huge axe, dark red and black noxian armor, scar, intimidating",
   "line": "약한 자는 물러나라."
  },
  {
@@ -1517,7 +1517,7 @@
    }
   ],
   "desc": "빛을 다루는 데마시아의 마법사. 늘 밝고 씩씩하다.",
-  "look": "Lux (League of Legends), blonde girl, light wand, white armor",
+  "look": "lux (league of legends), luxanna crownguard, 1girl, blonde hair, blue eyes, white and gold light armor, light baton staff, light magic, smile",
   "line": "빛으로 길을 비출게!"
  },
  {
@@ -1535,7 +1535,7 @@
    }
   ],
   "desc": "무엇이든 갈고리로 끌어오는 증기 로봇. 의외로 다정하다.",
-  "look": "Blitzcrank (League of Legends), steam golem robot, big hands",
+  "look": "blitzcrank (league of legends), steam golem robot, yellow brass body, glowing eye, giant mechanical hands, steam vents",
   "line": "목표 포착. 끌어당긴다."
  },
  {
@@ -1553,7 +1553,7 @@
    }
   ],
   "desc": "춤추듯 칼날을 조종하는 아이오니아의 수호자.",
-  "look": "Irelia (League of Legends), floating blades, dancer",
+  "look": "irelia (league of legends), 1girl, dark hair, ionian dancer outfit, floating blades circling, graceful pose",
   "line": "칼날은 내 뜻대로 춤춘다."
  },
  {
@@ -1571,7 +1571,7 @@
    }
   ],
   "desc": "백 미터 밖 표적도 놓치지 않는 저격수. 수사에 집요하다.",
-  "look": "Caitlyn (League of Legends), sheriff, top hat, sniper rifle",
+  "look": "caitlyn (league of legends), 1girl, long dark purple hair, purple top hat, sheriff outfit, long sniper rifle, piltover",
   "line": "단서는 이미 찾았어."
  },
  {
@@ -1589,7 +1589,7 @@
    }
   ],
   "desc": "거대한 강철 주먹을 단 집행자. 문은 부수고 지나간다.",
-  "look": "Vi (League of Legends), pink hair, giant gauntlets",
+  "look": "vi (league of legends), 1girl, short pink hair, giant hextech gauntlets, tattoos, piltover enforcer, confident grin",
   "line": "문? 그냥 부수면 되잖아."
  },
  {
@@ -1611,7 +1611,7 @@
    }
   ],
   "desc": "앞을 보지 못하지만 누구보다 정확하게 움직이는 수도승.",
-  "look": "Lee Sin (League of Legends), blind monk, red blindfold",
+  "look": "lee sin (league of legends), 1boy, red blindfold, shirtless, red monk pants, kick stance, dragon tattoo",
   "line": "보이지 않아도 느낄 수 있다."
  },
  {
@@ -1633,7 +1633,7 @@
    }
   ],
   "desc": "바람을 다루는 떠돌이 검객. 과거를 짊어지고 걷는다.",
-  "look": "Yasuo (League of Legends), wind swordsman, ponytail",
+  "look": "yasuo (league of legends), 1boy, black ponytail, stubble, blue sleeveless tunic, katana, wind swirl, ionia",
   "line": "바람이 이끄는 대로.",
   "skill": {
    "id": "windwall",
@@ -1666,7 +1666,7 @@
    }
   ],
   "desc": "아홉 꼬리를 지닌 여우 마법사. 인간을 이해하고 싶어 한다.",
-  "look": "Ahri (League of Legends), nine-tailed fox, fox ears",
+  "look": "ahri (league of legends), 1girl, nine tails, fox ears, long black hair, whisker marks, red and white outfit, blue orb, charming",
   "line": "날 따라와 볼래?",
   "skill": {
    "id": "charm",
@@ -1701,7 +1701,7 @@
    }
   ],
   "desc": "공허의 갑피와 하나가 된 사냥꾼. 균열 너머의 위협에 가장 민감하다.",
-  "look": "Kai'Sa (League of Legends), void armor suit, purple glow",
+  "look": "kai'sa (league of legends), 1girl, long dark purple hair, sleek purple void symbiote armor suit, glowing purple accents, void shoulder cannons",
   "line": "공허도 이 균열은 못 넘어.",
   "skill": {
    "id": "hunt",
