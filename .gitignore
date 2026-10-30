@@ -9,6 +9,7 @@ tools/comfy/config.json
 # 공식 그림과 그걸로 만든 그림은 공개 저장소에 올리지 않음
 ref/
 public/assets/chars/sl_*
+public/assets/chars/skins/sk_sl_*
 __pycache__/
 public/assets/audio/chars/mv_*
 public/assets/audio/chars/op_*

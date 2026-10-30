@@ -347,9 +347,9 @@
   {
    "id": "sk_sl_yuni_1",
    "char": "sl_yuni",
-   "name": "신의상 ver.",
+   "name": "풀사이드 · 빙수",
    "grade": "SS",
-   "desc": "직접 만든 일러스트를 넣는 자리예요. assets/chars/skins/<스킨id>_art.png",
+   "desc": "발로 물을 차 올리며 빙수 한 입. 카디건은 어깨에만 걸쳤다.",
    "look": "stellive, ayatsuno yuni, 1girl, unicorn horn, single horn, spiral horn, white hair, long hair, wavy hair, rainbow streak in bangs, twin braids, blue hair ribbons, purple eyes, white cropped jacket, high collar, blue trim, long sleeves, gem emblem on chest",
    "manual": true,
    "season": "s1"
@@ -357,36 +357,36 @@
   {
    "id": "sk_sl_huya_1",
    "char": "sl_huya",
-   "name": "신의상 ver.",
+   "name": "풀사이드 · 비치발리볼",
    "grade": "S",
-   "desc": "직접 만든 일러스트를 넣는 자리예요. assets/chars/skins/<스킨id>_art.png",
+   "desc": "날개까지 펼치고 스파이크. 공보다 물이 더 많이 튄다.",
    "look": "stellive, sakihane huya, 1girl, purple hair, very long hair, yellow eyes, black curved horns, pointy ears, purple beret, star hair ornament, black choker, gold necklace, pink gem, white puffy short sleeves, purple and black dress, frills, black bow",
    "manual": true
   },
   {
    "id": "sk_sl_gangzi_1",
    "char": "sl_gangzi",
-   "name": "신의상 ver.",
+   "name": "한여름 낮잠",
    "grade": "S",
-   "desc": "직접 만든 일러스트를 넣는 자리예요. assets/chars/skins/<스킨id>_art.png",
+   "desc": "툇마루, 선풍기, 수박. 고양이 안대는 아직 머리 위에.",
    "look": "stellive, 1girl, black hair, blue inner hair, gradient hair, very long hair, hair between eyes, yellow eyes, black hairband, black hair ribbons, white frilled ribbon trim, criss-cross choker, white camisole, cross-laced front, lace trim, sleeveless, black dress",
    "manual": true
   },
   {
    "id": "sk_sl_hina_1",
    "char": "sl_hina",
-   "name": "신의상 ver.",
+   "name": "풀사이드 · 선베드",
    "grade": "A",
-   "desc": "직접 만든 일러스트를 넣는 자리예요. assets/chars/skins/<스킨id>_art.png",
+   "desc": "파라솔 아래 누워 블루 하와이를 홀짝이는 오후. 선글라스는 머리 위에.",
    "look": "stellive, shirayuki hina, 1girl, black hair, long hair, blue eyes, large red hair bow, single braid, small red bow, gold heart hair clip, white collared shirt, red striped bowtie, beige sweater vest, school uniform",
    "manual": true
   },
   {
    "id": "sk_sl_mashiro_1",
    "char": "sl_mashiro",
-   "name": "신의상 ver.",
+   "name": "풀사이드 · 플라밍고",
    "grade": "A",
-   "desc": "직접 만든 일러스트를 넣는 자리예요. assets/chars/skins/<스킨id>_art.png",
+   "desc": "플라밍고 튜브 위에서 물총 조준 중. 눈 마주치면 쏜다.",
    "look": "stellive, neneko mashiro, 1girl, grey hair, short hair, bob cut, red streak in hair, red eyes, grey cat ears, black peaked cap, hair clip, white frilled shirt, red necktie, black corset, black jacket, quilted jacket lining, off shoulder jacket",
    "manual": true
   },
@@ -395,7 +395,7 @@
    "char": "sl_toa",
    "name": "신의상 ver.",
    "grade": "A",
-   "desc": "직접 만든 일러스트를 넣는 자리예요. assets/chars/skins/<스킨id>_art.png",
+   "desc": "직접 만든 일러스트를 넣는 자리예요. my_skins/sk_sl_toa_1.png",
    "look": "stellive, 1girl, black hair, purple highlights, long hair, low twintails, purple eyes, pink heart hair clip, pink x hair clip, grey collared shirt, pink bow, navy blazer, cross necklace, silver chain, pink armband",
    "manual": true
   }
