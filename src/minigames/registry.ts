@@ -31,6 +31,10 @@ import { LinesGame } from './lines';
 import { StageGame } from './stage';
 import { PlaneGame } from './plane';
 import { SpotlightGame } from './spotlight';
+import { DefendGame } from './defend';
+import { CourierGame } from './courier';
+import { GolfGame } from './golf';
+import { PagesGame } from './pages';
 
 /** 미니게임 id → 구현. 새 게임은 여기에 한 줄 추가하고 minigames.json 에 항목을 넣으면 된다. */
 export const GAMES: Record<string, GameCtor> = {
@@ -66,4 +70,8 @@ export const GAMES: Record<string, GameCtor> = {
   stage: StageGame,
   plane: PlaneGame,
   spotlight: SpotlightGame,
+  defend: DefendGame,
+  courier: CourierGame,
+  golf: GolfGame,
+  pages: PagesGame,
 };

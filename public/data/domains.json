@@ -14,7 +14,8 @@
    "jump",
    "memory",
    "throw",
-   "shuffle"
+   "shuffle",
+   "defend"
   ],
   "bossStars": 6,
   "gatekeeper": "orden",
@@ -44,7 +45,8 @@
    "runner",
    "rhythm",
    "stroop",
-   "hockey"
+   "hockey",
+   "courier"
   ],
   "bossStars": 6,
   "gatekeeper": "adel",
@@ -74,7 +76,8 @@
    "dodge",
    "stack",
    "target",
-   "orders"
+   "orders",
+   "golf"
   ],
   "bossStars": 6,
   "gatekeeper": "vorex",
