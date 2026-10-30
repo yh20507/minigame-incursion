@@ -5,10 +5,10 @@
  "assetsDir": "public/assets",
  "rawDir": "art_raw",
  "candidates": 2,
- "steps": 28,
- "cfg": 6.5,
- "style": "masterpiece, best quality, anime style, clean lineart, vibrant colors, detailed",
- "negative": "lowres, blurry, jpeg artifacts, watermark, signature, text, logo, speech bubble, extra limbs, extra fingers, bad hands, bad anatomy, cropped, multiple views, multiple characters, 2girls, 2boys, nsfw, nude, revealing clothes, green skin, green tint, monochrome, sepia, frame, border, panel, split screen, dark background, gradient background, scenery",
+ "steps": 30,
+ "cfg": 6,
+ "style": "masterpiece, best quality, amazing quality, very aesthetic, absurdres, anime style, clean lineart, vibrant colors, detailed",
+ "negative": "worst quality, bad quality, very displeasing, lowres, blurry, jpeg artifacts, watermark, signature, text, logo, speech bubble, extra limbs, extra fingers, bad hands, bad anatomy, cropped, multiple views, multiple characters, 2girls, 2boys, nsfw, nude, nipples, revealing clothes, green skin, green tint, monochrome, sepia, frame, border, panel, split screen, dark background, gradient background, scenery",
  "kinds": {
   "sprite": {
    "width": 768,
