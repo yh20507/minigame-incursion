@@ -13,7 +13,8 @@ export class StormGame extends MiniGame {
   dir: Dir = 1;
   signT = 0; // 표지판 보이는 남은 시간
   signG!: Phaser.GameObjects.Graphics;
-  fog!: Phaser.GameObjects.Graphics;
+  fog!: Phaser.GameObjects.Rectangle;
+  maskG!: Phaser.GameObjects.Graphics;
   view = 1; // 시야 비율
   runs = 0;
   label!: Phaser.GameObjects.Text;
@@ -33,7 +34,12 @@ export class StormGame extends MiniGame {
     }
     this.signG = this.gfx().setDepth(2);
     this.pl = this.player(this.px, this.py + 18, 36).setDepth(3);
-    this.fog = this.gfx().setDepth(4);
+    this.fog = this.add(this.s.add.rectangle(320, 170, 640, 340, 0xcfa875, 0.93)).setDepth(4);
+    this.maskG = this.s.add.graphics(); // 마스크는 컨테이너 변환을 안 타므로 씬 좌표로 그린다
+    this.maskG.setVisible(false);
+    const m = this.maskG.createGeometryMask();
+    m.invertAlpha = true;
+    this.fog.setMask(m);
     this.label = this.text(320, 12, '', 10, '#2e1f36').setDepth(6);
     this.newSign();
   }
@@ -113,13 +119,10 @@ export class StormGame extends MiniGame {
       g.fillTriangle(cx + ax * 12, cy + ay * 12, cx - ay * 8 - ax * 4, cy + ax * 8 - ay * 4, cx + ay * 8 - ax * 4, cy - ax * 8 - ay * 4);
     }
     // 시야
-    const f = this.fog;
-    f.clear();
     const r = 60 + 220 * this.view;
-    f.fillStyle(0xd9b98a, 0.92);
-    // 바깥 어둡게: 사각형에서 원을 뺀 모양 대신 두꺼운 링
-    f.lineStyle(600, 0xcfa875, 0.93);
-    f.strokeCircle(this.px, this.py, r + 300);
+    this.maskG.clear();
+    this.maskG.fillStyle(0xffffff, 1);
+    this.maskG.fillCircle(this.px, this.py + (360 - this.h.H), r);
     this.label.setText(`통과 ${this.runs} · 표지판 방향의 가장자리로!`);
   }
 
