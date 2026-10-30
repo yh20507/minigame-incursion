@@ -122,6 +122,8 @@ def draw(p):
         P.rect(7, 22, 16, 22, shade(cc, -0.25))
         P.vline(6, 14, 21, shade(cc, -0.2))
         P.vline(17, 14, 21, shade(cc, -0.2))
+        if p.get("capeTrim"):
+            tc = hexc(p["capeTrim"]); P.vline(6, 13, 21, tc); P.vline(17, 13, 21, tc)
     wings = p.get("wings")
     if wings == "bat":
         wc, wd = hexc(p.get("wingColor", "#e24bd0")), hexc("#3a2240")
@@ -394,6 +396,10 @@ def draw(p):
         P.hline(9, 14, 13, hexc(p["choker"] if isinstance(p["choker"], str) else "#2a2230"))
     if p.get("thighband"):
         P.hline(13, 14, 20, hexc(p["thighband"]))
+    if p.get("chestBand"):  # 가슴 넓은 색 띠 (팔콘·호크아이)
+        cb = hexc(p["chestBand"]); P.rect(tx0, 14, tx1, 15, cb); P.set(tx0, 14, shade(cb, -0.2)); P.set(tx1, 14, shade(cb, -0.2))
+    if p.get("shoulders"):
+        sc = hexc(p["shoulders"]); P.rect(tx0 - 2, 13, tx0 - 1, 14, sc); P.rect(tx1 + 1, 13, tx1 + 2, 14, sc)
     if p.get("chest"):  # 가슴 장식 (아크 리액터, 별 등)
         P.set(11, 15, hexc(p["chest"])); P.set(12, 15, hexc(p["chest"]))
     if p.get("emblem"):
@@ -453,6 +459,8 @@ def draw(p):
             P.rect(7, 6, 10, 8, hexc(p.get("eyePatch", "#ffffff"))); P.rect(13, 6, 16, 8, hexc(p.get("eyePatch", "#ffffff"))); P.rect(8, 7, 9, 7, hexc("#111111")); P.rect(14, 7, 15, 7, hexc("#111111"))
             if p.get("maskBand"):
                 P.rect(6, 4, 17, 9, hexc(p["maskBand"])); P.rect(7, 6, 10, 8, hexc(p.get("eyePatch", "#ffffff"))); P.rect(13, 6, 16, 8, hexc(p.get("eyePatch", "#ffffff")))
+            if p.get("eyeRing"):
+                rc = hexc(p["eyeRing"]); P.rect(6, 5, 11, 9, rc); P.rect(12, 5, 17, 9, rc); P.rect(7, 6, 10, 8, hexc(p.get("eyePatch", "#ffffff"))); P.rect(13, 6, 16, 8, hexc(p.get("eyePatch", "#ffffff"))); P.set(9, 7, OUTLINE); P.set(14, 7, OUTLINE)
         elif p.get("helmetStyle") == "lens":
             P.rect(8, 6, 15, 9, hexc("#1b1b24")); P.rect(9, 7, 10, 8, vz); P.rect(13, 7, 14, 8, vz)
         elif p.get("helmetStyle") == "diver":
@@ -520,6 +528,8 @@ def draw(p):
             mc = hexc(p.get("maskColor", "#2a2230")); P.rect(7, 11, 16, 12, mc); P.rect(6, 11, 6, 11, mc); P.rect(17, 11, 17, 11, mc)
         if "cheekpaint" in acc:
             P.set(7, 11, hexc("#2a7fd4")); P.set(16, 11, hexc("#2a7fd4"))
+        if "tusks" in acc:
+            P.set(9, 12, WHITE); P.set(14, 12, WHITE); P.set(9, 13, WHITE); P.set(14, 13, WHITE)
         if "nose" in acc:
             P.rect(11, 10, 12, 11, hexc(p.get("noseColor", "#e23a3a")))
         if "longnose" in acc:
@@ -600,6 +610,8 @@ def draw(p):
         sc = hexc("#e8c86a"); P.rect(7, -2, 16, 1, sc); P.rect(3, 2, 20, 3, sc); P.hline(7, 16, 1, hexc("#c62828")); P.hline(4, 19, 3, shade(sc, -0.2))
     elif hat == "cowboy":
         P.rect(7, -3, 16, 1, hc); P.rect(4, 2, 19, 3, hc); P.set(4, 1, hc); P.set(19, 1, hc); P.hline(7, 16, 1, hexc(p.get("hatBand", "#ff5fd2")))
+    elif hat == "pirate":
+        P.rect(5, -1, 18, 2, hc); P.rect(4, 1, 19, 2, hc); P.rect(7, -2, 16, -2, hc); P.set(11, 0, WHITE); P.set(12, 0, WHITE); P.set(11, 1, OUTLINE); P.set(12, 1, OUTLINE)
     elif hat == "widehat":
         P.rect(7, -2, 16, 1, hc); P.rect(2, 2, 21, 3, hc); P.hline(7, 16, 1, hd)
     elif hat == "feathered":
@@ -924,6 +936,8 @@ def draw_prop(P, pr, skin, back=False):
         c = hexc("#ff7fb0"); P.rect(0, 17, 23, 20, c); P.rect(0, 7, 2, 16, c); P.rect(0, 5, 3, 7, c); P.set(4, 6, hexc("#2a2230")); P.set(1, 6, OUTLINE)
     elif kind == "towel":
         P.rect(4, 11, 5, 19, WHITE); P.rect(18, 11, 19, 19, WHITE); P.set(4, 19, hexc("#ff7fb0")); P.set(19, 19, hexc("#ff7fb0"))
+    elif kind == "cigarette":
+        P.set(13, 12, WHITE); P.set(14, 12, WHITE); P.set(15, 12, hexc("#ff8a3a"))
     elif kind == "bandage":
         P.hline(13, 14, 20, hexc("#f4f4ff")); P.hline(9, 10, 21, hexc("#f4f4ff"))
     elif kind == "broom":
@@ -956,15 +970,17 @@ def draw_special(P, p, body, skin, hair, eye, top, bot, acc):
         P.rect(4, -1, 19, 5, hexc("#1b1b24")); P.rect(3, 1, 20, 4, hexc("#1b1b24"))  # 아프로
         P.rect(7, -6, 16, -2, hexc("#1b1b24")); P.rect(5, -2, 18, -1, hexc("#1b1b24"))  # 탑햇
         P.rect(9, 13, 14, 18, hexc("#1b1b24")); P.rect(8, 14, 8, 17, hexc("#1b1b24")); P.rect(15, 14, 15, 17, hexc("#1b1b24")); P.rect(7, 13, 7, 17, hexc("#1b1b24")); P.rect(16, 13, 16, 17, hexc("#1b1b24"))
-        P.rect(11, 13, 12, 14, hexc("#ff8a3a")); P.set(11, 15, WHITE); P.set(12, 16, WHITE)
+        P.rect(10, 13, 13, 15, hexc("#ff8a3a")); P.set(11, 14, hexc("#ffd84b")); P.set(7, 17, hexc("#8a3ad8")); P.set(16, 17, hexc("#8a3ad8"))
         P.rect(9, 19, 10, 21, hexc("#1b1b24")); P.rect(13, 19, 14, 21, hexc("#1b1b24")); P.rect(9, 22, 10, 22, bone); P.rect(13, 22, 14, 22, bone)
         P.set(7, 18, bone); P.set(16, 18, bone)
-        draw_prop(P, ("cane",), skin)
+        draw_prop(P, ("violin",), skin)
         return P
     if body == "raccoon":
         fur = hexc("#8a6a4a"); d = shade(fur, -0.35); P.rect(6, 4, 17, 12, fur); P.rect(5, 1, 7, 3, fur); P.rect(16, 1, 18, 3, fur); P.rect(7, 7, 16, 9, d)
         P.rect(9, 8, 10, 8, hexc("#ffe08a")); P.rect(13, 8, 14, 8, hexc("#ffe08a")); P.rect(10, 10, 13, 12, hexc("#d9c9b0")); P.set(11, 10, OUTLINE); P.set(12, 10, OUTLINE)
-        oc = hexc("#ff8a3a"); P.rect(8, 13, 15, 19, oc); P.rect(7, 14, 7, 18, oc); P.rect(16, 14, 16, 18, oc); P.vline(11, 13, 19, shade(oc, -0.3)); P.rect(9, 20, 10, 22, fur); P.rect(13, 20, 14, 22, fur)
+        oc = hexc("#5a6270"); P.rect(8, 13, 15, 19, oc); P.rect(7, 14, 7, 18, oc); P.rect(16, 14, 16, 18, oc); P.vline(11, 13, 19, shade(oc, -0.3)); P.rect(9, 20, 10, 22, oc); P.rect(13, 20, 14, 22, oc)
+        P.rect(7, 13, 8, 14, hexc("#d9782a")); P.rect(15, 13, 16, 14, hexc("#d9782a")); P.rect(9, 13, 14, 13, hexc("#c62828")); P.hline(8, 15, 17, hexc("#8a5a2a"))
+        P.hline(7, 16, 2, hexc("#4a4a5a")); P.rect(8, 1, 10, 2, hexc("#9fd0ff")); P.rect(13, 1, 15, 2, hexc("#9fd0ff"))
         draw_prop(P, ("bigrifle",), skin); draw_prop(P, "raccoon_tail", skin) if False else None
         tc = fur; P.vline(3, 14, 21, tc); P.set(2, 13, tc); P.set(3, 16, d); P.set(3, 19, d)
         return P
@@ -1001,6 +1017,8 @@ def draw_special(P, p, body, skin, hair, eye, top, bot, acc):
         P.rect(6, 2, 17, 11, m); P.rect(7, 1, 16, 1, m); P.rect(9, 5, 14, 8, hexc("#2a2230")); P.rect(10, 6, 13, 7, hexc("#ffe08a")); P.set(11, 6, WHITE)
         P.rect(5, 12, 18, 19, m); P.rect(7, 13, 16, 18, d); P.rect(10, 14, 13, 17, m); P.set(5, 10, hexc("#9aa0aa")); P.set(18, 10, hexc("#9aa0aa")); P.set(4, 9, hexc("#dddddd")); P.set(19, 9, hexc("#dddddd"))
         P.rect(6, 20, 9, 22, d); P.rect(14, 20, 17, 22, d)
+        for x in (5, 7, 16, 18):
+            P.set(x, 11, hexc("#3a3a44")); P.set(x, 10, hexc("#6a6a74"))
         draw_prop(P, ("bighands", "#d9a93a"), skin)
         return P
     return P
@@ -1049,45 +1067,45 @@ CHARS = {
     "nova": dict(hair="#6a3a9a", hairStyle="long", eye="#ffd84b", outfit="jumpsuit", top="#5a3a9a", backProps=[("box", "#ff8a3a")], acc=["starclip"], mouth="grin"),
     "vorex": dict(hair="#e8e8e8", hairStyle="short", eye="#5fd3e0", beard="long", beardColor="#e8e8e8", outfit="coat", top="#3a2a4a", hat="peakedcap", hatColor="#2a1a3a", props=["mecharm"], mouth="flat", big=True),
     # ---- 마블
-    "mv_hawkeye": dict(hair="#d9c07a", hairStyle="short", eye="#5aa0d0", outfit="bodysuit", top="#5a2a8a", bottom="#1b1b24", suitLine="#1b1b24", sleeve="none", props=[("bow", "#5a2a8a")], backProps=["quiver"], mouth="flat"),
-    "mv_falcon": dict(skin="dark", hair="#1b1b24", hairStyle="short", eye="#3a2a2a", outfit="bodysuit", top="#c62828", bottom="#9a9aaa", suitLine="#dfe6ee", wings="mech", acc=["goggles_eyes"], goggleColor="#e24b4b", mouth="smile"),
-    "mv_antman": dict(fullHelmet="#c62828", helmetStyle="lens", visor="#e24b4b", antenna=True, outfit="bodysuit", top="#c62828", bottom="#1b1b24", suitLine="#9aa0aa", props=[("sparkle", "#9fe0ff")]),
-    "mv_deadpool": dict(fullHelmet="#c62828", helmetStyle="mask", eyePatch="#ffffff", maskBand="#1b1b24", outfit="bodysuit", top="#c62828", bottom="#1b1b24", suitLine="#1b1b24", belt="#5a4a3a", backProps=["katana3"], mouth="none"),
-    "mv_widow": dict(hair="#d9442a", hairStyle="wavybob", eye="#6fcf7a", outfit="bodysuit", top="#1b1b24", bottom="#1b1b24", suitLine="#ffd84b", belt="#3a3a4a", gloves="#3a3a4a", mouth="smirk"),
+    "mv_hawkeye": dict(hair="#d9c07a", hairStyle="short", bangs="up", eye="#5aa0d0", outfit="bodysuit", top="#1b1b24", bottom="#1b1b24", suitLine="#5a2a8a", chestBand="#5a2a8a", sleeve="none", belt="#3a3a4a", acc=["sunglasses"], sunglassColor="#3a2a5a", props=[("bow", "#2a2230")], backProps=["quiver"], mouth="flat", gloves="#1b1b24"),
+    "mv_falcon": dict(skin="dark", hair="#1b1b24", hairStyle="short", bangs="up", eye="#3a2a2a", outfit="bodysuit", top="#c62828", bottom="#1b1b24", suitLine="#dfe6ee", chestBand="#c62828", wings="mech", wingColor="#9aa0aa", acc=["goggles_eyes"], goggleColor="#e24b4b", gloves="#c62828", mouth="flat"),
+    "mv_antman": dict(fullHelmet="#c0c4cc", helmetStyle="lens", visor="#e24b4b", outfit="bodysuit", top="#8a1f1f", bottom="#1b1b24", suitLine="#c62828", belt="#9aa0aa", gloves="#1b1b24"),
+    "mv_deadpool": dict(fullHelmet="#c62828", helmetStyle="mask", eyePatch="#ffffff", maskBand="#c62828", eyeRing="#1b1b24", outfit="bodysuit", top="#c62828", bottom="#c62828", suitLine="#1b1b24", belt="#8a5a2a", gloves="#1b1b24", backProps=["katana3"], mouth="none"),
+    "mv_widow": dict(hair="#b5533c", hairStyle="braid", eye="#6fcf7a", outfit="bodysuit", top="#1b2238", bottom="#1b2238", suitLine="#3a4a6a", belt="#d9a93a", gloves="#d9a93a", props=["daggers"], mouth="flat"),
     "mv_rocket": dict(body="raccoon"),
-    "mv_wolverine": dict(fullHelmet="#ffd23a", helmetStyle="mask", eyePatch="#ffffff", maskBand="#2a4a8a", helmetEars="#1b1b24", outfit="bodysuit", top="#ffd23a", bottom="#2a4a8a", suitLine="#2a4a8a", props=["claws"], big=True),
-    "mv_cap": dict(fullHelmet="#2a63d8", helmetStyle="open", hair="#d9c07a", eye="#5aa0d0", outfit="bodysuit", top="#2a63d8", bottom="#c62828", suitLine="#ffffff", chest="#ffffff", props=["roundshield"], gloves="#8a2a2a", mouth="flat"),
-    "mv_panther": dict(fullHelmet="#1b1b24", helmetStyle="lens", visor="#dfe6ee", helmetEars="#1b1b24", outfit="bodysuit", top="#1b1b24", bottom="#2a2230", suitLine="#b48cff", necklace="#c0c0c8", skin="dark"),
-    "mv_strange": dict(hair="#2a2a2a", hairStyle="short", bangs="parted", streak="#dfe6ee", streak2="#dfe6ee", eye="#5aa0d0", beard="goatee", outfit="tunic", top="#2a4a8a", bottom="#1b2a4a", cape="#c62828", chest="#6fcf7a", props=[("magic", "#ff8a3a")], mouth="flat"),
+    "mv_wolverine": dict(fullHelmet="#2a4a8a", helmetStyle="mask", eyePatch="#ffffff", maskBand="#2a4a8a", helmetEars="#2a4a8a", beard="stubble", outfit="bodysuit", top="#ffd23a", bottom="#ffd23a", suitLine="#2a4a8a", shoulders="#2a4a8a", belt="#1b1b24", gloves="#2a4a8a", props=["claws"], big=True),
+    "mv_cap": dict(fullHelmet="#1b2a4a", helmetStyle="open", hair="#d9c07a", eye="#5aa0d0", outfit="bodysuit", top="#1b2a4a", bottom="#1b2a4a", suitLine="#9aa0aa", chest="#dfe6ee", belt="#5a3a2a", gloves="#5a3a2a", props=[("shield", "#9aa0aa", "#dfe6ee")], mouth="flat"),
+    "mv_panther": dict(fullHelmet="#1b1b24", helmetStyle="lens", visor="#dfe6ee", helmetEars="#1b1b24", outfit="bodysuit", top="#1b1b24", bottom="#1b1b24", suitLine="#9aa0aa", necklace="#dfe6ee", gloves="#9aa0aa", skin="dark"),
+    "mv_strange": dict(hair="#2a2a2a", hairStyle="short", bangs="parted", streak="#dfe6ee", streak2="#dfe6ee", eye="#5aa0d0", beard="goatee", outfit="tunic", top="#1f5f8a", bottom="#1a4a6a", cape="#c62828", chest="#6fcf7a", belt="#5a4a3a", props=[("magic", "#ff8a3a")], mouth="flat"),
     "mv_ironman": dict(fullHelmet="#c62828", helmetStyle="ironman", visor="#9fe0ff", outfit="armor", top="#c62828", bottom="#8a1f1f", chest="#9fe0ff", gloves="#e8c04a", props=[("sparkle", "#9fe0ff")], belt="#e8c04a"),
     "mv_thor": dict(hair="#e8c05a", hairStyle="long", bangs="parted", eye="#5aa0d0", beard="full", beardColor="#d9a93a", outfit="armor", top="#9aa0aa", bottom="#3a3a4a", cape="#c62828", props=["mjolnir", "lightning"], mouth="flat", big=True),
-    "mv_wanda": dict(hair="#8a3a2a", hairStyle="longwavy", eye="#e24b4b", eyes="glow", outfit="bodysuit", top="#c62828", bottom="#1b1b24", suitLine="#8a1f1f", cape="#8a1f1f", hat="tiara", hatColor="#e23a3a", props=[("magic", "#ff3a3a")], glow="#ff3a3a", mouth="flat"),
+    "mv_wanda": dict(hair="#8a3a2a", hairStyle="longwavy", eye="#5aa0d0", outfit="bodysuit", top="#8a1f1f", bottom="#1b1b24", suitLine="#c62828", cape="#8a1f1f", hat="tiara", hatColor="#5a1a1a", gloves="#8a1f1f", props=[("magic", "#ff3a3a")], glow="#ff3a3a", mouth="flat"),
     # ---- 원피스
-    "op_usopp": dict(skin="tan", hair="#1b1b24", hairStyle="curly", eye="#2a2230", acc=["longnose", "goggles_fore"], goggleColor="#ffd84b", hat="bandana", hatColor="#d9a93a", outfit="overalls", top="#8a5a2a", shirt="#f4f4ff", sleeve="none", props=["slingshot"], mouth="grin"),
-    "op_franky": dict(hair="#2a63d8", hairStyle="pompadour", eye="#2a2230", acc=["sunglasses"], outfit="shirtless", bottom="#c62828", shorts=True, props=["metalarms"], jacket="#ff8a3a", mouth="grin", big=True, chest="#ffd84b"),
+    "op_usopp": dict(skin="tan", hair="#1b1b24", hairStyle="afro", eye="#2a2230", acc=["longnose"], hat="cap", hatColor="#3a7a3a", outfit="overalls", top="#d9a93a", shirt="#9fd48a", sleeve="short", props=["slingshot"], belt="#8a5a2a", mouth="grin", shoes="#8a5a2a"),
+    "op_franky": dict(hair="#2a63d8", hairStyle="pompadour", eye="#2a2230", acc=["sunglasses"], outfit="shirtless", bottom="#c62828", shorts=True, props=["metalarms"], jacket="#c62828", mouth="grin", big=True),
     "op_brook": dict(body="skeleton"),
-    "op_buggy": dict(hair="#2a63d8", hairStyle="long", eye="#2a2230", acc=["nose", "cheekpaint"], noseColor="#e23a3a", hat="cowboy", hatColor="#ff8a3a", hatBand="#ffffff", outfit="coat", top="#c62828", cape="#ff8a3a", mouth="grin", scarf="#ffd84b"),
-    "op_nami": dict(hair="#ff8a3a", hairStyle="longwavy", eye="#8a5a3a", outfit="shirt", top="#f4f4ff", bottom="#2a4a8a", sleeve="short", props=["clima"], mouth="smile", legs="#2a4a8a"),
-    "op_sanji": dict(hair="#e8c05a", hairStyle="short", bangs="cover", eye="#2a2230", beard="goatee", beardColor="#c9a24a", outfit="suit", top="#1b1b24", shirt="#2a63d8", tie="#1b1b24", mouth="flat"),
-    "op_jinbe": dict(skin="blue", hair="#1b1b24", hairStyle="topknot", eye="#2a2230", outfit="kimono", top="#ffd84b", bottom="#2a4a8a", pattern=[(9, 15), (13, 19), (10, 20), (15, 16)], patternColor="#5fb3ff", mouth="flat", big=True, beard="sideburns", beardColor="#1b1b24"),
-    "op_robin": dict(skin="tan", hair="#1b1b24", hairStyle="long", eye="#5aa0d0", outfit="dress", top="#8a3a9a", bottom="#ffd1b3", sleeve="none", hat="sunglasses_head", hatColor="#2a2230", mouth="smile"),
-    "op_law": dict(skin="tan", hair="#1b1b24", hairStyle="short", eye="#9aa0aa", beard="goatee", hat="furhat", hatColor="#f4f4ff", outfit="hoodie", top="#ffd23a", bottom="#1b1b24", props=[("katana", "#dfe6ee")], mouth="flat", acc=["earrings"], earringColor="#ffd84b"),
-    "op_hancock": dict(hair="#1b1b24", hairStyle="long", eye="#2a2a4a", outfit="dress", top="#c62828", bottom="#8a1f1f", acc=["earrings"], earringColor="#ffffff", props=["snake"], mouth="smirk"),
-    "op_zoro": dict(skin="tan", hair="#5aa05a", hairStyle="short", eye="#2a2230", acc=["scar"], outfit="coat", top="#2a5a3a", sash="#c62828", props=["katana3"], mouth="frown", eyes="angry"),
-    "op_ace": dict(skin="tan", hair="#1b1b24", hairStyle="short", bangs="messy", eye="#2a2230", acc=["freckles"], hat="cowboy", hatColor="#ff8a3a", hatBand="#c62828", outfit="shirtless", bottom="#1b1b24", shorts=True, necklace="#c62828", props=[("flame", "#ff8a3a")], mouth="grin"),
-    "op_luffy": dict(skin="tan", hair="#1b1b24", hairStyle="short", bangs="messy", eye="#2a2230", acc=["scar"], hat="strawhat", outfit="vest", top="#c62828", shirt=A, bottom="#2a63d8", legs="#2a63d8", shoes="#8a5a2a", mouth="grin"),
+    "op_buggy": dict(hair="#2a63d8", hairStyle="twin", eye="#2a2230", acc=["nose", "cheekpaint"], noseColor="#e23a3a", hat="pirate", hatColor="#d9782a", outfit="shirt", top="#f4f4ff", sleeve="none", chestBand="#c62828", sash="#1a7a6a", legs="#bfe6e6", cape="#1b2a3a", capeTrim="#e8e8e8", scarf="#8a3a9a", gloves="#ffffff", mouth="open", shoes="#8a5a2a"),
+    "op_nami": dict(hair="#ff8a3a", hairStyle="bob", eye="#8a5a3a", outfit="shirt", top="#f4f4ff", chestBand="#2a63d8", sleeve="short", skirt="#ff9a3a", props=["clima"], mouth="open", legs="#f6d7c3", shoes="#8a2a2a"),
+    "op_sanji": dict(hair="#e8c05a", hairStyle="short", bangs="cover", eye="#2a2230", beard="goatee", beardColor="#c9a24a", outfit="suit", top="#1b2238", shirt="#e8c05a", tie="#5a3a2a", mouth="flat", props=["cigarette"]),
+    "op_jinbe": dict(skin="blue", hair="#1b1b24", hairStyle="topknot", eye="#2a2230", acc=["tusks"], outfit="kimono", top="#e85a2a", bottom="#2a3ad8", pattern=[(9, 15), (13, 16), (10, 20), (14, 21), (8, 18)], patternColor="#1b1b24", cape="#e23a3a", mouth="frown", big=True, eyes="angry"),
+    "op_robin": dict(skin="tan", hair="#1b1b24", hairStyle="long", eye="#5aa0d0", outfit="coat", top="#1b1b24", belt="#5fb3ff", hat="sunglasses_head", hatColor="#5fb3ff", mouth="flat", legs="#1b1b24"),
+    "op_law": dict(skin="tan", hair="#1b1b24", hairStyle="short", eye="#9aa0aa", beard="goatee", hat="furhat", hatColor="#f4f4ff", outfit="shirtless", bottom="#9fd0ff", jacket="#1b1b24", props=[("katana", "#dfe6ee")], mouth="frown", acc=["earrings"], earringColor="#ffd84b", legs="#9fd0ff", eyes="angry"),
+    "op_hancock": dict(hair="#1b1b24", hairStyle="long", eye="#2a2a4a", outfit="dress", top="#1b1b24", bottom="#1b1b24", sleeve="short", sash="#8a3ad8", chest="#ffd84b", acc=["earrings"], earringColor="#ffd84b", props=["snake"], mouth="smirk", cape="#f4b6c8"),
+    "op_zoro": dict(skin="tan", hair="#5aa05a", hairStyle="short", eye="#2a2230", acc=["scar"], hat="bandana", hatColor="#1f4a2a", outfit="shirtless", bottom="#3aa05a", sash="#2a7a3a", legs="#3aa05a", props=["katana3"], mouth="frown", eyes="angry", acc2=None),
+    "op_ace": dict(skin="tan", hair="#1b1b24", hairStyle="short", bangs="messy", eye="#2a2230", acc=["freckles"], hat="cowboy", hatColor="#ff8a3a", hatBand="#2a2230", outfit="shirtless", bottom="#1b1b24", shorts=True, necklace="#c62828", belt="#ff8a3a", props=[("flame", "#ff8a3a")], mouth="grin", shoes="#1b1b24"),
+    "op_luffy": dict(skin="tan", hair="#1b1b24", hairStyle="short", bangs="messy", eye="#2a2230", acc=["scar"], hat="strawhat", outfit="vest", top="#c62828", shirt=A, bottom="#2a63d8", sash="#ffd84b", legs="#2a63d8", shoes="#8a5a2a", mouth="grin"),
     # ---- 리그 오브 레전드
-    "lol_garen": dict(hair="#5a3a2a", hairStyle="short", eye="#5aa0d0", outfit="armor", top="#2a63d8", bottom="#3a3a4a", props=[("greatsword", "#dfe6ee")], emblem="#ffd84b", mouth="flat", big=True),
-    "lol_ashe": dict(hair="#f4f4ff", hairStyle="long", eye="#9fe0ff", outfit="dress", top="#2a4a8a", bottom="#1b2a4a", hat="hood", hatColor="#2a4a8a", props=[("bow", "#9fe0ff"), "ice"], mouth="flat"),
-    "lol_yi": dict(fullHelmet="#d9a93a", helmetStyle="lens", visor="#6fcf7a", outfit="armor", top="#2a6a3a", bottom="#1b4a2a", props=[("sword", "#dfe6ee")], belt="#d9a93a"),
-    "lol_darius": dict(hair="#1b1b24", hairStyle="short", eye="#c62828", beard="full", beardColor="#1b1b24", outfit="armor", top="#5a1f1f", bottom="#1b1b24", props=["axe"], acc=["scar"], mouth="frown", eyes="angry", big=True),
-    "lol_lux": dict(hair="#e8c05a", hairStyle="long", eye="#5aa0d0", outfit="armor", top="#f4f4ff", bottom="#d9a93a", props=[("staff", "#d9a93a", "#ffe08a"), ("sparkle", "#ffe08a")], mouth="smile"),
+    "lol_garen": dict(hair="#5a3a2a", hairStyle="short", eye="#5aa0d0", outfit="armor", top="#c9cfd8", bottom="#5a7ab8", shoulders="#d9a93a", belt="#2a3ad8", cape="#2a3ad8", props=[("greatsword", "#dfe6ee")], mouth="flat", big=True, shoes="#5a3a2a"),
+    "lol_ashe": dict(hair="#cfe6ff", hairStyle="long", eye="#9fe0ff", outfit="dress", top="#1f6a7a", bottom="#1a4a5a", hat="hood", hatColor="#1f6a7a", props=[("bow", "#d9a93a"), "ice"], mouth="flat"),
+    "lol_yi": dict(fullHelmet="#d9a93a", helmetStyle="lens", visor="#6fcf7a", outfit="robe", top="#e8c05a", props=[("sword", "#dfe6ee")], belt="#2a6a3a"),
+    "lol_darius": dict(hair="#1b1b24", hairStyle="short", eye="#c62828", beard="stubble", outfit="armor", top="#8a2a2a", bottom="#1b1b24", shoulders="#8a2a2a", cape="#1b1b24", props=["axe"], acc=["scar"], mouth="frown", eyes="angry", big=True),
+    "lol_lux": dict(hair="#e8c05a", hairStyle="long", eye="#5aa0d0", outfit="armor", top="#c9cfd8", bottom="#1b2a4a", cape="#f4f4ff", props=[("staff", "#d9a93a", "#ffe08a"), ("sparkle", "#ffe08a")], mouth="smile", legs="#1b2a4a"),
     "lol_blitz": dict(body="golem"),
-    "lol_irelia": dict(hair="#1b1b24", hairStyle="long", eye="#5aa0d0", outfit="dress", top="#c62828", bottom="#ffd84b", sleeve="none", props=["blades"], mouth="flat", acc=["ribbon"], ribbonColor="#c62828"),
-    "lol_cait": dict(hair="#3a2a6a", hairStyle="long", eye="#5aa0d0", outfit="jacket", top="#3a2a6a", shirt="#f4f4ff", hat="tophat", hatColor="#3a2a6a", hatBand="#d9a93a", props=["sniper"], mouth="flat"),
-    "lol_vi": dict(hair="#ff5fa8", hairStyle="short", bangs="side", eye="#5aa0d0", outfit="jacket", top="#8a2a4a", shirt="#d9c9b0", props=[("gauntlets", "#ff8fb0")], mouth="grin", acc=["scarR"]),
-    "lol_leesin": dict(skin="tan", hair="#1b1b24", hairStyle="short", eye="#2a2230", acc=["blindfold"], blindfoldColor="#c62828", outfit="shirtless", bottom="#c62828", props=[("flame", "#ff8a3a")], mouth="flat", belt="#d9a93a"),
-    "lol_yasuo": dict(skin="tan", hair="#1b1b24", hairStyle="ponytail", eye="#2a2230", beard="stubble", outfit="tunic", top="#2a4a8a", bottom="#5a3a2a", sleeve="none", props=[("katana", "#dfe6ee"), "wind"], mouth="flat", sash="#c62828"),
+    "lol_irelia": dict(hair="#1b1b24", hairStyle="long", eye="#5aa0d0", outfit="bodysuit", top="#c62828", bottom="#1b1b24", suitLine="#dfe6ee", shoulders="#c9cfd8", hat="tiara", hatColor="#c9cfd8", props=["blades"], mouth="flat", scarf="#ff5fa8"),
+    "lol_cait": dict(hair="#1b1b3a", hairStyle="long", eye="#5aa0d0", outfit="dress", top="#4a2a7a", bottom="#4a2a7a", skirtFrill="#f4f4ff", hat="tophat", hatColor="#3a2a6a", hatBand="#d9a93a", belt="#8a5a2a", props=["sniper"], mouth="flat", legs="#1b1b24"),
+    "lol_vi": dict(hair="#ff5fa8", hairStyle="short", bangs="side", eye="#5aa0d0", hat="goggles", goggleColor="#d9a93a", outfit="bodysuit", top="#3a4a5a", bottom="#2a3a4a", suitLine="#9aa0aa", props=[("gauntlets", "#2a4a8a")], mouth="grin", acc=["scarR"]),
+    "lol_leesin": dict(skin="tan", hair="#8a2a2a", hairStyle="ponytail", eye="#2a2230", acc=["blindfold"], blindfoldColor="#c62828", outfit="shirtless", bottom="#1b1b24", legs="#1b1b24", sash="#c62828", belt="#d9a93a", props=["bandage"], mouth="flat", shoes="#1b1b24"),
+    "lol_yasuo": dict(skin="tan", hair="#3a2a4a", hairStyle="ponytail", eye="#2a2230", beard="stubble", outfit="tunic", top="#4a6a8a", bottom="#2a4a8a", sleeve="none", shoulders="#c9cfd8", props=[("katana", "#dfe6ee"), "wind"], mouth="flat", sash="#8a5a2a", legs="#2a4a8a"),
     "lol_ahri": dict(hair="#1b1b24", hairStyle="long", eye="#ffd84b", ears="fox", earColor="#1b1b24", tails="fox9", tailColor="#f4f4ff", acc=["whiskers"], outfit="dress", top="#c62828", bottom="#f4f4ff", props=[("orb", "#5fd3e0")], mouth="smirk"),
     "lol_kaisa": dict(hair="#3a2a6a", hairStyle="long", eye="#b48cff", eyes="glow", outfit="bodysuit", top="#3a1a5a", bottom="#2a1040", suitLine="#b48cff", props=[("sparkle", "#b48cff")], glow="#8a3ad8", mouth="flat"),
     # ---- 스텔라이브 (공식 전신 일러스트 기준)
