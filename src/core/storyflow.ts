@@ -21,7 +21,12 @@ export function pendingDomainStory(domainId: string): string | null {
   if (!d) return null;
   const arrive = `${domainId}_arrive`;
   if (has(arrive) && !seen(arrive)) return arrive;
-  if (d.final) return null;
+  if (d.final) {
+    // 서재: 해방 뒤 에필로그
+    const fa = `${domainId}_after`;
+    if (has(fa) && !seen(fa) && st.save.cleared[domainId]) return fa;
+    return null;
+  }
   const recs = d.games.map((g) => st.save.scores[g]);
   const step = `${domainId}_step`;
   if (has(step) && !seen(step) && recs.some((r) => (r?.stars ?? 0) >= 1)) return step;
@@ -65,9 +70,15 @@ export function unreadPersonal() {
 export function nextStoryHint(domainId: string): string | null {
   const st = App.store;
   const d = App.content.domain(domainId);
-  if (!d || d.final) return null;
-  const recs = d.games.map((g) => st.save.scores[g]);
+  if (!d) return null;
   const chk = (id: string) => has(id) && !seen(id);
+  if (d.final) {
+    if (chk(`${domainId}_boss`)) return '마지막 장 — 관측자에게 도전';
+    if (chk(`${domainId}_clear`)) return '마지막 장 — 책을 끝까지 읽어 내기';
+    if (chk(`${domainId}_after`)) return '에필로그 — 해방 뒤 서재에 다시 들르기';
+    return null;
+  }
+  const recs = d.games.map((g) => st.save.scores[g]);
   if (chk(`${domainId}_step`)) return '이야기 ② — 이 영역 미니게임에서 ★1 받기';
   if (chk(`${domainId}_rift`)) return `이야기 ③ — 미니게임 2개에서 ★2 이상 (지금 ${recs.filter((r) => (r?.stars ?? 0) >= 2).length}/2)`;
   if (chk(`${domainId}_inter`)) return `이야기 ④ — 이 영역 동료 3명 모으기 (지금 ${ownedInDomain(domainId)}/3)`;

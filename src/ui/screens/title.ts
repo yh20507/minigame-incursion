@@ -41,7 +41,7 @@ export function titleScreen(): Screen {
   const foot = h(
     'div',
     { class: 'title-foot' },
-    h('span', null, `v0.4 · ${mode}`),
+    h('span', null, `v${__APP_VERSION__} · ${mode}`),
     h('span', null, '글꼴 Pretendard · Rajdhani · 갈무리 (OFL)'),
   );
   const el = h(

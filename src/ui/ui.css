@@ -1060,6 +1060,20 @@ input[type=range].slider::-webkit-slider-thumb { -webkit-appearance: none; width
 .game-card.soon { opacity: 0.55; filter: grayscale(0.5); }
 .game-card.soon .gc-go::after { content: ' · 준비 중'; }
 
+/* ---------- 서재 책장 ---------- */
+.shelf { position: absolute; left: 40px; right: 40px; top: 170px; height: 330px; padding: 22px 28px; display: flex; flex-direction: column; gap: 14px; --cut: 20px; border-top: 4px solid #ffe08a; background: linear-gradient(180deg, rgba(58,47,24,0.55), rgba(18,14,6,0.7)); }
+.shelf-head h3 { font-size: 30px; font-weight: 900; letter-spacing: -0.02em; }
+.shelf-head p { font-size: 15px; }
+.shelf-row { flex: 1; display: grid; grid-template-columns: repeat(9, 1fr); gap: 10px; align-items: end; padding: 0 6px 10px; border-bottom: 6px solid #6b4a22; box-shadow: 0 10px 0 -4px rgba(0,0,0,0.5); }
+.book { display: flex; flex-direction: column; justify-content: space-between; height: 190px; padding: 12px 10px; color: var(--ink); text-align: left; background: linear-gradient(90deg, color-mix(in srgb, var(--c) 40%, #1a1408), color-mix(in srgb, var(--c) 22%, #1a1408) 20%, color-mix(in srgb, var(--c) 30%, #1a1408)); border: 1px solid color-mix(in srgb, var(--c) 50%, transparent); border-left: 6px solid var(--c); transition: transform 0.15s; animation-delay: calc(var(--i) * 0.05s); }
+.book:hover { transform: translateY(-10px); }
+.book.locked { opacity: 0.45; filter: grayscale(0.7); }
+.book.full { box-shadow: 0 0 0 1px #ffe08a, 0 0 18px rgba(255,224,138,0.35); }
+.book-spine b { display: block; font-size: 18px; font-weight: 900; line-height: 1.15; }
+.book-spine small { color: var(--dim); font-size: 12px; }
+.book-meta { display: flex; flex-direction: column; gap: 3px; font-size: 13px; color: var(--dim); }
+.book-meta svg { width: 12px; height: 12px; vertical-align: -1px; }
+
 /* ---------- 개인 이야기 · 기록 ---------- */
 .cd-stories { margin-top: 14px; }
 .cd-stories-row { display: flex; gap: 8px; margin-top: 8px; }

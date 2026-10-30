@@ -23,7 +23,9 @@ export class PagesGame extends MiniGame {
     this.pool = Object.keys(GAMES).filter((k) => k !== 'pages');
     this.child = this.add(this.s.add.container(0, 0));
     this.flash = this.add(this.s.add.rectangle(320, 170, 640, 340, 0xffe08a, 0)).setDepth(50);
-    this.label = this.text(320, 12, '', 10, '#ffe08a').setDepth(60);
+    // 쪽 번호 띠는 맨 아래에 (안쪽 게임의 안내문과 겹치지 않게)
+    this.add(this.s.add.rectangle(320, 334, 640, 12, 0x120e06, 0.8)).setDepth(55);
+    this.label = this.text(320, 334, '', 10, '#ffe08a').setDepth(60);
     this.pageLen = this.h.micro ? 5 : Math.max(6, 10 - (this.h.difficulty - 1) * 2);
     this.turn(true);
   }
@@ -56,8 +58,6 @@ export class PagesGame extends MiniGame {
       this.inner = new Ctor(this.proxy);
       this.inner.create();
       this.pageT = 0;
-      const g = (this.h as any).scene?.registry ? null : null;
-      void g;
       const name = this.gameName(id);
       this.label.setText(`${this.page}쪽 · ${name}`);
       this.h.float(`${this.page}쪽 — ${name}`, 320, 60, '#ffe08a');

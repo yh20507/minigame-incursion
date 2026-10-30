@@ -2,7 +2,7 @@
 import { App } from '../../core/app';
 import { audio } from '../../core/audio';
 import { addShards, currentFrontier, exploreOpen, exploreProgress, frontierOpen, isLanded, landed, markLanded, shardsFor } from '../../core/explore';
-import { nextStoryHint, pendingDomainStory, pendingMapStory, rollRecord, storyProgress } from '../../core/storyflow';
+import { hasRecord, nextStoryHint, pendingDomainStory, pendingMapStory, recordsOf, rollRecord, storyProgress } from '../../core/storyflow';
 import { USABLE, modeInfo } from '../../core/modes';
 import type { DomainDef } from '../../core/types';
 import type { RunResult } from '../../scenes/Play';
@@ -272,11 +272,41 @@ export function domainScreen(data: { id: string }): Screen {
       const sp = storyProgress(d.id);
       return hint || sp.total ? h('div', { class: 'story-hint enter' }, svg(I.book), h('b', null, `이야기 ${sp.seen}/${sp.total}`), hint ? h('span', null, hint) : h('span', { class: 'dim' }, '이 영역의 이야기를 전부 봤어요')) : null;
     })(),
-    d.final ? null : h('div', { class: 'game-grid' }, games),
+    d.final ? shelf() : h('div', { class: 'game-grid' }, games),
     boss,
     teamStrip(d.id, { scene: 'Domain', data: { id: d.id } }),
   );
   return { el, bg: d.id, back: () => ui.show('WorldMap', { part: d.part ?? 1 }) };
+}
+
+/** 서재 책장: 아홉 대륙이 책이 되어 꽂힌다. 이야기·기록 조각 진행도를 한눈에. */
+function shelf(): HTMLElement {
+  const st = App.store;
+  const doms = App.content.domains.filter((d) => !d.final);
+  const books = doms.map((d, i) => {
+    const sp = storyProgress(d.id);
+    const recs = recordsOf(d.id);
+    const got = recs.filter((r) => hasRecord(r.id)).length;
+    const cleared = !!st.save.cleared[d.id];
+    const open = st.isDomainUnlocked(d);
+    const full = sp.seen >= sp.total && got >= recs.length && cleared;
+    return h(
+      'button',
+      { class: 'book enter' + (open ? '' : ' locked') + (full ? ' full' : ''), vars: { c: d.color }, style: { ['--i' as any]: String(i) }, onclick: () => (open ? ui.show('Domain', { id: d.id }) : ui.toast('아직 펼쳐지지 않은 책이에요')) },
+      h('div', { class: 'book-spine' }, h('b', null, open ? d.name : '???'), h('small', null, `${d.part ?? 1}부`)),
+      h('div', { class: 'book-meta' }, h('span', null, svg(I.book), ` ${sp.seen}/${sp.total}`), h('span', null, svg(I.star), ` ${got}/${recs.length}`), cleared ? h('span', { class: 'good' }, '해방') : h('span', { class: 'dim' }, '진행 중')),
+    );
+  });
+  const totalSeen = doms.reduce((a, d) => a + storyProgress(d.id).seen, 0);
+  const totalAll = doms.reduce((a, d) => a + storyProgress(d.id).total, 0);
+  const recAll = App.content.records.length;
+  const recGot = App.content.records.filter((r) => hasRecord(r.id)).length;
+  return h(
+    'section',
+    { class: 'shelf panel enter' },
+    h('div', { class: 'shelf-head' }, h('div', { class: 'eyebrow' }, 'THE SHELF'), h('h3', null, '아홉 대륙의 책'), h('p', { class: 'dim' }, `읽은 장면 ${totalSeen}/${totalAll} · 기록 조각 ${recGot}/${recAll} — 책을 누르면 그 대륙으로 돌아갑니다.`)),
+    h('div', { class: 'shelf-row' }, books),
+  );
 }
 
 // ---------------------------------------------------------------- 준비
@@ -439,6 +469,7 @@ export function resultScreen(r: RunResult): Screen {
             if (!isFinal) {
               const nd = App.content.domains.find((d) => d.unlockAfter === r.domain);
               if (nd) lines.push({ t: nd.landing ? `원정대가 다음 대륙 '${nd.name}'의 좌표를 모을 수 있어요!` : `새 영역 '${nd.name}'이(가) 열렸다!`, c: 'accent' });
+              if (dd?.final) lines.push({ t: '2부 「닫히지 않은 책」 완독! 서재에 다시 들르면 에필로그가 이어져요.', c: 'gold' });
             }
           } else next = { key: isFinal ? 'WorldMap' : 'Domain', data: isFinal ? {} : { id: r.domain } };
         } else {

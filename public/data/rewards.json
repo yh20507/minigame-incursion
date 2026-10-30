@@ -417,13 +417,183 @@
   },
   {
    "id": "hard12",
-   "name": "조각세계 최강",
-   "desc": "모든 미니게임 어려움 모드 ★3 기준 달성",
+   "name": "균열의 조율자",
+   "desc": "어려움 모드에서 ★3 기준 넘기기 12게임",
    "cond": {
     "type": "hard",
     "n": 12
    },
    "coins": 8000
+  },
+  {
+   "id": "own100",
+   "name": "조각세계의 모든 이름",
+   "desc": "동료 100명 모으기",
+   "cond": {
+    "type": "owned",
+    "n": 100
+   },
+   "coins": 8000
+  },
+  {
+   "id": "stars60",
+   "name": "별을 모으는 사람",
+   "desc": "별 60개 모으기",
+   "cond": {
+    "type": "stars",
+    "n": 60
+   },
+   "coins": 3000
+  },
+  {
+   "id": "stars100",
+   "name": "백 개의 별",
+   "desc": "별 100개 모으기",
+   "cond": {
+    "type": "stars",
+    "n": 100
+   },
+   "coins": 8000
+  },
+  {
+   "id": "hard24",
+   "name": "시련을 읽는 자",
+   "desc": "어려움 모드에서 ★3 기준 넘기기 24게임",
+   "cond": {
+    "type": "hard",
+    "n": 24
+   },
+   "coins": 6000
+  },
+  {
+   "id": "hard36",
+   "name": "조각세계 최강",
+   "desc": "모든 미니게임(36) 어려움 모드 ★3 기준 달성",
+   "cond": {
+    "type": "hard",
+    "n": 36
+   },
+   "coins": 15000
+  },
+  {
+   "id": "c_frost",
+   "name": "태엽을 되감은 사람",
+   "desc": "서리 시계탑 해방",
+   "cond": {
+    "type": "cleared",
+    "key": "frost"
+   },
+   "coins": 2000
+  },
+  {
+   "id": "c_abyss",
+   "name": "등대지기",
+   "desc": "심해 등대 해방",
+   "cond": {
+    "type": "cleared",
+    "key": "abyss"
+   },
+   "coins": 2000
+  },
+  {
+   "id": "c_sky",
+   "name": "구름 정원사",
+   "desc": "하늘 정원 해방",
+   "cond": {
+    "type": "cleared",
+    "key": "sky"
+   },
+   "coins": 2000
+  },
+  {
+   "id": "c_glass",
+   "name": "거울 너머를 본 사람",
+   "desc": "유리 사막 해방",
+   "cond": {
+    "type": "cleared",
+    "key": "glass"
+   },
+   "coins": 2000
+  },
+  {
+   "id": "c_paper",
+   "name": "커튼콜",
+   "desc": "종이 극장 해방",
+   "cond": {
+    "type": "cleared",
+    "key": "paper"
+   },
+   "coins": 2000
+  },
+  {
+   "id": "reader",
+   "name": "읽는 사람",
+   "desc": "관측자의 서재 — 마지막 장을 읽어 내기",
+   "cond": {
+    "type": "cleared",
+    "key": "library"
+   },
+   "coins": 6000
+  },
+  {
+   "id": "rec12",
+   "name": "기록 수집가",
+   "desc": "기록 조각 12개 찾기",
+   "cond": {
+    "type": "records",
+    "n": 12
+   },
+   "coins": 1500
+  },
+  {
+   "id": "rec36",
+   "name": "조각세계의 사서",
+   "desc": "기록 조각 36개 찾기",
+   "cond": {
+    "type": "records",
+    "n": 36
+   },
+   "coins": 4000
+  },
+  {
+   "id": "rec72",
+   "name": "서고지기",
+   "desc": "모든 기록 조각(72) 찾기",
+   "cond": {
+    "type": "records",
+    "n": 72
+   },
+   "coins": 10000
+  },
+  {
+   "id": "sto10",
+   "name": "귀 기울이는 사람",
+   "desc": "동료 개인 이야기 10편 읽기",
+   "cond": {
+    "type": "stories",
+    "n": 10
+   },
+   "coins": 1500
+  },
+  {
+   "id": "sto30",
+   "name": "이야기꾼",
+   "desc": "동료 개인 이야기 30편 읽기",
+   "cond": {
+    "type": "stories",
+    "n": 30
+   },
+   "coins": 4000
+  },
+  {
+   "id": "sto70",
+   "name": "모든 이름을 아는 자",
+   "desc": "동료 개인 이야기 전부(70) 읽기",
+   "cond": {
+    "type": "stories",
+    "n": 70
+   },
+   "coins": 10000
   }
  ],
  "tickets": [
