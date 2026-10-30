@@ -7,6 +7,7 @@ import type { Bonus, GameDef } from '../core/types';
 import { T, button, fadeIn, go } from '../core/ui';
 import type { Host, InputState, MiniGame } from '../minigames/base';
 import { GAMES } from '../minigames/registry';
+import { SkillRuntime } from './SkillRuntime';
 
 export type Mode = 'normal' | 'boss' | 'final' | 'landing' | 'micro' | 'daily' | 'marathon';
 
@@ -84,6 +85,11 @@ export class PlayScene extends Phaser.Scene {
   itemScore = 0;
   itemTime = 0;
   itemCoin = 0;
+  /** 리더 고유 스킬 (번개 모드 제외) */
+  skill: SkillRuntime | null = null;
+  get sc() {
+    return this as Phaser.Scene;
+  }
 
   // 입력
   keys!: Record<string, Phaser.Input.Keyboard.Key>;
@@ -171,6 +177,13 @@ export class PlayScene extends Phaser.Scene {
         break;
     }
     this.shields = this.bonus.shield;
+    // 리더 고유 스킬
+    this.skill = null;
+    {
+      const leadId = st.save.team.leader;
+      const lead = App.content.hasChar(leadId) ? App.content.char(leadId) : null;
+      if (lead?.skill && this.mode !== 'micro') this.skill = new SkillRuntime(this, lead.skill, st.save.owned[leadId]?.b ?? 0);
+    }
     this.items = data.items ?? [];
     this.revive = false;
     this.itemScore = this.itemTime = this.itemCoin = 0;
@@ -183,6 +196,7 @@ export class PlayScene extends Phaser.Scene {
       if (it.effect === 'coin') this.itemCoin += it.value;
       if (it.effect === 'revive') this.revive = true;
     }
+    this.skill?.onRunStart();
 
     this.bgImg = this.add.image(0, 0, 'bg_rift').setOrigin(0).setDisplaySize(W, H);
     this.add.rectangle(0, 0, W, H, 0x07060f, 0.55).setOrigin(0);
@@ -190,6 +204,7 @@ export class PlayScene extends Phaser.Scene {
     this.buildHud();
     this.events.once('shutdown', () => {
       this.mg = null;
+      this.skill?.destroy();
     });
     this.nextSegment();
   }
@@ -206,6 +221,7 @@ export class PlayScene extends Phaser.Scene {
     });
     kb.on('keyup', (e: KeyboardEvent) => this.codes.add('up:' + e.code));
     kb.on('keydown-ESC', () => this.togglePause());
+    kb.on('keydown-SHIFT', () => this.phase === 'play' && this.skill?.activate());
     this.input.on('pointerdown', () => (this.ptrPressed = true));
     this.input.on('pointerup', () => (this.ptrReleased = true));
   }
@@ -418,6 +434,7 @@ export class PlayScene extends Phaser.Scene {
     this.refreshHud();
     this.drawTimer();
     this.hudName.setText(`${d.name} · ${this.gameDef.name}`);
+    this.skill?.onSegment();
     this.intro();
   }
 
@@ -508,15 +525,43 @@ export class PlayScene extends Phaser.Scene {
 
   addScore(n: number, x?: number, y?: number) {
     if (this.phase !== 'play') return;
-    const v = Math.round(n * (1 + this.segBonus.score / 100));
+    let mult = 1;
+    let crit = false;
+    if (this.skill) {
+      (this.skill as any).critNow = false;
+      mult = this.skill.scoreMult();
+      crit = !!(this.skill as any).critNow;
+    }
+    const v = Math.round(n * (1 + this.segBonus.score / 100) * mult);
     this.segScore += v;
     this.totalScore += v;
     this.hudScore.setText(this.totalScore.toLocaleString());
-    if (x !== undefined && y !== undefined) this.float('+' + v, x, y, C.gold);
+    if (x !== undefined && y !== undefined) this.float((crit ? '크리티컬! +' : '+') + v, x, y, crit ? '#ff5fd2' : mult > 1 ? '#ffe28a' : C.gold);
+    this.skill?.onScore(v);
   }
 
   hit(x?: number, y?: number): boolean {
     if (this.phase !== 'play') return true;
+    if (this.skill) {
+      const r = this.skill.onHit();
+      if (r === 'ignore') {
+        audio.sfx('shield');
+        this.cameras.main.flash(100, 255, 200, 69);
+        if (x !== undefined && y !== undefined) this.float(this.skill.def.name + '!', x, y, '#ffc845');
+        return true;
+      }
+      if (r === 'time') {
+        audio.sfx('hit');
+        this.cameras.main.flash(120, 255, 75, 110);
+        this.timeAdj -= this.skill.p.time;
+        if (x !== undefined && y !== undefined) this.float(`−${this.skill.p.time}초`, x, y, C.bad);
+        if (this.segT >= this.segDur + this.timeAdj) {
+          this.dead = true;
+          return false;
+        }
+        return true;
+      }
+    }
     if (this.shields > 0) {
       this.shields--;
       audio.sfx('shield');
@@ -533,12 +578,17 @@ export class PlayScene extends Phaser.Scene {
       return false;
     }
     this.lives--;
+    this.skill?.afterHit();
     if (this.lives <= 0 && this.revive) {
       this.revive = false;
       this.lives = 1;
       audio.sfx('legend');
       this.cameras.main.flash(300, 255, 255, 255);
       this.float('부활!', x ?? W / 2, y ?? 120, '#ffffff');
+    }
+    if (this.lives <= 0 && this.skill?.onFatal()) {
+      this.refreshHud();
+      return true;
     }
     this.refreshHud();
     if (this.lives <= 0) {
@@ -558,13 +608,23 @@ export class PlayScene extends Phaser.Scene {
   update(_t: number, delta: number) {
     const dt = Math.min(delta / 1000, 0.05);
     if (this.phase === 'play' && this.mg) {
-      this.segT += dt;
-      const gs = (this.host as any).gameSpeed as number;
+      this.skill?.update(dt);
+      const frozen = !!this.skill?.timerFrozen();
+      if (!frozen) this.segT += dt;
+      const gs = ((this.host as any).gameSpeed as number) * (this.skill?.speedMult() ?? 1);
       this.host.t += dt * gs * (this.hard ? 1.5 : 1);
       this.host.inp = this.readInput();
       this.mg.update(dt * gs);
       this.drawTimer();
-      const timeUp = this.segT >= this.segDur + this.timeAdj;
+      if (this.skill?.lastStandOver()) this.dead = true;
+      let timeUp = this.segT >= this.segDur + this.timeAdj;
+      if (timeUp && this.skill && this.mode !== 'micro') {
+        const extra = this.skill.onTimeUp();
+        if (extra > 0) {
+          this.timeAdj += extra;
+          timeUp = false;
+        }
+      }
       if (this.mode === 'micro') {
         if (this.microFailed) this.endSegment(false);
         else if (this.mg.microDone()) this.endSegment(true);

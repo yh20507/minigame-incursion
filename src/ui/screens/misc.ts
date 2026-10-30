@@ -4,7 +4,7 @@ import { audio } from '../../core/audio';
 import { USABLE, bonusLines } from '../../core/modes';
 import { dailySetup } from '../../scenes/Play';
 import { ui, type Screen } from '../app';
-import { btn, charCard, charImg, itemIcon, topBar } from '../components';
+import { btn, charCard, charImg, itemIcon, topBar, skillCard } from '../components';
 import { fmt, h, svg } from '../dom';
 import { I } from '../icons';
 
@@ -144,7 +144,7 @@ export function teamStrip(domainId: string | null, back: { scene: string; data?:
     'div',
     { class: 'team-strip panel enter' },
     h('div', { class: 'ts-slots' }, charCard(lead.id, { size: 'sm', showLevel: false }), ...st.save.team.supports.map((s) => (s ? charCard(s, { size: 'sm', showLevel: false }) : h('div', { class: 'ts-empty' }, svg(I.plus))))),
-    h('div', { class: 'ts-text' }, h('div', { class: 'sec-title' }, h('b', null, '출전 팀'), h('span', null, `리더 ${lead.name} · ${lead.title}`)), h('div', { class: 'bonus-chips' }, bonusLines(b).map((l) => h('span', { class: 'tag good' }, l)), b.notes.map((n) => h('span', { class: 'tag gold' }, n)))),
+    h('div', { class: 'ts-text' }, h('div', { class: 'sec-title' }, h('b', null, '출전 팀'), h('span', null, `리더 ${lead.name} · ${lead.title}`)), h('div', { class: 'bonus-chips' }, skillCard(lead.id, { compact: true }), bonusLines(b).map((l) => h('span', { class: 'tag good' }, l)), b.notes.map((n) => h('span', { class: 'tag gold' }, n)))),
     btn('편성 변경', () => ui.show('Team', { back }), { cls: 'sm ghost', icon: I.team }),
   );
 }

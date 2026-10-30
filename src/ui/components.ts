@@ -4,6 +4,7 @@ import { RARITY_COLORS } from '../core/art';
 import { audio } from '../core/audio';
 import type { PullResult } from '../core/types';
 import { bestArt, portraitArt, artUrl, texUrl, ui } from './app';
+import { skillDesc } from '../core/skills';
 import { h, svg, fmt, countUp, type Attrs } from './dom';
 import { I, ITEM_ICON } from './icons';
 
@@ -211,4 +212,19 @@ export function pager(page: number, pages: number, onPage: (p: number) => void) 
 
 export function keyHint(text: string) {
   return h('span', { class: 'key' }, text);
+}
+
+/** ★4·★5 고유 스킬 카드. 리더일 때만 발동한다는 안내 포함 */
+export function skillCard(charId: string, o: { compact?: boolean; level?: number } = {}) {
+  const c = App.content.char(charId);
+  if (!c.skill) return null;
+  const b = o.level ?? App.store.save.owned[charId]?.b ?? 0;
+  const desc = skillDesc(c.skill, b);
+  if (o.compact) return h('span', { class: 'tag skill' }, svg(I.bolt), ` ${c.skill.name}`, c.skill.active ? h('small', null, ' SHIFT') : null);
+  return h(
+    'div',
+    { class: 'skill-card' },
+    h('div', { class: 'sk-ico' }, svg(I.bolt)),
+    h('div', { class: 'sk-text' }, h('div', { class: 'sk-head' }, h('b', null, c.skill.name), h('span', { class: 'tag ' + (c.skill.active ? 'hot' : 'gold') }, c.skill.active ? '액티브 · SHIFT' : '자동'), h('small', { class: 'dim' }, '리더 전용')), h('p', null, desc), b < 3 ? h('small', { class: 'faint' }, `+3 강화 시: ${skillDesc(c.skill, 3)}`) : null),
+  );
 }

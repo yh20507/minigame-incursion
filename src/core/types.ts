@@ -26,6 +26,8 @@ export interface CharDef {
   unlock?: string;
   /** 목소리: 기본 음높이(Hz), 빠르기, 음색, 포먼트 배율 */
   voice?: { pitch: number; speed?: number; wave?: OscillatorType; formant?: number };
+  /** ★4·★5 고유 스킬 (리더일 때만) */
+  skill?: import('./skills').SkillDef;
 }
 
 export interface DomainDef {

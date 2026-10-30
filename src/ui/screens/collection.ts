@@ -4,7 +4,7 @@ import { audio } from '../../core/audio';
 import { passiveLabel } from '../../core/store';
 import type { CharDef } from '../../core/types';
 import { bestArt, ui, type Screen } from '../app';
-import { RC, badge, bar, btn, charCard, charImg, itemIcon, pager, rarityName, rarityStars, tabs, topBar } from '../components';
+import { RC, badge, bar, btn, charCard, charImg, itemIcon, pager, rarityName, rarityStars, skillCard, tabs, topBar } from '../components';
 import { fmt, h, svg } from '../dom';
 import { I } from '../icons';
 import { showReveal } from '../reveal';
@@ -137,6 +137,7 @@ export function collectionScreen(data: { tab?: string; sel?: string; page?: numb
         h('div', { class: 'cd-top' }, rarityStars(c.rarity), h('span', { class: 'tag dimmed' }, App.content.domainName(c.domain)), o && o.b > 0 ? h('span', { class: 'tag gold' }, `+${o.b} 강화`) : null),
         h('h2', null, own ? c.name : '???'),
         h('p', { class: 'cd-title' }, own ? c.title : rarityName(c.rarity)),
+        own ? skillCard(id) : null,
         own
           ? h(
               'div',

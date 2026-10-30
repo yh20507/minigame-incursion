@@ -3,7 +3,7 @@ import { App } from '../../core/app';
 import { bonusLines } from '../../core/modes';
 import { passiveLabel } from '../../core/store';
 import { ui, type Screen } from '../app';
-import { RC, btn, charCard, charImg, pager, rarityStars, topBar } from '../components';
+import { RC, btn, charCard, charImg, pager, rarityStars, topBar, skillCard } from '../components';
 import { h, svg } from '../dom';
 import { I } from '../icons';
 
@@ -66,6 +66,7 @@ export function teamScreen(data: { back?: { scene: string; data?: object }; slot
         'div',
         { class: 'team-info panel pad' },
         h('div', { class: 'sec-title' }, h('b', null, lead.name), h('span', null, lead.title)),
+        skillCard(lead.id),
         h('div', { class: 'team-pass' }, lead.passives.map((p) => h('div', null, svg(I.sparkle), ' ', passiveLabel(p, App.content.domainName(p.domain ?? ''))))),
         h('div', { class: 'sec-title', style: { marginTop: '18px' } }, h('b', null, '팀 보너스'), h('span', null, '모든 영역 공통분')),
         h('div', { class: 'bonus-chips' }, bonusLines(b).map((l) => h('span', { class: 'tag good' }, l))),

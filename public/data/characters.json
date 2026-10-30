@@ -119,7 +119,7 @@
   "passives": [
    {
     "type": "coin",
-    "value": 12
+    "value": 20
    }
   ],
   "desc": "왕의 곁을 지키던 마법사. 균열을 연구하며 설계자의 정체를 쫓는다.",
@@ -136,12 +136,8 @@
   "pool": true,
   "passives": [
    {
-    "type": "shield",
-    "value": 1
-   },
-   {
-    "type": "score",
-    "value": 5
+    "type": "time",
+    "value": 4
    }
   ],
   "desc": "왕국의 비밀 첩보원. 누구의 편인지는 아무도 모른다.",
@@ -174,6 +170,15 @@
    "speed": 0.9,
    "wave": "sawtooth",
    "formant": 1.0
+  },
+  "skill": {
+   "id": "charge",
+   "kind": "start_boost",
+   "name": "돌격 명령",
+   "p": {
+    "dur": 8,
+    "mult": 2
+   }
   }
  },
  {
@@ -202,6 +207,16 @@
    "speed": 1.25,
    "wave": "sawtooth",
    "formant": 0.85
+  },
+  "skill": {
+   "id": "dragon_breath",
+   "kind": "periodic",
+   "name": "용의 숨결",
+   "p": {
+    "every": 15,
+    "dur": 5,
+    "mult": 2
+   }
   }
  },
  {
@@ -234,6 +249,14 @@
    "speed": 0.75,
    "wave": "triangle",
    "formant": 1.1
+  },
+  "skill": {
+   "id": "rift_armor",
+   "kind": "rift_armor",
+   "name": "균열 갑주",
+   "p": {
+    "time": 6
+   }
   }
  },
  {
@@ -360,12 +383,8 @@
   "pool": true,
   "passives": [
    {
-    "type": "shield",
-    "value": 1
-   },
-   {
-    "type": "time",
-    "value": 2
+    "type": "score",
+    "value": 12
    }
   ],
   "desc": "대기업 회장을 지키던 경호원. 회사가 사라진 뒤에도 습관처럼 주위를 살핀다.",
@@ -382,8 +401,12 @@
   "pool": true,
   "passives": [
    {
-    "type": "score",
-    "value": 12
+    "type": "coin",
+    "value": 10
+   },
+   {
+    "type": "time",
+    "value": 2
    }
   ],
   "desc": "네온 고가도로를 지배하는 바이크 갱의 두목. 속도 말고는 관심이 없다.",
@@ -400,8 +423,12 @@
   "pool": true,
   "passives": [
    {
-    "type": "coin",
-    "value": 12
+    "type": "score",
+    "value": 8
+   },
+   {
+    "type": "shield",
+    "value": 1
    }
   ],
   "desc": "도시의 모든 소문이 모이는 곳에 그녀가 있다. 정보값은 비싸다.",
@@ -434,6 +461,14 @@
    "speed": 1.05,
    "wave": "square",
    "formant": 1.2
+  },
+  "skill": {
+   "id": "encore",
+   "kind": "encore",
+   "name": "앙코르",
+   "p": {
+    "dur": 5
+   }
   }
  },
  {
@@ -466,6 +501,17 @@
    "speed": 0.8,
    "wave": "triangle",
    "formant": 1.25
+  },
+  "skill": {
+   "id": "spotlight",
+   "kind": "slow",
+   "name": "스포트라이트",
+   "active": true,
+   "p": {
+    "dur": 3,
+    "factor": 0.5,
+    "cd": 20
+   }
   }
  },
  {
@@ -592,12 +638,8 @@
   "pool": true,
   "passives": [
    {
-    "type": "shield",
-    "value": 1
-   },
-   {
     "type": "coin",
-    "value": 5
+    "value": 20
    }
   ],
   "desc": "정거장의 질서를 책임지는 경비대장. 규칙을 어기는 사람에게 엄격하다.",
@@ -614,8 +656,8 @@
   "pool": true,
   "passives": [
    {
-    "type": "coin",
-    "value": 12
+    "type": "time",
+    "value": 4
    }
   ],
   "desc": "촉수 네 개로 물건 네 개를 동시에 파는 상인. 흥정에 진 적이 없다.",
@@ -648,6 +690,14 @@
    "speed": 1.3,
    "wave": "square",
    "formant": 1.1
+  },
+  "skill": {
+   "id": "warp_dodge",
+   "kind": "dodge",
+   "name": "워프",
+   "p": {
+    "chance": 30
+   }
   }
  },
  {
@@ -682,6 +732,14 @@
    "speed": 0.7,
    "wave": "sawtooth",
    "formant": 0.7
+  },
+  "skill": {
+   "id": "majesty",
+   "kind": "extra_life",
+   "name": "왕의 위엄",
+   "p": {
+    "n": 1
+   }
   }
  },
  {
@@ -716,6 +774,15 @@
    "speed": 1.0,
    "wave": "square",
    "formant": 1.4
+  },
+  "skill": {
+   "id": "harbor",
+   "kind": "time_bank",
+   "name": "항만 효율",
+   "p": {
+    "per": 100,
+    "sec": 0.3
+   }
   }
  },
  {
@@ -750,6 +817,15 @@
    "speed": 0.85,
    "wave": "sawtooth",
    "formant": 0.75
+  },
+  "skill": {
+   "id": "helm",
+   "kind": "last_stand",
+   "name": "불굴의 키",
+   "p": {
+    "dur": 5,
+    "mult": 2
+   }
   }
  },
  {
@@ -783,6 +859,12 @@
    "speed": 0.65,
    "wave": "triangle",
    "formant": 0.9
+  },
+  "skill": {
+   "id": "one_more",
+   "kind": "roulette",
+   "name": "한 판 더",
+   "p": {}
   }
  },
  {
@@ -989,7 +1071,15 @@
   ],
   "desc": "스스로 만든 강철 슈트를 입는 천재. 자신감이 넘친다.",
   "look": "Iron Man (Marvel), red and gold armor, arc reactor",
-  "line": "슈트 업그레이드는 이미 끝났지."
+  "line": "슈트 업그레이드는 이미 끝났지.",
+  "skill": {
+   "id": "reserve",
+   "kind": "shield_regen",
+   "name": "예비 동력",
+   "p": {
+    "every": 15
+   }
+  }
  },
  {
   "id": "mv_thor",
@@ -1011,7 +1101,18 @@
   ],
   "desc": "망치를 휘둘러 번개를 부르는 신. 호탕하게 웃는다.",
   "look": "Thor (Marvel), armor, red cape, hammer, lightning",
-  "line": "천둥이 내 편이다!"
+  "line": "천둥이 내 편이다!",
+  "skill": {
+   "id": "thunder",
+   "kind": "invuln",
+   "name": "천둥",
+   "active": true,
+   "p": {
+    "dur": 3,
+    "mult": 2,
+    "cd": 25
+   }
+  }
  },
  {
   "id": "mv_wanda",
@@ -1037,7 +1138,16 @@
   ],
   "desc": "현실 자체를 바꿔 버리는 힘을 가진 마녀. 균열과 묘하게 공명한다.",
   "look": "Scarlet Witch (Marvel), red costume, headpiece, red magic",
-  "line": "이 세계도... 바꿀 수 있어."
+  "line": "이 세계도... 바꿀 수 있어.",
+  "skill": {
+   "id": "reality",
+   "kind": "warp",
+   "name": "현실 조작",
+   "p": {
+    "chance": 50,
+    "refund": 2
+   }
+  }
  },
  {
   "id": "op_usopp",
@@ -1243,7 +1353,16 @@
   ],
   "desc": "검 세 자루를 쓰는 검사. 길은 늘 잃지만 칼끝은 정확하다.",
   "look": "Roronoa Zoro (One Piece), green hair, three swords, bandana",
-  "line": "길은... 이쪽이 맞을 거다."
+  "line": "길은... 이쪽이 맞을 거다.",
+  "skill": {
+   "id": "three_worlds",
+   "kind": "combo",
+   "name": "삼천세계",
+   "p": {
+    "step": 0.1,
+    "max": 2
+   }
+  }
  },
  {
   "id": "op_ace",
@@ -1265,7 +1384,16 @@
   ],
   "desc": "온몸이 불꽃이 되는 해적. 동생을 무엇보다 아낀다.",
   "look": "Portgas D. Ace (One Piece), orange hat, fire",
-  "line": "불꽃은 꺼지지 않아."
+  "line": "불꽃은 꺼지지 않아.",
+  "skill": {
+   "id": "flame",
+   "kind": "late_bloom",
+   "name": "불꽃",
+   "p": {
+    "last": 10,
+    "mult": 2
+   }
+  }
  },
  {
   "id": "op_luffy",
@@ -1291,7 +1419,16 @@
   ],
   "desc": "몸이 고무처럼 늘어나는 해적 선장. 동료를 위해서라면 무엇이든 한다.",
   "look": "Monkey D. Luffy (One Piece), straw hat, red vest, big grin",
-  "line": "조각세계? 전부 모험이다!"
+  "line": "조각세계? 전부 모험이다!",
+  "skill": {
+   "id": "gear2",
+   "kind": "revive_plus",
+   "name": "기어 세컨드",
+   "p": {
+    "dur": 5,
+    "mult": 3
+   }
+  }
  },
  {
   "id": "lol_garen",
@@ -1497,7 +1634,18 @@
   ],
   "desc": "바람을 다루는 떠돌이 검객. 과거를 짊어지고 걷는다.",
   "look": "Yasuo (League of Legends), wind swordsman, ponytail",
-  "line": "바람이 이끄는 대로."
+  "line": "바람이 이끄는 대로.",
+  "skill": {
+   "id": "windwall",
+   "kind": "invuln",
+   "name": "바람 장막",
+   "active": true,
+   "p": {
+    "dur": 2,
+    "mult": 1,
+    "cd": 12
+   }
+  }
  },
  {
   "id": "lol_ahri",
@@ -1519,7 +1667,16 @@
   ],
   "desc": "아홉 꼬리를 지닌 여우 마법사. 인간을 이해하고 싶어 한다.",
   "look": "Ahri (League of Legends), nine-tailed fox, fox ears",
-  "line": "날 따라와 볼래?"
+  "line": "날 따라와 볼래?",
+  "skill": {
+   "id": "charm",
+   "kind": "crit",
+   "name": "매혹",
+   "p": {
+    "chance": 10,
+    "mult": 2
+   }
+  }
  },
  {
   "id": "lol_kaisa",
@@ -1545,7 +1702,16 @@
   ],
   "desc": "공허의 갑피와 하나가 된 사냥꾼. 균열 너머의 위협에 가장 민감하다.",
   "look": "Kai'Sa (League of Legends), void armor suit, purple glow",
-  "line": "공허도 이 균열은 못 넘어."
+  "line": "공허도 이 균열은 못 넘어.",
+  "skill": {
+   "id": "hunt",
+   "kind": "hunt",
+   "name": "사냥 본능",
+   "p": {
+    "per": 1000,
+    "max": 3
+   }
+  }
  },
  {
   "id": "sl_yuni",
@@ -1571,7 +1737,16 @@
   ],
   "desc": "지구에서 깨어난 알리콘. 게임과 저스트 채팅 방송을 한다.",
   "look": "stellive, ayatsuno yuni, 1girl, unicorn horn, single horn, spiral horn, white hair, long hair, wavy hair, rainbow streak in bangs, twin braids, blue hair ribbons, purple eyes, white cropped jacket, high collar, blue trim, long sleeves, gem emblem on chest",
-  "line": ""
+  "line": "",
+  "skill": {
+   "id": "live_start",
+   "kind": "live_start",
+   "name": "라이브 스타트",
+   "p": {
+    "dur": 10,
+    "mult": 1.5
+   }
+  }
  },
  {
   "id": "sl_huya",
@@ -1593,7 +1768,17 @@
   ],
   "desc": "한때 별이었던 고대의 엘더 드래곤. 스텔라이브의 첫 전학생.",
   "look": "stellive, sakihane huya, 1girl, purple hair, very long hair, yellow eyes, black curved horns, pointy ears, purple beret, star hair ornament, black choker, gold necklace, pink gem, white puffy short sleeves, purple and black dress, frills, black bow",
-  "line": ""
+  "line": "",
+  "skill": {
+   "id": "rhythm_sense",
+   "kind": "rhythm",
+   "name": "리듬 감각",
+   "p": {
+    "window": 3,
+    "step": 5,
+    "max": 50
+   }
+  }
  },
  {
   "id": "sl_gangzi",
@@ -1615,7 +1800,16 @@
   ],
   "desc": "스텔라이브의 대표. 정식 멤버가 아닌 게스트 멤버로 소개된다.",
   "look": "stellive, 1girl, black hair, blue inner hair, gradient hair, very long hair, hair between eyes, yellow eyes, black hairband, black hair ribbons, white frilled ribbon trim, criss-cross choker, white camisole, cross-laced front, lace trim, sleeveless, black dress",
-  "line": ""
+  "line": "",
+  "skill": {
+   "id": "endure",
+   "kind": "endure",
+   "name": "버티기",
+   "p": {
+    "dur": 3,
+    "refund": 1
+   }
+  }
  },
  {
   "id": "sl_hina",

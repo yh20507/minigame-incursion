@@ -5,6 +5,7 @@ import { bestArt, ui } from './app';
 import { RC, rarityName } from './components';
 import { h, svg, wait } from './dom';
 import { fx } from './fx';
+import { skillDesc } from '../core/skills';
 import { I } from './icons';
 
 export function showReveal(charId: string, o: { note?: string; tag?: string; quick?: boolean; skin?: import('../core/types').SkinDef } = {}) {
@@ -33,6 +34,7 @@ export function showReveal(charId: string, o: { note?: string; tag?: string; qui
         nameEl,
         h('div', { class: 'rv-title' }, h('span', null, o.skin ? o.skin.name : ch.title), h('i', null, ' · '), h('span', { class: 'rv-dom' }, o.skin ? ch.title : App.content.domainName(ch.domain))),
         lineEl,
+        ch.skill && !o.skin ? h('div', { class: 'rv-skill' }, svg(I.bolt), h('b', null, ch.skill.name), h('span', null, skillDesc(ch.skill))) : null,
         o.note ? h('div', { class: 'rv-note' }, o.tag ? h('span', { class: 'tag hot' }, o.tag) : null, h('span', null, o.note)) : null,
       ),
       h('div', { class: 'rv-hint' }, h('span', { class: 'key' }, 'SPACE'), ' 또는 클릭으로 계속'),

@@ -1031,3 +1031,16 @@ input[type=range].slider::-webkit-slider-thumb { -webkit-appearance: none; width
 .pi-list b { color: #ffc845; min-width: 64px; font-family: Rajdhani, sans-serif; font-size: 16px; }
 .pi-feat { display: flex; gap: 10px; flex-wrap: wrap; overflow: hidden; }
 .pi-feat .char-card { flex: none; }
+
+/* ---------- 고유 스킬 ---------- */
+.tag.skill { background: rgba(255,200,69,0.15); border-color: #ffc845; color: #ffc845; }
+.tag.skill small { color: var(--dim); font-weight: 600; }
+.skill-card { display: grid; grid-template-columns: 44px 1fr; gap: 12px; padding: 12px 14px; margin: 6px 0 10px; background: linear-gradient(90deg, rgba(255,200,69,0.12), rgba(255,200,69,0.02)); border: 1px solid rgba(255,200,69,0.4); border-left: 3px solid #ffc845; }
+.sk-ico { width: 44px; height: 44px; display: grid; place-items: center; font-size: 24px; color: #ffc845; background: rgba(255,200,69,0.1); }
+.sk-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.sk-head b { font-size: 17px; color: #ffe28a; }
+.sk-text p { margin: 4px 0 2px; font-size: 14px; color: var(--ink); line-height: 1.4; }
+.sk-text small.faint { font-size: 12px; }
+.rv-skill { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding: 8px 14px; border-left: 3px solid #ffc845; background: rgba(255,200,69,0.1); font-size: 16px; color: #ffe28a; }
+.rv-skill b { font-size: 18px; }
+.rv-skill span { color: var(--ink); opacity: 0.85; font-size: 14px; }
