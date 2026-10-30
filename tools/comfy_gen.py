@@ -41,7 +41,7 @@ CONFIG = os.path.join(HERE, "config.json")
 PROMPTS = os.path.join(HERE, "prompts.json")
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 
-KINDS = ["sprite", "art", "full", "bg"]
+KINDS = ["sprite", "art", "full", "bg", "skin", "skinsprite"]
 
 
 # ---------------------------------------------------------------- 공용
@@ -149,6 +149,24 @@ class Comfy:
         try:
             info = json.loads(self._req("/object_info/CheckpointLoaderSimple"))
             spec = info["CheckpointLoaderSimple"]["input"]["required"]["ckpt_name"]
+            if isinstance(spec[0], list):
+                return spec[0]
+            if len(spec) > 1 and isinstance(spec[1], dict):
+                return spec[1].get("options", [])
+        except Exception:
+            pass
+        return []
+
+    def loras(self):
+        try:
+            lst = json.loads(self._req("/models/loras"))
+            if isinstance(lst, list):
+                return [x for x in lst if isinstance(x, str)]
+        except Exception:
+            pass
+        try:
+            info = json.loads(self._req("/object_info/LoraLoader"))
+            spec = info["LoraLoader"]["input"]["required"]["lora_name"]
             if isinstance(spec[0], list):
                 return spec[0]
             if len(spec) > 1 and isinstance(spec[1], dict):
@@ -275,7 +293,30 @@ def build_prompts(cfg, existing):
     for gid in [d["id"] for d in domains] + ["rift"] + [w["id"] for w in worlds]:
         hint = bg_hint.get(gid) or f"{theme[gid].get('name', gid)} themed scenery, {theme[gid].get('subtitle', '')}"
         put(f"{gid}:bg", {"id": gid, "kind": "bg", "name": gid, "group": gid, "prompt": f"{cfg['kinds']['bg']['prefix']}, {hint}"})
+    # 스킨 (직접 그리는 manual 스킨은 제외): 카드/감상용 full 한 장 + 게임용 도트 한 장
+    _sk = game_data("skins")
+    skins = _sk.get("skins", []) if isinstance(_sk, dict) else []
+    cmap = {c["id"]: c for c in chars}
+    for sk in skins:
+        if sk.get("manual"):
+            continue
+        c = cmap.get(sk["char"])
+        if not c:
+            continue
+        look = sk.get("look") or f"{c.get('look', '')}, {sk.get('name', '')}"
+        setting = {
+            "ashen": "dark fantasy knight kingdom", "neon": "rainy cyberpunk harbor city", "nebula": "space station in a nebula",
+            "rift": "mysterious dimensional rift", "frost": "frozen clocktower city", "abyss": "deep sea lighthouse village",
+            "sky": "floating garden islands above clouds", "glass": "mirror desert of glass sand", "paper": "origami paper theater city",
+            "library": "endless library of floating books",
+        }.get(c["domain"], "")
+        full_parts = [cfg["kinds"]["skin"]["prefix"], look]
+        if setting:
+            full_parts.append(setting + " background")
+        put(f"{sk['id']}:skin", {"id": sk["id"], "kind": "skin", "name": f"{c.get('name', sk['char'])} · {sk['name']}", "group": c["domain"], "char": sk["char"], "prompt": ", ".join(full_parts)})
+        put(f"{sk['id']}:skinsprite", {"id": sk["id"], "kind": "skinsprite", "name": f"{c.get('name', sk['char'])} · {sk['name']} (도트)", "group": c["domain"], "char": sk["char"], "prompt": f"{cfg['kinds']['skinsprite']['prefix']}, {look}"})
     valid = {f"{c['id']}:{k}" for c in chars for k in (["sprite", "art"] + (["full"] if c["rarity"] >= 4 else []))}
+    valid |= {f"{sk['id']}:{k}" for sk in skins if not sk.get("manual") and sk["char"] in cmap for k in ("skin", "skinsprite")}
     valid |= {f"{g}:bg" for g in [d["id"] for d in domains] + ["rift"] + [w["id"] for w in worlds]}
     return {k: v for k, v in out.items() if k in valid}
 
@@ -284,6 +325,10 @@ def target_path(cfg, entry):
     assets = rel(cfg["assetsDir"])
     if entry["kind"] == "bg":
         return os.path.join(assets, "bg", entry["id"] + ".png")
+    if entry["kind"] == "skin":
+        return os.path.join(assets, "chars", "skins", f"{entry['id']}_full.png")
+    if entry["kind"] == "skinsprite":
+        return os.path.join(assets, "chars", "skins", f"{entry['id']}_sprite.png")
     return os.path.join(assets, "chars", f"{entry['id']}_{entry['kind']}.png")
 
 
@@ -294,15 +339,23 @@ def convert(cfg, src, entry):
     dst = target_path(cfg, entry)
     os.makedirs(os.path.dirname(dst), exist_ok=True)
     k = entry["kind"]
-    if k in ("full", "art"):
-        # 고해상도 일러스트는 변환 없이 (긴 변 1024 로만 맞춤)
+    if k in ("full", "art", "skin"):
+        # 고해상도 일러스트는 변환 없이 (긴 변 2048 까지만)
         im = Image.open(src).convert("RGB")
-        im.thumbnail((1024, 1536))
+        im.thumbnail((1536, 2048))
         im.save(dst)
+        if k == "skin":
+            # 카드용 정사각 _art: 위쪽(얼굴·상체) 기준으로 자른다
+            w, h = im.size
+            side = min(w, h)
+            top = max(0, int(h * 0.04))
+            card = im.crop(((w - side) // 2, top, (w - side) // 2 + side, top + side))
+            card.thumbnail((1024, 1024))
+            card.save(dst.replace("_full.png", "_art.png"))
         return dst
     import pixelize
 
-    if k == "sprite":
+    if k in ("sprite", "skinsprite"):
         # 치비 일러스트(흰 배경)를 48px 도트로: 배경 제거 → 부드럽게 축소 → 32색 양자화
         im = Image.open(src).convert("RGBA")
         im = pixelize.remove_bg(im, 70)
@@ -356,6 +409,43 @@ def apply_ref(wf, image_name, width, height, denoise):
     wf["902"] = {"class_type": "VAEEncode", "inputs": {"pixels": ["901", 0], "vae": [ck, 2]}}
     wf[ks]["inputs"]["latent_image"] = ["902", 0]
     wf[ks]["inputs"]["denoise"] = denoise
+    return wf
+
+
+def apply_loras(wf, loras):
+    """체크포인트 뒤에 LoraLoader 를 사슬처럼 끼운다. loras: [{"name": 파일명, "strength": 0.8, "trigger": "단어"}]"""
+    ck = next((k for k, n in wf.items() if n.get("class_type") == "CheckpointLoaderSimple"), None)
+    if not ck:
+        return wf
+    model_src, clip_src = [ck, 0], [ck, 1]
+    for i, l in enumerate(loras):
+        if not l.get("name"):
+            continue
+        nid = str(950 + i)
+        st = float(l.get("strength", 0.8))
+        wf[nid] = {"class_type": "LoraLoader", "inputs": {"lora_name": l["name"], "strength_model": st, "strength_clip": float(l.get("clip", st)), "model": model_src, "clip": clip_src}}
+        model_src, clip_src = [nid, 0], [nid, 1]
+    for k, n in wf.items():
+        if k.startswith("95"):
+            continue
+        inp = n.get("inputs", {})
+        if inp.get("model") == [ck, 0]:
+            inp["model"] = model_src
+        if inp.get("clip") == [ck, 1]:
+            inp["clip"] = clip_src
+    return wf
+
+
+def apply_hires(wf, scale, denoise=0.45, steps=20):
+    """2패스 고화질: 1차 결과 latent 를 scale 배 키워 한 번 더 그린 뒤 디코드."""
+    ks = next((k for k, n in wf.items() if n.get("class_type", "").startswith("KSampler")), None)
+    dec = next((k for k, n in wf.items() if n.get("class_type") == "VAEDecode"), None)
+    if not ks or not dec:
+        return wf
+    base = wf[ks]["inputs"]
+    wf["960"] = {"class_type": "LatentUpscaleBy", "inputs": {"samples": [ks, 0], "upscale_method": "nearest-exact", "scale_by": float(scale)}}
+    wf["961"] = {"class_type": "KSampler", "inputs": {**base, "seed": base["seed"], "steps": steps, "denoise": denoise, "latent_image": ["960", 0]}}
+    wf[dec]["inputs"]["samples"] = ["961", 0]
     return wf
 
 
@@ -428,7 +518,7 @@ def select(prompts, cfg, args):
     kinds = set(filter(None, (args.kinds or "").split(","))) or set(KINDS)
     out = []
     for key, e in prompts.items():
-        if ids and e["id"] not in ids:
+        if ids and e["id"] not in ids and e.get("char") not in ids:
             continue
         if e["kind"] not in kinds:
             continue
@@ -475,11 +565,15 @@ def cmd_run(args):
         kc = cfg["kinds"][e["kind"]]
         n = args.count or kc.get("candidates") or cfg.get("candidates", 4)
         style = kc.get("style", cfg["style"])
-        prompt = f"{e['prompt']}, {style}"
+        loras = kc.get("loras", cfg.get("loras", [])) or []
+        triggers = [l.get("trigger") for l in loras if l.get("trigger")]
+        prompt = ", ".join(filter(None, [*triggers, e["prompt"], style]))
         negative = e.get("negative") or cfg["negative"]
+        ckpt = kc.get("checkpoint") or cfg.get("checkpoint", "")
+        hires = kc.get("hires") or 0
         folder = os.path.join(raw_root, e["kind"], e["id"])
         os.makedirs(folder, exist_ok=True)
-        ref = find_ref(e["id"]) if e["kind"] in cfg.get("refKinds", ["sprite"]) else None
+        ref = find_ref(e.get("char", e["id"])) if e["kind"] in cfg.get("refKinds", ["sprite"]) else None
         ref_name = None
         if ref:
             try:
@@ -498,9 +592,13 @@ def cmd_run(args):
                 "SEED": seed,
                 "STEPS": kc.get("steps", cfg.get("steps", 28)),
                 "CFG": kc.get("cfg", cfg.get("cfg", 6.5)),
-                "CHECKPOINT": cfg.get("checkpoint", ""),
+                "CHECKPOINT": ckpt,
                 "PREFIX": f"incursion/{e['kind']}_{e['id']}",
             })
+            if loras:
+                wf = apply_loras(wf, loras)
+            if hires and hires > 1:
+                wf = apply_hires(wf, hires, kc.get("hiresDenoise", 0.45), kc.get("hiresSteps", 20))
             if ref_name:
                 dn = cfg.get("refDenoise", {}).get(e["kind"], REF_DENOISE[e["kind"]])
                 wf = apply_ref(wf, ref_name, e.get("width", kc["width"]), e.get("height", kc["height"]), dn)
@@ -522,6 +620,52 @@ def cmd_run(args):
             dst = convert(cfg, saved[0], e)
             print(f"    → 게임에 적용: {os.path.relpath(dst, ROOT)}  (다른 후보: pick {e['id']} {e['kind']} 번호)")
     print("끝. 게임을 다시 켜면 반영돼요.")
+    return 0
+
+
+def cmd_models(args):
+    """ComfyUI 가 가진 체크포인트·LoRA 목록을 보여 주고 모델목록.txt 로 저장"""
+    cfg = load_config()
+    comfy = find_server(cfg)
+    if not comfy:
+        print(f"ComfyUI 에 연결할 수 없어요: {cfg['server']}  (ComfyUI 를 켜고 다시 해 주세요)")
+        return 1
+    cks, los = comfy.checkpoints(), comfy.loras()
+    lines = ["[checkpoints]", *cks, "", "[loras]", *los, "", f"[현재 설정] checkpoint={cfg.get('checkpoint')}  loras={[l.get('name') for l in cfg.get('loras', [])]}"]
+    txt = "\n".join(lines)
+    print(txt)
+    out = os.path.join(ROOT, "모델목록.txt")
+    with open(out, "w", encoding="utf-8") as f:
+        f.write(txt)
+    print(f"\n→ {out} 에 저장했어요")
+    return 0
+
+
+def cmd_myskins(args):
+    """my_skins/<스킨id>.png (직접 그린 그림) → assets/chars/skins/<id>_full.png + _art.png"""
+    from PIL import Image
+    cfg = load_config()
+    src_dir = os.path.join(ROOT, "my_skins")
+    os.makedirs(src_dir, exist_ok=True)
+    data = game_data("skins")
+    ids = {sk["id"] for sk in (data.get("skins", []) if isinstance(data, dict) else [])}
+    done = 0
+    for fn in sorted(os.listdir(src_dir)):
+        base, ext = os.path.splitext(fn)
+        if ext.lower() not in (".png", ".jpg", ".jpeg", ".webp"):
+            continue
+        sid = base.replace("_full", "").replace("_art", "")
+        if sid not in ids:
+            print(f"  [건너뜀] {fn}: skins.json 에 없는 스킨 id")
+            continue
+        convert(cfg, os.path.join(src_dir, fn), {"id": sid, "kind": "skin"})
+        done += 1
+        print(f"  {fn} → chars/skins/{sid}_full.png + _art.png")
+    if not done:
+        print(f"my_skins 폴더에 <스킨id>.png 를 넣어 주세요. 예: {os.path.join(src_dir, 'sk_sl_yuni_1.png')}")
+        print("  스킨 id 는 public/data/skins.json 의 id (sk_sl_yuni_1, sk_sl_huya_1, sk_sl_gangzi_1, sk_sl_hina_1, sk_sl_mashiro_1, sk_sl_toa_1 ...)")
+    else:
+        print(f"끝. {done}장 적용. 게임을 다시 켜면 보여요.")
     return 0
 
 
@@ -606,6 +750,8 @@ def main():
     p.add_argument("kind", choices=KINDS)
     p.add_argument("n", type=int)
     sub.add_parser("status")
+    sub.add_parser("models")
+    sub.add_parser("myskins")
     a = ap.parse_args()
     if a.cmd == "init":
         return cmd_init(a)
@@ -615,6 +761,10 @@ def main():
         return cmd_pick(a)
     if a.cmd == "status":
         return cmd_status(a)
+    if a.cmd == "models":
+        return cmd_models(a)
+    if a.cmd == "myskins":
+        return cmd_myskins(a)
     return menu()
 
 
