@@ -8,6 +8,7 @@ import { RC, badge, bar, btn, charCard, charImg, itemIcon, pager, rarityName, ra
 import { fmt, h, svg } from '../dom';
 import { I } from '../icons';
 import { showReveal } from '../reveal';
+import { SKIN_COL, skinCard } from './skins';
 
 interface Tab {
   id: string;
@@ -157,6 +158,35 @@ export function collectionScreen(data: { tab?: string; sel?: string; page?: numb
             )
           : null,
         h('div', { class: 'cd-actions' }, actions),
+        skinsRow(id, own),
+      ),
+    );
+  }
+
+  function skinsRow(id: string, own: boolean) {
+    const list = App.content.skinsOf(id);
+    if (!list.length) return null;
+    const eq = st.equippedSkin(id);
+    return h(
+      'div',
+      { class: 'cd-skins' },
+      h('div', { class: 'cd-skins-head' }, h('span', { class: 'eyebrow' }, 'SKINS'), h('span', { class: 'dim' }, eq ? `입은 의상: ${eq.name}` : '기본 의상'), eq && own ? h('button', { class: 'link', onclick: async () => { await st.equipSkin(id, null); reopen(); } }, '기본으로') : null),
+      h(
+        'div',
+        { class: 'cd-skins-row' },
+        list.map((s) =>
+          h(
+            'div',
+            { class: 'cd-skin' },
+            skinCard(s, { size: 'sm', selected: eq?.id === s.id, showOwner: false, onClick: async () => {
+              if (!st.ownsSkin(s.id)) return ui.toast(st.skinAvailable(s) ? `의상 균열에서 뽑거나 조각 ${App.content.skins.config.exchange[s.grade]}개로 교환할 수 있어요` : '그림을 넣으면 열려요');
+              if (!own) return ui.toast('이 동료를 만나면 입힐 수 있어요');
+              await st.equipSkin(id, eq?.id === s.id ? null : s.id);
+              reopen();
+            } }),
+            h('small', { style: { color: SKIN_COL(s.grade) } }, `${s.grade} · ${s.name}`),
+          ),
+        ),
       ),
     );
   }

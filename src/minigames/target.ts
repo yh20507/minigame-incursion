@@ -74,7 +74,7 @@ export class TargetGame extends MiniGame {
     this.spawnT -= dt;
     if (this.spawnT <= 0) {
       this.spawn();
-      this.spawnT = (this.h.micro ? 0.35 : Math.max(0.28, 0.75 - this.h.t * 0.01)) * this.rnd(0.7, 1.3);
+      this.spawnT = (this.h.micro ? 0.35 : Math.max(0.24, 0.7 - this.h.t * 0.012 - (this.h.difficulty - 1) * 0.1)) * this.rnd(0.7, 1.3);
     }
     for (const d of [...this.drones]) {
       d.age += dt;

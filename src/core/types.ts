@@ -96,14 +96,78 @@ export interface TitleDef {
   id: string;
   name: string;
   desc: string;
-  cond: { type: 'pulls' | 'owned' | 'rarity' | 'enhance' | 'world' | 'stars' | 'cleared' | 'attend'; n?: number; min?: number; world?: string; key?: string };
+  cond: { type: 'pulls' | 'owned' | 'rarity' | 'enhance' | 'world' | 'stars' | 'cleared' | 'attend' | 'skins' | 'hard'; n?: number; min?: number; world?: string; key?: string };
   coins: number;
 }
 
 export interface RewardsDef {
   attendance: { day: number; coins?: number; items?: Record<string, number> }[];
   titles: TitleDef[];
-  tickets: { id: string; world: string }[];
+  tickets: { id: string; world: string; rarity?: number; /** 시즌 패스 보상이면 시즌 id */ pass?: string; name?: string }[];
+}
+
+export type MissionType = 'play' | 'earn' | 'star3' | 'hard' | 'pull' | 'challenge' | 'attend' | 'skinpull';
+export interface MissionDef {
+  id: string;
+  name: string;
+  type: MissionType;
+  n: number;
+  xp: number;
+}
+export interface PassLevel {
+  lv: number;
+  coins?: number;
+  items?: Record<string, number>;
+  skinShards?: number;
+  ticket?: string;
+}
+export interface PassDef {
+  season: string;
+  name: string;
+  sub: string;
+  start: string;
+  end: string;
+  xpPerLevel: number;
+  maxLevel: number;
+  levels: PassLevel[];
+  weekly: MissionDef[];
+  daily: MissionDef[];
+}
+
+export type SkinGrade = 'A' | 'S' | 'SS';
+export interface SkinDef {
+  id: string;
+  char: string;
+  name: string;
+  grade: SkinGrade;
+  desc: string;
+  look?: string;
+  /** 그림을 직접 넣는 자리 (임시 그림 없음, 파일이 생길 때까지 뽑기에서 제외) */
+  manual?: boolean;
+  /** 시즌 한정 (updates.json 의 시즌 id) */
+  season?: string;
+}
+export interface SkinsData {
+  config: {
+    cost: { single: number; multi: number; multiCount: number };
+    rates: { S: number; A: number };
+    shardRoll: [number, number];
+    dupShards: Record<SkinGrade, number>;
+    exchange: Record<SkinGrade, number>;
+    pity: number;
+    pickupMult: number;
+    multiGuarantee: SkinGrade;
+  };
+  grades: Record<SkinGrade, { name: string; color: string }>;
+  skins: SkinDef[];
+}
+export interface SkinPull {
+  kind: 'skin' | 'shard';
+  id: string;
+  grade?: SkinGrade;
+  isNew: boolean;
+  shards: number;
+  pity: boolean;
 }
 
 export interface WorldDef {
@@ -177,6 +241,8 @@ export interface ScoreRec {
   best: number;
   stars: number;
   plays: number;
+  /** 어려움 모드 최고 점수 */
+  hardBest?: number;
 }
 
 export interface SaveData {
@@ -207,6 +273,11 @@ export interface SaveData {
     titles: { claimed: string[]; equipped: string };
     tickets: string[];
     eventRewards: string[];
+    skins: { owned: string[]; equipped: Record<string, string>; shards: number; pity: number; pulls: number };
+    /** 시즌 패스·미션. week/day 는 주기 키, weekly/daily 는 미션별 진행도, done 은 보상 받은 미션 */
+    pass: { season: string; xp: number; claimed: number[]; week: string; weekly: Record<string, number>; day: string; daily: Record<string, number>; done: string[]; freePull: string; attendDays: string[] };
+    /** 어려움 모드 최고 점수 (온라인 저장용) */
+    hardBest: Record<string, number>;
   };
 }
 

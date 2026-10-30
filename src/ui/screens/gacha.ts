@@ -8,6 +8,7 @@ import { fmt, h, svg, wait } from '../dom';
 import { fx } from '../fx';
 import { I } from '../icons';
 import { showReveal } from '../reveal';
+import { armSummaryKeys, runPull, sumChip, type PullCard } from '../pullfx';
 
 const RAR_COL = (r: number) => (r <= 0 ? '#5fd3e0' : RC[r]);
 
@@ -24,6 +25,12 @@ export function gachaScreen(data: { banner?: string }): Screen {
   let busy = false;
 
   // ---------- 왼쪽: 배너 목록
+  const skinEntry = h(
+    'button',
+    { class: 'gb-item skin-entry', vars: { c: '#b48cff' }, onclick: () => { if (busy) return; audio.sfx('select'); ui.show('SkinGacha'); } },
+    h('div', { class: 'gb-art skin-ico' }, svg(I.palette)),
+    h('div', { class: 'gb-text' }, h('div', { class: 'gb-tags' }, h('span', { class: 'tag' }, '스킨'), st.skinPool().some((s) => st.skinPickup(s)) ? h('span', { class: 'tag hot' }, 'PICK UP') : null), h('b', null, '의상 균열'), h('small', null, `보유 스킨 ${st.save.extra.skins.owned.length} · 조각 ${st.save.extra.skins.shards}`)),
+  );
   const list = h(
     'div',
     { class: 'gb-list enter-left' },
@@ -46,12 +53,13 @@ export function gachaScreen(data: { banner?: string }): Screen {
         h(
           'div',
           { class: 'gb-text' },
-          h('div', { class: 'gb-tags' }, h('span', { class: 'tag ' + (b.type === 'standard' ? 'dimmed' : pr?.rerun ? 'good' : 'hot') }, b.type === 'standard' ? '상시' : pr?.rerun ? '복각' : '한정'), st.isFirstMulti(b.id) ? h('span', { class: 'tag gold' }, '첫 확정') : null),
+          h('div', { class: 'gb-tags' }, h('span', { class: 'tag ' + (b.type === 'standard' ? 'dimmed' : pr?.rerun ? 'good' : 'hot') }, b.type === 'standard' ? '상시' : pr?.rerun ? '복각' : '한정'), st.isFirstMulti(b.id) ? h('span', { class: 'tag gold' }, '첫 확정') : null, b.type === 'standard' && st.freePullLeft() ? h('span', { class: 'tag free' }, '무료 1회') : null),
           h('b', null, b.name),
           h('small', null, pr?.end ? `~ ${pr.end}` : '기간 제한 없음'),
         ),
       );
     }),
+    skinEntry,
   );
 
   // ---------- 가운데: 선택한 배너
@@ -100,7 +108,10 @@ export function gachaScreen(data: { banner?: string }): Screen {
   }
 
   // ---------- 아래: 소환 버튼
-  const single = btn('1회 소환', () => doPull(false), { cls: 'big ghost pull-btn', sub: `${fmt(cfg.cost.single)} 코인`, icon: I.coin, disabled: st.coins < cfg.cost.single || !pool.length });
+  const freeNow = banner.type === 'standard' && st.freePullLeft();
+  const single = freeNow
+    ? btn('무료 소환', () => doPull(false, true), { cls: 'big primary pull-btn free pulse', sub: '오늘의 무료 1회 · 매일 0시 충전', icon: I.gift, color: '#4be37a', disabled: !pool.length })
+    : btn('1회 소환', () => doPull(false), { cls: 'big ghost pull-btn', sub: `${fmt(cfg.cost.single)} 코인`, icon: I.coin, disabled: st.coins < cfg.cost.single || !pool.length });
   const multi = btn(`${cfg.cost.multiCount - 1}+1회 소환`, () => doPull(true), {
     cls: 'big primary pull-btn' + (first ? ' gold pulse' : ''),
     sub: first ? `${fmt(cfg.cost.multi)} 코인 · ★${fg} 이상 확정!` : `${fmt(cfg.cost.multi)} 코인 · ★${cfg.multiGuarantee} 이상 1개 보장`,
@@ -128,12 +139,12 @@ export function gachaScreen(data: { banner?: string }): Screen {
   const el = h('div', { class: 'gacha' }, topBar('차원 균열', { back: () => ui.show('Lobby'), color: col, sub: '조각세계 곳곳에 열린 균열에서 동료를 부른다' }), h('div', { class: 'gacha-body' }, list, hero), bottom);
 
   // ---------------------------------------------------------------- 소환
-  async function doPull(isMulti: boolean) {
+  async function doPull(isMulti: boolean, free = false) {
     if (busy) return;
     busy = true;
     let res: PullResult[];
     try {
-      res = await st.pull(banner.id, isMulti);
+      res = await st.pull(banner.id, isMulti, free);
     } catch (e: any) {
       busy = false;
       ui.toast(e?.message ?? '소환 실패', 'bad');
@@ -145,139 +156,15 @@ export function gachaScreen(data: { banner?: string }): Screen {
   async function animate(res: PullResult[]) {
     const top = Math.max(0, ...res.map((r) => r.rarity));
     const topCol = top >= 5 ? '#ff5fd2' : RAR_COL(top);
-    const multiPull = res.length > 1;
     audio.stopBgm();
     audio.bgm('gacha_open', 55, 'lydian', 110, ['gacha']);
-
-    const ov = h('div', { class: 'gacha-ov', vars: { c: col, tc: topCol } }, h('div', { class: 'gov-bg' + (bgA.pixel ? ' pixel' : ''), style: bgUrl ? { backgroundImage: `url(${bgUrl})` } : {} }), h('div', { class: 'gov-shade' }));
-    el.appendChild(ov);
-
-    // ----- 팩
-    const strip = h('div', { class: 'pk-strip' }, h('div', { class: 'pk-zig' }));
-    const tearLine = h('div', { class: 'pk-tear' });
-    const pack = h(
-      'div',
-      { class: 'pack' + (multiPull ? ' multi' : '') },
-      h('div', { class: 'pk-body' }, h('div', { class: 'pk-shine' }), h('div', { class: 'pk-emblem' }, svg(I.rift)), h('div', { class: 'pk-name' }, banner.name), h('div', { class: 'pk-count' }, multiPull ? `${res.length} CARDS` : '1 CARD'), h('div', { class: 'pk-lines' })),
-      strip,
-      h('div', { class: 'pk-dash' }),
-      tearLine,
-      h('div', { class: 'pk-beam' }),
-    );
-    const hint = h('div', { class: 'pk-hint blink' }, '팩 윗부분을 옆으로 끌어서 찢기  ', h('span', { class: 'key' }, 'SPACE'), ' 길게');
-    let progress = 0;
-    const skip = btn('건너뛰기', () => (progress = 1), { cls: 'sm ghost gov-skip', icon: I.skip, silent: true });
-    ov.append(pack, hint, skip);
-    audio.sfx('pack');
-    await wait(650);
-    pack.classList.add('idle');
-
-    // ----- 찢기 (드래그 / 스페이스)
-    let dragging = false;
-    let lastTick = 0;
-    const packRect = () => pack.getBoundingClientRect();
-    const onDown = (e: PointerEvent) => {
-      const r = packRect();
-      if (e.clientY < r.top + r.height * 0.3) dragging = true;
-    };
-    const onMove = (e: PointerEvent) => {
-      if (!dragging) return;
-      const r = packRect();
-      const k = (e.clientX - r.left) / r.width;
-      progress = Math.max(progress, Math.min(1, Math.max(k, 1 - k) > 0.5 ? Math.abs(k - 0.5) * 2 : 0));
-    };
-    const onUp = () => (dragging = false);
-    let spaceDown = false;
-    const kd = (e: KeyboardEvent) => e.code === 'Space' && (spaceDown = true);
-    const ku = (e: KeyboardEvent) => e.code === 'Space' && (spaceDown = false);
-    ov.addEventListener('pointerdown', onDown);
-    window.addEventListener('pointermove', onMove);
-    window.addEventListener('pointerup', onUp);
-    document.addEventListener('keydown', kd);
-    document.addEventListener('keyup', ku);
-    await new Promise<void>((resolve) => {
-      let raf = 0;
-      let lastLeak = 0;
-      let lastT = performance.now();
-      const loop = (t: number) => {
-        const dt = Math.min(0.3, (t - lastT) / 1000);
-        lastT = t;
-        if (spaceDown) progress = Math.min(1, progress + dt * 1.1);
-        tearLine.style.width = progress * 100 + '%';
-        if (progress > 0 && progress < 1) {
-          if (Math.floor(progress * 12) !== lastTick) {
-            lastTick = Math.floor(progress * 12);
-            audio.sfx('tick');
-          }
-          if (t - lastLeak > 60) {
-            lastLeak = t;
-            const r = pack.getBoundingClientRect();
-            const sr = ui.stage.getBoundingClientRect();
-            const x = ((r.left + r.width * progress - sr.left) / sr.width) * 1920;
-            const y = ((r.top + 54 - sr.top) / sr.height) * 1080;
-            fx.burst(x, y, { n: 3, color: [topCol, '#fff'], speed: 220, size: 4, life: 0.6, g: -200, spread: Math.PI, angle: -Math.PI / 2, glow: true });
-          }
-        }
-        if (progress >= 1) return resolve();
-        raf = requestAnimationFrame(loop);
-      };
-      raf = requestAnimationFrame(loop);
-      void raf;
-    });
-    ov.removeEventListener('pointerdown', onDown);
-    window.removeEventListener('pointermove', onMove);
-    window.removeEventListener('pointerup', onUp);
-    document.removeEventListener('keydown', kd);
-    document.removeEventListener('keyup', ku);
-    hint.remove();
-    skip.remove();
-    pack.classList.remove('idle');
-
-    // ----- 띠 날아가고 빛
-    audio.sfx('tear');
-    pack.classList.add('torn');
-    const pr = pack.getBoundingClientRect();
-    const sr = ui.stage.getBoundingClientRect();
-    const px = ((pr.left + pr.width / 2 - sr.left) / sr.width) * 1920;
-    const py = ((pr.top + 40 - sr.top) / sr.height) * 1080;
-    fx.burst(px, py, { n: top >= 4 ? 120 : 60, color: [topCol, '#fff'], speed: top >= 4 ? 900 : 500, size: 6, life: 1.3, shape: 'spark', g: 400 });
-    fx.shake(ui.stage, top >= 4 ? 3 : 1.2, top >= 4 ? 500 : 250);
-    audio.sfx(top >= 4 ? 'legend' : top === 3 ? 'hero' : 'rare');
-    await wait(top >= 4 ? 900 : 600);
-    if (top >= 5) {
-      const warn = h('div', { class: 'gov-warn' }, h('div', { class: 'gov-warn-text' }, '균 열 이 변'), h('div', { class: 'eyebrow' }, 'RIFT ANOMALY DETECTED'));
-      ov.appendChild(warn);
-      await wait(1300);
-      audio.sfx('ultra');
-      warn.classList.add('burst');
-      fx.flash('#fff', 700, 1);
-      fx.shake(ui.stage, 5, 700);
-      fx.burst(960, 540, { n: 200, color: ['#ff5fd2', '#5fd3e0', '#ffc845', '#fff', '#b48cff', '#4be37a'], speed: 1400, size: 9, life: 1.8, shape: 'shard', g: 200 });
-      await wait(600);
-      warn.remove();
-    }
-    pack.classList.add('gone');
-    await wait(400);
-    pack.remove();
-    await deal(ov, res);
-  }
-
-  async function deal(ov: HTMLElement, res: PullResult[]) {
-    const single = res.length === 1;
-    type Card = { el: HTMLElement; r: PullResult; open: boolean };
-    const cards: Card[] = [];
-    const grid = h('div', { class: 'cards' + (single ? ' single' : '') });
-    ov.appendChild(grid);
-    const row1 = h('div', { class: 'cards-row' });
-    const row2 = h('div', { class: 'cards-row' });
-    grid.append(row1, row2);
-    res.forEach((r, i) => {
+    const cards: PullCard[] = res.map((r) => {
       const c = r.kind === 'char' ? App.content.char(r.id) : null;
       const rc = RAR_COL(r.rarity);
       const face = c
         ? h(
             'div',
-            { class: 'cf' },
+            { class: 'cf', vars: { c: rc } },
             h('div', { class: 'cf-art' }, charImg(c.id, 'portrait')),
             h('div', { class: 'cf-shade' }),
             h('div', { class: 'cf-top' }, rarityStars(c.rarity), r.isNew ? h('span', { class: 'tag hot' }, 'NEW') : null),
@@ -285,74 +172,39 @@ export function gachaScreen(data: { banner?: string }): Screen {
           )
         : h(
             'div',
-            { class: 'cf item' },
+            { class: 'cf item', vars: { c: rc } },
             h('div', { class: 'cf-item-ico' }, itemIcon(r.id)),
             h('div', { class: 'cf-name' }, h('b', null, App.content.item(r.id)?.name ?? r.id), h('small', { class: 'dim' }, App.content.item(r.id)?.effect === 'instant' ? `+${App.content.item(r.id)!.value} 코인` : '아이템')),
           );
-      const back = h('div', { class: 'cb' }, h('div', { class: 'cb-pattern' }), h('div', { class: 'cb-emblem' }, svg(I.rift)));
-      const card = h('div', { class: `card r${r.rarity}` + (r.kind === 'item' ? ' item' : ''), vars: { c: rc }, style: { animationDelay: i * 70 + 'ms' } }, h('div', { class: 'card-inner' }, back, face));
-      (i < 6 ? row1 : row2).appendChild(card);
-      const cd: Card = { el: card, r, open: false };
-      cards.push(cd);
-      card.addEventListener('click', () => flip(cd));
-      setTimeout(() => audio.sfx('select'), i * 70);
-    });
-    let flipping = false;
-    const flip = async (cd: Card) => {
-      if (cd.open || flipping) return;
-      flipping = true;
-      cd.open = true;
-      audio.sfx('flip');
-      cd.el.classList.add('open');
-      const r = cd.r;
-      if (r.kind === 'char' && r.rarity >= 4) {
-        await wait(350);
-        await showReveal(r.id, { note: dupText(r), tag: r.isNew ? 'NEW' : undefined, quick: true });
-      } else {
-        if (r.rarity === 3) audio.sfx('hero');
-        await wait(220);
-      }
-      flipping = false;
-      if (cards.every((c) => c.open)) finish();
-    };
-    const flipAll = async () => {
-      for (const c of cards) {
-        if (c.open) continue;
-        while (flipping) await wait(40);
-        await flip(c);
-      }
-    };
-    const allBtn = btn('전부 뒤집기', flipAll, { cls: 'primary gov-all', icon: I.sparkle, sub: 'SPACE' });
-    ov.appendChild(allBtn);
-    const onKey = (e: KeyboardEvent) => {
-      if (e.code === 'Space' && !cards.every((c) => c.open)) {
-        e.preventDefault();
-        flipAll();
-      }
-    };
-    document.addEventListener('keydown', onKey);
-
-    const finish = () => {
-      document.removeEventListener('keydown', onKey);
-      allBtn.remove();
-      const nNew = res.filter((r) => r.isNew).length;
-      const nUp = res.filter((r) => r.levelUp).length;
-      const nItem = res.filter((r) => r.kind === 'item').length;
-      const toU = Math.max(0, cfg.pity.ultra - st.save.pity.ultra);
-      const toL = Math.max(0, cfg.pity.legend - st.save.pity.legend);
-      const isMulti = res.length > 1;
-      const again = isMulti ? cfg.cost.multi : cfg.cost.single;
-      const close = () => {
-        ov.classList.add('out');
-        setTimeout(() => {
-          busy = false;
-          ui.show('Gacha', { banner: banner.id }, { instant: true });
-        }, 300);
+      return {
+        face,
+        glow: r.kind === 'char' ? r.rarity : 0,
+        sfx: r.rarity === 3 ? 'hero' : undefined,
+        onFlip: r.kind === 'char' && r.rarity >= 4 ? () => showReveal(r.id, { note: dupText(r), tag: r.isNew ? 'NEW' : undefined, quick: true }) : undefined,
       };
-      const sum = h(
+    });
+    const { ov, done } = runPull({ host: el, packName: banner.name, color: col, topColor: topCol, top, bgUrl, bgPixel: bgA.pixel, cards, countLabel: res.length > 1 ? `${res.length} CARDS` : '1 CARD' });
+    await done;
+
+    const nNew = res.filter((r) => r.isNew).length;
+    const nUp = res.filter((r) => r.levelUp).length;
+    const nItem = res.filter((r) => r.kind === 'item').length;
+    const toU = Math.max(0, cfg.pity.ultra - st.save.pity.ultra);
+    const toL = Math.max(0, cfg.pity.legend - st.save.pity.legend);
+    const isMulti = res.length > 1;
+    const again = isMulti ? cfg.cost.multi : cfg.cost.single;
+    const close = () => {
+      ov.classList.add('out');
+      setTimeout(() => {
+        busy = false;
+        ui.show('Gacha', { banner: banner.id }, { instant: true });
+      }, 300);
+    };
+    ov.appendChild(
+      h(
         'div',
         { class: 'gov-sum' },
-        h('div', { class: 'gov-sum-chips' }, chip('NEW', nNew, 'hot'), chip('강화', nUp, 'gold'), chip('아이템', nItem, 'cyan')),
+        h('div', { class: 'gov-sum-chips' }, sumChip('NEW', nNew, 'hot'), sumChip('강화', nUp, 'gold'), sumChip('아이템', nItem, 'cyan')),
         h('div', { class: 'gov-sum-pity' }, h('span', null, '★4 확정까지 ', h('b', { class: 'num' }, `${toL}`)), h('span', null, '★5 확정까지 ', h('b', { class: 'num' }, `${toU}`))),
         h(
           'div',
@@ -364,19 +216,9 @@ export function gachaScreen(data: { banner?: string }): Screen {
           }, { cls: 'ghost', icon: I.rift, sub: `${fmt(again)} 코인`, disabled: st.coins < again }),
           btn('확인', close, { cls: 'primary', sub: 'SPACE' }),
         ),
-      );
-      ov.appendChild(sum);
-      const onSpace = (e: KeyboardEvent) => {
-        if (e.code === 'Space' || e.code === 'Enter') {
-          document.removeEventListener('keydown', onSpace);
-          close();
-        }
-      };
-      setTimeout(() => document.addEventListener('keydown', onSpace), 300);
-    };
-    function chip(label: string, n: number, cls: string) {
-      return h('span', { class: 'sum-chip' + (n ? ' ' + cls : '') }, h('b', { class: 'num' }, String(n)), h('small', null, label));
-    }
+      ),
+    );
+    armSummaryKeys(close);
   }
 
   // ---------------------------------------------------------------- 모달

@@ -364,24 +364,95 @@
     "n": 100
    },
    "coins": 5000
+  },
+  {
+   "id": "skin3",
+   "name": "옷장이 늘었다",
+   "desc": "스킨 3개 모으기",
+   "cond": {
+    "type": "skins",
+    "n": 3
+   },
+   "coins": 800
+  },
+  {
+   "id": "skin10",
+   "name": "패셔니스타",
+   "desc": "스킨 10개 모으기",
+   "cond": {
+    "type": "skins",
+    "n": 10
+   },
+   "coins": 2500
+  },
+  {
+   "id": "skin25",
+   "name": "의상실 주인",
+   "desc": "스킨 25개 모으기",
+   "cond": {
+    "type": "skins",
+    "n": 25
+   },
+   "coins": 5000
+  },
+  {
+   "id": "hard3",
+   "name": "한계 너머",
+   "desc": "어려움 모드에서 ★3 기준 넘기기 3게임",
+   "cond": {
+    "type": "hard",
+    "n": 3
+   },
+   "coins": 1500
+  },
+  {
+   "id": "hard8",
+   "name": "시련의 정복자",
+   "desc": "어려움 모드에서 ★3 기준 넘기기 8게임",
+   "cond": {
+    "type": "hard",
+    "n": 8
+   },
+   "coins": 4000
+  },
+  {
+   "id": "hard12",
+   "name": "조각세계 최강",
+   "desc": "모든 미니게임 어려움 모드 ★3 기준 달성",
+   "cond": {
+    "type": "hard",
+    "n": 12
+   },
+   "coins": 8000
   }
  ],
  "tickets": [
   {
    "id": "tk_marvel",
-   "world": "marvel"
+   "world": "marvel",
+   "rarity": 4
   },
   {
    "id": "tk_onepiece",
-   "world": "onepiece"
+   "world": "onepiece",
+   "rarity": 4
   },
   {
    "id": "tk_lol",
-   "world": "lol"
+   "world": "lol",
+   "rarity": 4
   },
   {
    "id": "tk_stellive",
-   "world": "stellive"
+   "world": "stellive",
+   "rarity": 4
+  },
+  {
+   "id": "tk_pass_s1",
+   "world": "any",
+   "rarity": 5,
+   "pass": "s1",
+   "name": "시즌 1 ★5 선택권"
   }
  ]
 }

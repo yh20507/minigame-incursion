@@ -3,7 +3,7 @@ import { App } from '../core/app';
 import { RARITY_COLORS } from '../core/art';
 import { audio } from '../core/audio';
 import type { PullResult } from '../core/types';
-import { bestArt, portraitArt, artUrl, ui } from './app';
+import { bestArt, portraitArt, artUrl, texUrl, ui } from './app';
 import { h, svg, fmt, countUp, type Attrs } from './dom';
 import { I, ITEM_ICON } from './icons';
 
@@ -140,7 +140,9 @@ export function badge(text: string, cls = '') {
 // ---------------------------------------------------------------- 캐릭터
 /** 캐릭터 그림 요소. pixel 이면 또렷하게 확대 */
 export function charImg(id: string, kind: 'portrait' | 'best' | 'sprite' = 'portrait', attrs: Attrs = {}) {
-  const a = kind === 'portrait' ? portraitArt(id) : kind === 'best' ? bestArt(id) : { url: artUrl('spr', id) ?? '', pixel: true };
+  const skin = App.store.equippedSkin(id)?.id;
+  const sprKey = skin && ui.game.textures.exists(`skin_${skin}_sprite`) ? `skin_${skin}_sprite` : `spr_${id}`;
+  const a = kind === 'portrait' ? portraitArt(id) : kind === 'best' ? bestArt(id) : { url: texUrl(sprKey) ?? artUrl('spr', id) ?? '', pixel: true };
   return h('img', { ...attrs, src: a.url, alt: '', class: ((attrs.class ?? '') + (a.pixel ? ' pixel' : '')).trim(), data: { kind: (a as any).kind ?? kind } });
 }
 

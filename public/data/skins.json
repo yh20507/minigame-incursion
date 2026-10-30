@@ -1,0 +1,387 @@
+{
+ "config": {
+  "cost": {
+   "single": 300,
+   "multi": 2800,
+   "multiCount": 11
+  },
+  "rates": {
+   "S": 3,
+   "A": 22
+  },
+  "shardRoll": [
+   10,
+   30
+  ],
+  "dupShards": {
+   "A": 30,
+   "S": 100,
+   "SS": 200
+  },
+  "exchange": {
+   "A": 100,
+   "S": 300,
+   "SS": 600
+  },
+  "pity": 50,
+  "pickupMult": 2,
+  "multiGuarantee": "A"
+ },
+ "grades": {
+  "A": {
+   "name": "일반 스킨",
+   "color": "#4aa3ff"
+  },
+  "S": {
+   "name": "프리미엄 스킨",
+   "color": "#ffc845"
+  },
+  "SS": {
+   "name": "시즌 한정 스킨",
+   "color": "#ff5fd2"
+  }
+ },
+ "skins": [
+  {
+   "id": "sk_elowen_1",
+   "char": "elowen",
+   "name": "대관식 정장",
+   "grade": "A",
+   "desc": "잿빛 왕관의 대관식에 맞춰 지은 정장. 잿더미 위에서도 격식을 잃지 않는다.",
+   "look": "ceremonial formal attire, black and gold embroidered coat, ash-grey accents, royal insignia, court mage woman, long silver hair, star-patterned robe, staff glowing with rift light"
+  },
+  {
+   "id": "sk_nia_1",
+   "char": "nia",
+   "name": "대관식 정장",
+   "grade": "A",
+   "desc": "잿빛 왕관의 대관식에 맞춰 지은 정장. 잿더미 위에서도 격식을 잃지 않는다.",
+   "look": "ceremonial formal attire, black and gold embroidered coat, ash-grey accents, royal insignia, shadow spy, black hood and mask, twin daggers, slim agile build"
+  },
+  {
+   "id": "sk_seraphina_1",
+   "char": "seraphina",
+   "name": "대관식 정장",
+   "grade": "S",
+   "desc": "잿빛 왕관의 대관식에 맞춰 지은 정장. 잿더미 위에서도 격식을 잃지 않는다.",
+   "look": "ceremonial formal attire, black and gold embroidered coat, ash-grey accents, royal insignia, knight commander woman, silver plate armor, red cape, golden braided hair, crested sword"
+  },
+  {
+   "id": "sk_cassian_1",
+   "char": "cassian",
+   "name": "대관식 정장",
+   "grade": "S",
+   "desc": "잿빛 왕관의 대관식에 맞춰 지은 정장. 잿더미 위에서도 격식을 잃지 않는다.",
+   "look": "ceremonial formal attire, black and gold embroidered coat, ash-grey accents, royal insignia, dragon rider, flight goggles, scarf blowing in wind, dragon scale armor, lance"
+  },
+  {
+   "id": "sk_seraphina_x_1",
+   "char": "seraphina_x",
+   "name": "대관식 정장",
+   "grade": "SS",
+   "desc": "잿빛 왕관의 대관식에 맞춰 지은 정장. 잿더미 위에서도 격식을 잃지 않는다.",
+   "look": "ceremonial formal attire, black and gold embroidered coat, ash-grey accents, royal insignia, alternate version of a knight commander woman, golden braided hair, dark violet armor, glowing magenta rift aura, otherworldly",
+   "season": "s1"
+  },
+  {
+   "id": "sk_kai_1",
+   "char": "kai",
+   "name": "네온 라이브",
+   "grade": "A",
+   "desc": "네온 하버의 밤 공연을 위한 무대 의상. 빛이 닿으면 색이 흐른다.",
+   "look": "stage outfit, neon pink and cyan accents, holographic fabric, glowing accessories, idol costume, corporate bodyguard, black suit, sunglasses, earpiece"
+  },
+  {
+   "id": "sk_roxy_1",
+   "char": "roxy",
+   "name": "네온 라이브",
+   "grade": "A",
+   "desc": "네온 하버의 밤 공연을 위한 무대 의상. 빛이 닿으면 색이 흐른다.",
+   "look": "stage outfit, neon pink and cyan accents, holographic fabric, glowing accessories, idol costume, biker gang boss woman, leather jacket, neon mohawk, helmet under arm"
+  },
+  {
+   "id": "sk_silva_1",
+   "char": "silva",
+   "name": "네온 라이브",
+   "grade": "A",
+   "desc": "네온 하버의 밤 공연을 위한 무대 의상. 빛이 닿으면 색이 흐른다.",
+   "look": "stage outfit, neon pink and cyan accents, holographic fabric, glowing accessories, idol costume, information broker woman, spiderweb pattern shawl, floating holographic screens, long nails"
+  },
+  {
+   "id": "sk_lumiere_1",
+   "char": "lumiere",
+   "name": "네온 라이브",
+   "grade": "S",
+   "desc": "네온 하버의 밤 공연을 위한 무대 의상. 빛이 닿으면 색이 흐른다.",
+   "look": "stage outfit, neon pink and cyan accents, holographic fabric, glowing accessories, idol costume, neon pop singer woman, glamorous stage dress, holographic microphone, glowing long hair"
+  },
+  {
+   "id": "sk_lumiere_x_1",
+   "char": "lumiere_x",
+   "name": "네온 라이브",
+   "grade": "SS",
+   "desc": "네온 하버의 밤 공연을 위한 무대 의상. 빛이 닿으면 색이 흐른다.",
+   "look": "stage outfit, neon pink and cyan accents, holographic fabric, glowing accessories, idol costume, alternate version of a neon pop singer woman, glowing long hair, dark iridescent stage dress, magenta rift aura, otherworldly",
+   "season": "s1"
+  },
+  {
+   "id": "sk_onyx_1",
+   "char": "onyx",
+   "name": "표류선 캐주얼",
+   "grade": "A",
+   "desc": "성운 표류선 승무원의 비번 날 차림. 중력이 약해 머리카락이 떠오른다.",
+   "look": "casual spacesuit jacket, deep blue and teal, patches and badges, zero-gravity hair, security chief, heavy armored spacesuit, large shield, stern face"
+  },
+  {
+   "id": "sk_qura_1",
+   "char": "qura",
+   "name": "표류선 캐주얼",
+   "grade": "A",
+   "desc": "성운 표류선 승무원의 비번 날 차림. 중력이 약해 머리카락이 떠오른다.",
+   "look": "casual spacesuit jacket, deep blue and teal, patches and badges, zero-gravity hair, alien merchant with four tentacles each holding goods, big eyes, merchant vest"
+  },
+  {
+   "id": "sk_nova_1",
+   "char": "nova",
+   "name": "표류선 캐주얼",
+   "grade": "S",
+   "desc": "성운 표류선 승무원의 비번 날 차림. 중력이 약해 머리카락이 떠오른다.",
+   "look": "casual spacesuit jacket, deep blue and teal, patches and badges, zero-gravity hair, galaxy explorer woman, explorer spacesuit, big backpack, star pin, confident smile"
+  },
+  {
+   "id": "sk_orden_1",
+   "char": "orden",
+   "name": "대관식 정장",
+   "grade": "S",
+   "desc": "잿빛 왕관의 대관식에 맞춰 지은 정장. 잿더미 위에서도 격식을 잃지 않는다.",
+   "look": "ceremonial formal attire, black and gold embroidered coat, ash-grey accents, royal insignia, ash king, ash-covered crown, cracked royal armor, huge greatsword, weary"
+  },
+  {
+   "id": "sk_adel_1",
+   "char": "adel",
+   "name": "네온 라이브",
+   "grade": "S",
+   "desc": "네온 하버의 밤 공연을 위한 무대 의상. 빛이 닿으면 색이 흐른다.",
+   "look": "stage outfit, neon pink and cyan accents, holographic fabric, glowing accessories, idol costume, holographic AI harbor master, translucent cyan body, harbor uniform, rings of data orbiting"
+  },
+  {
+   "id": "sk_vorex_1",
+   "char": "vorex",
+   "name": "표류선 캐주얼",
+   "grade": "S",
+   "desc": "성운 표류선 승무원의 비번 날 차림. 중력이 약해 머리카락이 떠오른다.",
+   "look": "casual spacesuit jacket, deep blue and teal, patches and badges, zero-gravity hair, old space captain, huge build, worn captain coat, mechanical prosthetic arm, white beard"
+  },
+  {
+   "id": "sk_architect_1",
+   "char": "architect",
+   "name": "균열 산책복",
+   "grade": "SS",
+   "desc": "균열을 산책할 때 입는 옷. 옷자락 끝이 조금씩 흩어진다.",
+   "look": "dark violet casual outfit with glitch-like tears, floating fragments, mysterious figure in dark cloak, face hidden in shadow, glowing pink eyes, threads and needle motif, lonely",
+   "season": "s1"
+  },
+  {
+   "id": "sk_mv_cap_1",
+   "char": "mv_cap",
+   "name": "클래식 코믹스",
+   "grade": "A",
+   "desc": "은빛 시대 만화책에서 튀어나온 듯한 옛 의상.",
+   "look": "classic comic book costume, bold primary colors, halftone shading, retro comic style, Captain America (Marvel), star-spangled suit, round shield"
+  },
+  {
+   "id": "sk_mv_panther_1",
+   "char": "mv_panther",
+   "name": "클래식 코믹스",
+   "grade": "A",
+   "desc": "은빛 시대 만화책에서 튀어나온 듯한 옛 의상.",
+   "look": "classic comic book costume, bold primary colors, halftone shading, retro comic style, Black Panther (Marvel), black panther suit, silver details"
+  },
+  {
+   "id": "sk_mv_strange_1",
+   "char": "mv_strange",
+   "name": "클래식 코믹스",
+   "grade": "A",
+   "desc": "은빛 시대 만화책에서 튀어나온 듯한 옛 의상.",
+   "look": "classic comic book costume, bold primary colors, halftone shading, retro comic style, Doctor Strange (Marvel), blue robe, red cloak, magic circles"
+  },
+  {
+   "id": "sk_mv_ironman_1",
+   "char": "mv_ironman",
+   "name": "클래식 코믹스",
+   "grade": "S",
+   "desc": "은빛 시대 만화책에서 튀어나온 듯한 옛 의상.",
+   "look": "classic comic book costume, bold primary colors, halftone shading, retro comic style, Iron Man (Marvel), red and gold armor, arc reactor"
+  },
+  {
+   "id": "sk_mv_thor_1",
+   "char": "mv_thor",
+   "name": "클래식 코믹스",
+   "grade": "S",
+   "desc": "은빛 시대 만화책에서 튀어나온 듯한 옛 의상.",
+   "look": "classic comic book costume, bold primary colors, halftone shading, retro comic style, Thor (Marvel), armor, red cape, hammer, lightning"
+  },
+  {
+   "id": "sk_mv_wanda_1",
+   "char": "mv_wanda",
+   "name": "클래식 코믹스",
+   "grade": "SS",
+   "desc": "은빛 시대 만화책에서 튀어나온 듯한 옛 의상.",
+   "look": "classic comic book costume, bold primary colors, halftone shading, retro comic style, Scarlet Witch (Marvel), red costume, headpiece, red magic",
+   "season": "s1"
+  },
+  {
+   "id": "sk_op_robin_1",
+   "char": "op_robin",
+   "name": "와노국 기모노",
+   "grade": "A",
+   "desc": "와노국에서 맞춘 기모노. 칼을 차도 어울린다.",
+   "look": "japanese kimono, wano country style, haori, floral pattern, sandals, Nico Robin (One Piece), archaeologist, black hair, cowboy hat"
+  },
+  {
+   "id": "sk_op_law_1",
+   "char": "op_law",
+   "name": "와노국 기모노",
+   "grade": "A",
+   "desc": "와노국에서 맞춘 기모노. 칼을 차도 어울린다.",
+   "look": "japanese kimono, wano country style, haori, floral pattern, sandals, Trafalgar Law (One Piece), spotted hat, long nodachi sword"
+  },
+  {
+   "id": "sk_op_hancock_1",
+   "char": "op_hancock",
+   "name": "와노국 기모노",
+   "grade": "A",
+   "desc": "와노국에서 맞춘 기모노. 칼을 차도 어울린다.",
+   "look": "japanese kimono, wano country style, haori, floral pattern, sandals, Boa Hancock (One Piece), pirate empress, long black hair, elegant dress"
+  },
+  {
+   "id": "sk_op_zoro_1",
+   "char": "op_zoro",
+   "name": "와노국 기모노",
+   "grade": "S",
+   "desc": "와노국에서 맞춘 기모노. 칼을 차도 어울린다.",
+   "look": "japanese kimono, wano country style, haori, floral pattern, sandals, Roronoa Zoro (One Piece), green hair, three swords, bandana"
+  },
+  {
+   "id": "sk_op_ace_1",
+   "char": "op_ace",
+   "name": "와노국 기모노",
+   "grade": "S",
+   "desc": "와노국에서 맞춘 기모노. 칼을 차도 어울린다.",
+   "look": "japanese kimono, wano country style, haori, floral pattern, sandals, Portgas D. Ace (One Piece), orange hat, fire"
+  },
+  {
+   "id": "sk_op_luffy_1",
+   "char": "op_luffy",
+   "name": "와노국 기모노",
+   "grade": "SS",
+   "desc": "와노국에서 맞춘 기모노. 칼을 차도 어울린다.",
+   "look": "japanese kimono, wano country style, haori, floral pattern, sandals, Monkey D. Luffy (One Piece), straw hat, red vest, big grin",
+   "season": "s1"
+  },
+  {
+   "id": "sk_lol_cait_1",
+   "char": "lol_cait",
+   "name": "K/DA 스테이지",
+   "grade": "A",
+   "desc": "무대 조명 아래 가장 빛나는 팝스타의 의상.",
+   "look": "K/DA pop star outfit, glossy black and gold, neon accents, stage lights, Caitlyn (League of Legends), sheriff, top hat, sniper rifle"
+  },
+  {
+   "id": "sk_lol_vi_1",
+   "char": "lol_vi",
+   "name": "K/DA 스테이지",
+   "grade": "A",
+   "desc": "무대 조명 아래 가장 빛나는 팝스타의 의상.",
+   "look": "K/DA pop star outfit, glossy black and gold, neon accents, stage lights, Vi (League of Legends), pink hair, giant gauntlets"
+  },
+  {
+   "id": "sk_lol_leesin_1",
+   "char": "lol_leesin",
+   "name": "K/DA 스테이지",
+   "grade": "A",
+   "desc": "무대 조명 아래 가장 빛나는 팝스타의 의상.",
+   "look": "K/DA pop star outfit, glossy black and gold, neon accents, stage lights, Lee Sin (League of Legends), blind monk, red blindfold"
+  },
+  {
+   "id": "sk_lol_yasuo_1",
+   "char": "lol_yasuo",
+   "name": "K/DA 스테이지",
+   "grade": "S",
+   "desc": "무대 조명 아래 가장 빛나는 팝스타의 의상.",
+   "look": "K/DA pop star outfit, glossy black and gold, neon accents, stage lights, Yasuo (League of Legends), wind swordsman, ponytail"
+  },
+  {
+   "id": "sk_lol_ahri_1",
+   "char": "lol_ahri",
+   "name": "K/DA 스테이지",
+   "grade": "S",
+   "desc": "무대 조명 아래 가장 빛나는 팝스타의 의상.",
+   "look": "K/DA pop star outfit, glossy black and gold, neon accents, stage lights, Ahri (League of Legends), nine-tailed fox, fox ears"
+  },
+  {
+   "id": "sk_lol_kaisa_1",
+   "char": "lol_kaisa",
+   "name": "K/DA 스테이지",
+   "grade": "SS",
+   "desc": "무대 조명 아래 가장 빛나는 팝스타의 의상.",
+   "look": "K/DA pop star outfit, glossy black and gold, neon accents, stage lights, Kai'Sa (League of Legends), void armor suit, purple glow",
+   "season": "s1"
+  },
+  {
+   "id": "sk_sl_yuni_1",
+   "char": "sl_yuni",
+   "name": "신의상 ver.",
+   "grade": "SS",
+   "desc": "직접 만든 일러스트를 넣는 자리예요. assets/chars/skins/<스킨id>_art.png",
+   "look": "stellive, ayatsuno yuni, 1girl, unicorn horn, single horn, spiral horn, white hair, long hair, wavy hair, rainbow streak in bangs, twin braids, blue hair ribbons, purple eyes, white cropped jacket, high collar, blue trim, long sleeves, gem emblem on chest",
+   "manual": true,
+   "season": "s1"
+  },
+  {
+   "id": "sk_sl_huya_1",
+   "char": "sl_huya",
+   "name": "신의상 ver.",
+   "grade": "S",
+   "desc": "직접 만든 일러스트를 넣는 자리예요. assets/chars/skins/<스킨id>_art.png",
+   "look": "stellive, sakihane huya, 1girl, purple hair, very long hair, yellow eyes, black curved horns, pointy ears, purple beret, star hair ornament, black choker, gold necklace, pink gem, white puffy short sleeves, purple and black dress, frills, black bow",
+   "manual": true
+  },
+  {
+   "id": "sk_sl_gangzi_1",
+   "char": "sl_gangzi",
+   "name": "신의상 ver.",
+   "grade": "S",
+   "desc": "직접 만든 일러스트를 넣는 자리예요. assets/chars/skins/<스킨id>_art.png",
+   "look": "stellive, 1girl, black hair, blue inner hair, gradient hair, very long hair, hair between eyes, yellow eyes, black hairband, black hair ribbons, white frilled ribbon trim, criss-cross choker, white camisole, cross-laced front, lace trim, sleeveless, black dress",
+   "manual": true
+  },
+  {
+   "id": "sk_sl_hina_1",
+   "char": "sl_hina",
+   "name": "신의상 ver.",
+   "grade": "A",
+   "desc": "직접 만든 일러스트를 넣는 자리예요. assets/chars/skins/<스킨id>_art.png",
+   "look": "stellive, shirayuki hina, 1girl, black hair, long hair, blue eyes, large red hair bow, single braid, small red bow, gold heart hair clip, white collared shirt, red striped bowtie, beige sweater vest, school uniform",
+   "manual": true
+  },
+  {
+   "id": "sk_sl_mashiro_1",
+   "char": "sl_mashiro",
+   "name": "신의상 ver.",
+   "grade": "A",
+   "desc": "직접 만든 일러스트를 넣는 자리예요. assets/chars/skins/<스킨id>_art.png",
+   "look": "stellive, neneko mashiro, 1girl, grey hair, short hair, bob cut, red streak in hair, red eyes, grey cat ears, black peaked cap, hair clip, white frilled shirt, red necktie, black corset, black jacket, quilted jacket lining, off shoulder jacket",
+   "manual": true
+  },
+  {
+   "id": "sk_sl_toa_1",
+   "char": "sl_toa",
+   "name": "신의상 ver.",
+   "grade": "A",
+   "desc": "직접 만든 일러스트를 넣는 자리예요. assets/chars/skins/<스킨id>_art.png",
+   "look": "stellive, 1girl, black hair, purple highlights, long hair, low twintails, purple eyes, pink heart hair clip, pink x hair clip, grey collared shirt, pink bow, navy blazer, cross necklace, silver chain, pink armband",
+   "manual": true
+  }
+ ]
+}

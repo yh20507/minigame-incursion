@@ -7,12 +7,12 @@ import { h, svg, wait } from './dom';
 import { fx } from './fx';
 import { I } from './icons';
 
-export function showReveal(charId: string, o: { note?: string; tag?: string; quick?: boolean } = {}) {
+export function showReveal(charId: string, o: { note?: string; tag?: string; quick?: boolean; skin?: import('../core/types').SkinDef } = {}) {
   return new Promise<void>((resolve) => {
     const ch = App.content.char(charId);
-    const ultra = ch.rarity >= 5;
-    const col = RC[ch.rarity];
-    const art = bestArt(charId);
+    const ultra = o.skin ? o.skin.grade === 'SS' : ch.rarity >= 5;
+    const col = o.skin ? App.content.skins.grades[o.skin.grade].color : RC[ch.rarity];
+    const art = bestArt(charId, true, o.skin ? o.skin.id : undefined);
     const world = App.content.world(ch.domain);
     const domCol = App.content.domainColor(ch.domain);
 
@@ -29,14 +29,14 @@ export function showReveal(charId: string, o: { note?: string; tag?: string; qui
       h(
         'div',
         { class: 'rv-text' },
-        h('div', { class: 'rv-rarity' }, h('span', { class: 'eyebrow' }, ultra ? 'ULTRA RARE' : 'LEGENDARY'), h('b', null, rarityName(ch.rarity))),
+        h('div', { class: 'rv-rarity' }, h('span', { class: 'eyebrow' }, o.skin ? `${o.skin.grade} SKIN` : ultra ? 'ULTRA RARE' : 'LEGENDARY'), h('b', null, o.skin ? App.content.skins.grades[o.skin.grade].name : rarityName(ch.rarity))),
         nameEl,
-        h('div', { class: 'rv-title' }, h('span', null, ch.title), h('i', null, ' · '), h('span', { class: 'rv-dom' }, App.content.domainName(ch.domain))),
+        h('div', { class: 'rv-title' }, h('span', null, o.skin ? o.skin.name : ch.title), h('i', null, ' · '), h('span', { class: 'rv-dom' }, o.skin ? ch.title : App.content.domainName(ch.domain))),
         lineEl,
         o.note ? h('div', { class: 'rv-note' }, o.tag ? h('span', { class: 'tag hot' }, o.tag) : null, h('span', null, o.note)) : null,
       ),
       h('div', { class: 'rv-hint' }, h('span', { class: 'key' }, 'SPACE'), ' 또는 클릭으로 계속'),
-      h('div', { class: 'rv-stamp' }, svg(I.star), h('b', null, String(ch.rarity))),
+      h('div', { class: 'rv-stamp' }, o.skin ? h('b', null, o.skin.grade) : [svg(I.star), h('b', null, String(ch.rarity))]),
     );
     ui.topLayer.appendChild(el);
 

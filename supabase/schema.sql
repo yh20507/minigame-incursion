@@ -195,7 +195,10 @@ revoke execute on function public.mi__add_dupe(uuid, text, int, jsonb) from publ
 
 -- 뽑기: 확률·천장·아이템·코인 차감·강화·기록을 한 번에 처리한다.
 -- p_pool: 이번 균열에서 나올 수 있는 캐릭터 id 목록 (클라이언트가 균열 설정에서 계산해 보냄)
-create or replace function public.mi_pull(p_banner text, p_pool text[], p_multi boolean)
+-- 일일 무료 소환
+alter table public.mi_profiles add column if not exists free_pull_on date;
+drop function if exists public.mi_pull(text, text[], boolean);
+create or replace function public.mi_pull(p_banner text, p_pool text[], p_multi boolean, p_free boolean default false)
 returns jsonb
 language plpgsql security definer set search_path = '' as $$
 declare
@@ -230,6 +233,13 @@ begin
 
   select * into prof from public.mi_profiles where user_id = uid for update;
   if prof is null then raise exception 'profile missing'; end if;
+  -- 무료 소환: 상시 균열 1회, 하루 한 번
+  if p_free then
+    if p_multi or p_banner <> 'standard' then raise exception 'free pull is single standard only'; end if;
+    if prof.free_pull_on is not distinct from current_date then raise exception '오늘 무료 소환은 이미 썼어요'; end if;
+    update public.mi_profiles set free_pull_on = current_date where user_id = uid;
+    cost := 0;
+  end if;
   if prof.coins < cost then raise exception '코인이 부족해요'; end if;
   first := p_multi and not (p_banner = any (prof.first_multi));
   if first then guarantee := greatest(guarantee, coalesce((cfg ->> 'firstMultiGuarantee')::int, 4)); end if;
@@ -383,7 +393,7 @@ revoke execute on function public.mi_submit_result(text, int, int, int) from pub
 revoke execute on function public.mi_add_coins(int) from public, anon;
 revoke execute on function public.mi_grant_character(text) from public, anon;
 revoke execute on function public.mi_save_meta(jsonb, jsonb, jsonb, jsonb) from public, anon;
-revoke execute on function public.mi_pull(text, text[], boolean) from public, anon;
+revoke execute on function public.mi_pull(text, text[], boolean, boolean) from public, anon;
 revoke execute on function public.mi_use_items(text[]) from public, anon;
 revoke execute on function public.mi_use_shard(text) from public, anon;
 revoke execute on function public.mi_add_items(jsonb) from public, anon;
@@ -392,7 +402,7 @@ grant execute on function public.mi_submit_result(text, int, int, int) to authen
 grant execute on function public.mi_add_coins(int) to authenticated;
 grant execute on function public.mi_grant_character(text) to authenticated;
 grant execute on function public.mi_save_meta(jsonb, jsonb, jsonb, jsonb) to authenticated;
-grant execute on function public.mi_pull(text, text[], boolean) to authenticated;
+grant execute on function public.mi_pull(text, text[], boolean, boolean) to authenticated;
 grant execute on function public.mi_use_items(text[]) to authenticated;
 grant execute on function public.mi_use_shard(text) to authenticated;
 grant execute on function public.mi_add_items(jsonb) to authenticated;
@@ -415,7 +425,10 @@ begin
   if uid is null then raise exception 'not signed in'; end if;
   select value into cfg from public.mi_config where key = 'gacha';
   select c.rarity, c.domain into rar, dom from public.mi_characters c where c.id = p_char and c.pool;
-  if rar is distinct from 5 or p_ticket <> 'tk_' || dom then raise exception 'not allowed'; end if;
+  -- 선택권 설정(mi_config 'tickets')에 적힌 세계관·등급과 맞아야 한다. 설정이 없으면 예전 규칙(★5)
+  if exists (select 1 from public.mi_config where key = 'tickets') then
+    if not exists (select 1 from public.mi_config t where t.key = 'tickets' and (t.value -> p_ticket ->> 'world' = dom or t.value -> p_ticket ->> 'world' = 'any') and (t.value -> p_ticket ->> 'rarity')::int = rar) then raise exception 'not allowed'; end if;
+  elsif rar is distinct from 5 or p_ticket <> 'tk_' || dom then raise exception 'not allowed'; end if;
   select * into prof from public.mi_profiles where user_id = uid for update;
   if prof is null then raise exception 'profile missing'; end if;
   if p_ticket = any (prof.tickets) then raise exception '이미 쓴 선택권이에요'; end if;
@@ -434,3 +447,20 @@ end $$;
 
 revoke execute on function public.mi_claim_ticket(text, text) from public, anon;
 grant execute on function public.mi_claim_ticket(text, text) to authenticated;
+
+-- 코인 쓰기 (스킨 뽑기 등)
+create or replace function public.mi_spend_coins(p_amount int, p_reason text default '')
+returns int
+language plpgsql security definer set search_path = '' as $$
+declare
+  c int;
+begin
+  if auth.uid() is null then raise exception 'not signed in'; end if;
+  if p_amount <= 0 then raise exception 'bad amount'; end if;
+  update public.mi_profiles set coins = coins - p_amount, updated_at = now()
+  where user_id = auth.uid() and coins >= p_amount returning coins into c;
+  if c is null then raise exception '코인이 부족해요'; end if;
+  return c;
+end $$;
+revoke execute on function public.mi_spend_coins(int, text) from public, anon;
+grant execute on function public.mi_spend_coins(int, text) to authenticated;

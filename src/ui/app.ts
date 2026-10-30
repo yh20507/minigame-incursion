@@ -315,6 +315,11 @@ export function artUrl(kind: 'spr' | 'art' | 'full' | 'bg' | 'it', id: string): 
   return url;
 }
 
+/** 아무 텍스처 키의 그림 주소 */
+export function texUrl(key: string) {
+  return texInfo(key)?.url ?? null;
+}
+
 /** 실제 파일 그림인가 (임시 그림이 아닌가) */
 export function artIsFile(kind: 'spr' | 'art' | 'full' | 'bg' | 'it', id: string) {
   const key = `${kind}_${id}`;
@@ -333,18 +338,58 @@ export function bgArt(id: string): { url: string | null; pixel: boolean } {
   return { url: artUrl('bg', id), pixel: !artIsFile('bg', id) };
 }
 
-/** 큰 화면에 쓸 가장 좋은 캐릭터 그림. pixel = 임시(픽셀) 그림이라 확대 시 또렷하게 */
-export function bestArt(id: string, preferFull = true): { url: string; pixel: boolean; kind: 'full' | 'art' | 'spr' } {
-  if (preferFull && artIsFile('full', id)) return { url: artUrl('full', id)!, pixel: false, kind: 'full' };
-  if (artIsFile('art', id)) return { url: artUrl('art', id)!, pixel: false, kind: 'art' };
-  if (artIsFile('spr', id)) return { url: artUrl('spr', id)!, pixel: true, kind: 'spr' };
+/** 텍스처 키로 그림 주소·파일 여부 */
+function texInfo(key: string): { url: string; file: boolean } | null {
+  const tm = ui.game.textures;
+  if (!tm.exists(key)) return null;
+  if (urlCache.has(key)) return { url: urlCache.get(key)!, file: tm.get(key).getSourceImage() instanceof HTMLImageElement };
+  const src = tm.get(key).getSourceImage() as HTMLImageElement | HTMLCanvasElement;
+  const url = src instanceof HTMLImageElement ? src.src : src instanceof HTMLCanvasElement ? src.toDataURL() : null;
+  urlCache.set(key, url);
+  return url ? { url, file: src instanceof HTMLImageElement } : null;
+}
+
+/** 캐릭터의 그림 키 (입힌 스킨이 있으면 스킨 그림) */
+function keysFor(id: string, kind: 'full' | 'art' | 'spr', skinId?: string | null): string[] {
+  const sk = skinId === undefined ? App.store?.equippedSkin?.(id)?.id : skinId;
+  const skKind = kind === 'spr' ? 'sprite' : kind;
+  const out: string[] = [];
+  if (sk) out.push(`skin_${sk}_${skKind}`);
+  out.push(`${kind}_${id}`);
+  return out;
+}
+
+/** 큰 화면에 쓸 가장 좋은 캐릭터 그림. pixel = 임시(픽셀) 그림이라 확대 시 또렷하게. skinId 를 주면 그 스킨으로 (null 이면 기본) */
+export function bestArt(id: string, preferFull = true, skinId?: string | null): { url: string; pixel: boolean; kind: 'full' | 'art' | 'spr' } {
+  const order: ('full' | 'art' | 'spr')[] = preferFull ? ['full', 'art', 'spr'] : ['art', 'spr'];
+  // 1) 파일 그림 우선 2) 임시 그림
+  for (const pass of ['file', 'any'] as const) {
+    for (const kind of pass === 'file' ? order : (['spr'] as const)) {
+      // 임시 그림은 도트(spr)만 크게 쓴다 (임시 art/full 카드는 글자가 박혀 있어 안 씀)
+      for (const key of keysFor(id, kind, skinId)) {
+        const t = texInfo(key);
+        if (!t) continue;
+        if (pass === 'file' && !t.file) continue;
+        return { url: t.url, pixel: !t.file, kind };
+      }
+    }
+  }
   return { url: artUrl('spr', id) ?? '', pixel: true, kind: 'spr' };
 }
 
 /** 도감·카드용 초상 (art 파일 → 임시 art) */
-export function portraitArt(id: string): { url: string; pixel: boolean } {
-  if (artIsFile('art', id)) return { url: artUrl('art', id)!, pixel: false };
-  return { url: artUrl('art', id) ?? artUrl('spr', id) ?? '', pixel: true };
+export function portraitArt(id: string, skinId?: string | null): { url: string; pixel: boolean } {
+  for (const key of keysFor(id, 'art', skinId)) {
+    const t = texInfo(key);
+    if (t) return { url: t.url, pixel: !t.file };
+  }
+  return { url: artUrl('spr', id) ?? '', pixel: true };
+}
+
+/** 스킨 그림 (없으면 null) */
+export function skinArt(skinId: string, kind: 'art' | 'full' = 'art'): { url: string; pixel: boolean } | null {
+  const t = texInfo(`skin_${skinId}_${kind}`);
+  return t ? { url: t.url, pixel: !t.file } : null;
 }
 
 function shards(color: string) {

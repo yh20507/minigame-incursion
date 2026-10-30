@@ -10,6 +10,8 @@ import { bagScreen, challengeScreen, settingsScreen } from './misc';
 import { decorScreen } from './decor';
 import { expeditionScreen } from './expedition';
 import { domainScreen, prepScreen, resultScreen, worldMapScreen } from './adventure';
+import { skinGachaScreen } from './skins';
+import { passScreen } from './pass';
 
 export function registerScreens() {
   ui.register('Title', titleScreen);
@@ -28,4 +30,6 @@ export function registerScreens() {
   ui.register('Domain', domainScreen);
   ui.register('Prep', prepScreen);
   ui.register('Result', resultScreen);
+  ui.register('SkinGacha', skinGachaScreen);
+  ui.register('Pass', passScreen);
 }

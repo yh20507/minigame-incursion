@@ -15,6 +15,8 @@ export interface PlayData {
   game?: string;
   domain: string;
   items?: string[];
+  /** 어려움 모드 (일반 미니게임만) */
+  hard?: boolean;
 }
 
 export interface SegResult {
@@ -34,6 +36,7 @@ export interface RunResult {
   modifier?: string;
   coinPct: number;
   items: string[];
+  hard?: boolean;
 }
 
 const HUD_H = 20;
@@ -50,6 +53,7 @@ export function dailySetup() {
 
 export class PlayScene extends Phaser.Scene {
   mode!: Mode;
+  hard = false;
   domain!: string;
   queue: string[] = [];
   segIdx = 0;
@@ -106,6 +110,7 @@ export class PlayScene extends Phaser.Scene {
   create(data: PlayData) {
     fadeIn(this);
     this.mode = data.mode;
+    this.hard = !!data.hard && data.mode === 'normal';
     this.domain = data.domain;
     this.segIdx = 0;
     this.totalScore = 0;
@@ -370,7 +375,7 @@ export class PlayScene extends Phaser.Scene {
         break;
     }
     const difficulty =
-      this.isRush() ? this.rushCfg().difficulty : this.mode === 'marathon' ? 1 + Math.min(1, this.segIdx * 0.1) : 1;
+      this.isRush() ? this.rushCfg().difficulty : this.mode === 'marathon' ? 1 + Math.min(1, this.segIdx * 0.1) : this.hard ? 1.8 : 1;
     let gameSpeed = this.mode === 'micro' ? this.speed : 1;
     if (this.mods.has('fast')) gameSpeed *= 1.5;
 
@@ -392,7 +397,11 @@ export class PlayScene extends Phaser.Scene {
       inp: this.readInput(),
       t: 0,
       color: hexNum(d.color),
-      leaderKey: 'spr_' + App.store.save.team.leader,
+      leaderKey: (() => {
+        const lead = App.store.save.team.leader;
+        const sk = App.store.equippedSkin(lead);
+        return sk && this.textures.exists(`skin_${sk.id}_sprite`) ? `skin_${sk.id}_sprite` : 'spr_' + lead;
+      })(),
       addScore: (n, x, y) => self.addScore(n, x, y),
       hit: (x, y) => self.hit(x, y),
       addTime: (s) => (self.timeAdj += s),
@@ -551,7 +560,7 @@ export class PlayScene extends Phaser.Scene {
     if (this.phase === 'play' && this.mg) {
       this.segT += dt;
       const gs = (this.host as any).gameSpeed as number;
-      this.host.t += dt * gs;
+      this.host.t += dt * gs * (this.hard ? 1.5 : 1);
       this.host.inp = this.readInput();
       this.mg.update(dt * gs);
       this.drawTimer();
@@ -683,6 +692,7 @@ export class PlayScene extends Phaser.Scene {
       modifier: this.modName,
       coinPct: this.itemCoin,
       items: this.items,
+      hard: this.hard,
     };
     go(this, 'Result', r);
   }

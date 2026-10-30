@@ -133,7 +133,7 @@ export function setDomNavigate(fn: (key: string, data?: object) => void) {
   domNavigate = fn;
 }
 /** Phaser 가 아니라 DOM 으로 그리는 화면들 */
-export const DOM_SCREENS = new Set(['Title', 'Lobby', 'Gacha', 'Collection', 'Team', 'Challenge', 'Settings', 'Bag', 'Decor', 'Expedition', 'Rewards', 'WorldMap', 'Domain', 'Prep', 'Result', 'Story']);
+export const DOM_SCREENS = new Set(['Title', 'Lobby', 'Gacha', 'Collection', 'Team', 'Challenge', 'Settings', 'Bag', 'Decor', 'Expedition', 'Rewards', 'WorldMap', 'Domain', 'Prep', 'Result', 'Story', 'SkinGacha', 'Pass']);
 
 export function go(scene: Phaser.Scene, key: string, data?: object) {
   if ((scene as any).__leaving) return;

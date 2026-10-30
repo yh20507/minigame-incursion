@@ -28,12 +28,12 @@ export function rewardsScreen(data: { tab?: Tab; page?: number }): Screen {
   const el = h(
     'div',
     { class: 'rewards' },
-    topBar('보상', { back: () => ui.show('Lobby'), sub: '출석 · 칭호 · ★5 선택권' }),
+    topBar('보상', { back: () => ui.show('Lobby'), sub: '출석 · 칭호 · 선택권' }),
     tabs<Tab>(
       [
         { id: 'attend', label: '출석', sub: `${st.save.extra.attend.days}/28` },
         { id: 'titles', label: '칭호', badge: nTitle, sub: `${st.save.extra.titles.claimed.length}/${App.content.rewards.titles.length}` },
-        { id: 'tickets', label: '★5 선택권', badge: nTicket, color: RC[5] },
+        { id: 'tickets', label: '선택권', badge: nTicket, color: RC[4] },
       ],
       tab,
       (id) => ui.show('Rewards', { tab: id }, { instant: true }),
@@ -119,25 +119,25 @@ export function rewardsScreen(data: { tab?: Tab; page?: number }): Screen {
   }
 
   function tickets() {
-    const list = st.availableTickets();
+    const list = [...st.availableTickets()].sort((a, b) => Number(!!b.pass) - Number(!!a.pass));
     return h(
       'div',
       { class: 'tickets enter' },
-      h('div', { class: 'attend-head' }, h('span', null, '세계관마다 한 장. 그 세계관의 ★5 하나를 골라 바로 데려와요'), h('span', { class: 'dim' }, '이미 있으면 강화 재료가 돼요')),
+      h('div', { class: 'attend-head' }, h('span', null, '세계관마다 한 장(★4) · 시즌 패스 완주 보상(★5). 골라서 바로 데려와요'), h('span', { class: 'dim' }, '이미 있으면 강화 재료가 돼요')),
       list.length
         ? h(
             'div',
             { class: 'ticket-grid' },
             list.map((tk) => {
               const w = App.content.world(tk.world);
-              const c = w?.color ?? '#ff5fd2';
+              const c = tk.pass ? '#ffc845' : (w?.color ?? '#ff5fd2');
               const used = st.save.extra.tickets.includes(tk.id);
               return h(
                 'div',
-                { class: 'ticket panel' + (used ? ' used' : ''), vars: { c } },
-                h('div', { class: 'ticket-head' }, h('div', null, h('div', { class: 'eyebrow' }, 'SELECTOR TICKET'), h('b', null, `${w?.name ?? tk.world} ★5 선택권`)), h('span', { class: 'tag ' + (used ? 'dimmed' : 'gold') }, used ? '사용함' : '1장')),
+                { class: 'ticket panel' + (used ? ' used' : '') + (tk.pass ? ' pass-ticket' : ''), vars: { c } },
+                h('div', { class: 'ticket-head' }, h('div', null, h('div', { class: 'eyebrow' }, 'SELECTOR TICKET'), h('b', null, tk.name ?? `${w?.name ?? tk.world} ★${tk.rarity ?? 5} 선택권`)), h('span', { class: 'tag ' + (used ? 'dimmed' : 'gold') }, used ? '사용함' : '1장')),
                 h('div', { class: 'ticket-chars' }, st.ticketChoices(tk.id).map((ch) => charCard(ch.id, { size: 'md', owned: true, onClick: used ? undefined : () => confirmTicket(tk.id, ch.id) }))),
-                !used ? h('p', { class: 'dim' }, svg(I.fwd), ' 캐릭터를 눌러서 고르기') : null,
+                !used ? h('p', { class: 'dim' }, svg(I.fwd), tk.world === 'any' ? ' 모든 세계의 ★5 중 하나 · 캐릭터를 눌러서 고르기' : ' 캐릭터를 눌러서 고르기') : null,
               );
             }),
           )
@@ -148,7 +148,7 @@ export function rewardsScreen(data: { tab?: Tab; page?: number }): Screen {
   async function confirmTicket(ticketId: string, charId: string) {
     if (busy) return;
     const ch = App.content.char(charId);
-    const ok = await ui.confirm(`${ch.name}을(를) 데려올까요?\n선택권은 세계관마다 한 번만 쓸 수 있어요.`, '데려오기');
+    const ok = await ui.confirm(`${ch.name}을(를) 데려올까요?\n선택권은 한 번만 쓸 수 있어요.`, '데려오기');
     if (!ok) return;
     busy = true;
     try {

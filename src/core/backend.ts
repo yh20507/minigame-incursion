@@ -9,6 +9,7 @@ export type SaveEvent =
   | { t: 'additems'; items: Record<string, number> }
   | { t: 'shard'; char: string }
   | { t: 'ticket'; ticket: string; char: string }
+  | { t: 'spend'; n: number; reason: string }
   | { t: 'meta' };
 
 export interface PullResponse {
@@ -26,7 +27,7 @@ export interface Backend {
   load(def: SaveData): Promise<SaveData>;
   commit(save: SaveData, ev: SaveEvent): Promise<void>;
   /** 온라인 모드 전용. 로컬 모드는 null 을 돌려주고 Store 가 직접 판정한다. */
-  pull(bannerId: string, poolIds: string[], multi: boolean): Promise<PullResponse | null>;
+  pull(bannerId: string, poolIds: string[], multi: boolean, free?: boolean): Promise<PullResponse | null>;
   logout(): Promise<void>;
 }
 
@@ -76,6 +77,9 @@ export function mergeSave(def: SaveData, raw: Partial<SaveData>): SaveData {
     titles: { ...def.extra.titles, ...(raw.extra?.titles ?? {}) },
     tickets: [...(raw.extra?.tickets ?? [])],
     eventRewards: [...(raw.extra?.eventRewards ?? [])],
+    skins: { ...def.extra.skins, ...(raw.extra?.skins ?? {}), owned: [...(raw.extra?.skins?.owned ?? [])], equipped: { ...(raw.extra?.skins?.equipped ?? {}) } },
+    pass: { ...def.extra.pass, ...(raw.extra?.pass ?? {}), claimed: [...(raw.extra?.pass?.claimed ?? [])], weekly: { ...(raw.extra?.pass?.weekly ?? {}) }, daily: { ...(raw.extra?.pass?.daily ?? {}) }, done: [...(raw.extra?.pass?.done ?? [])], attendDays: [...(raw.extra?.pass?.attendDays ?? [])] },
+    hardBest: { ...(raw.extra?.hardBest ?? {}) },
   };
   s.extra.log = raw.extra?.log ?? [];
   s.owned = { ...def.owned, ...(raw.owned ?? {}) };
@@ -221,6 +225,9 @@ export class SupabaseBackend implements Backend {
       case 'ticket':
         r = await this.sb.rpc('mi_claim_ticket', { p_ticket: ev.ticket, p_char: ev.char });
         break;
+      case 'spend':
+        r = await this.sb.rpc('mi_spend_coins', { p_amount: ev.n, p_reason: ev.reason });
+        break;
       case 'meta':
         r = await this.sb.rpc('mi_save_meta', {
           p_team: save.team,
@@ -262,8 +269,8 @@ export class SupabaseBackend implements Backend {
     }
   }
 
-  async pull(bannerId: string, poolIds: string[], multi: boolean): Promise<PullResponse> {
-    const { data, error } = await this.sb.rpc('mi_pull', { p_banner: bannerId, p_pool: poolIds, p_multi: multi });
+  async pull(bannerId: string, poolIds: string[], multi: boolean, free = false): Promise<PullResponse> {
+    const { data, error } = await this.sb.rpc('mi_pull', { p_banner: bannerId, p_pool: poolIds, p_multi: multi, p_free: free });
     if (error) throw error;
     return {
       results: data.results,

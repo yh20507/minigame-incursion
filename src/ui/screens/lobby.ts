@@ -131,9 +131,22 @@ export function lobbyScreen(): Screen {
   // ---------- 메뉴
   const explore = !!st.save.cleared['final'];
   const challengeOpen = st.modeUnlocked('micro');
-  const rewardSub = nTicket ? `★5 선택권 ${nTicket}장` : nTitle ? `받을 칭호 ${nTitle}개` : '출석 · 칭호';
+  const rewardSub = nTicket ? `선택권 ${nTicket}장` : nTitle ? `받을 칭호 ${nTitle}개` : '출석 · 칭호';
   const rewardTab = nTicket ? 'tickets' : nTitle ? 'titles' : 'attend';
   const locked = (msg: string) => () => ui.toast(msg);
+  function passStrip() {
+    const p = App.content.pass;
+    const lv = st.passLevel();
+    const n = st.passBadge();
+    return h(
+      'button',
+      { class: 'pass-strip enter' + (n ? ' hot' : ''), onclick: () => { audio.sfx('confirm'); ui.show('Pass'); }, onpointerenter: () => audio.sfx('select') },
+      h('span', { class: 'ps-ico' }, svg(I.crown)),
+      h('span', { class: 'ps-text' }, h('b', null, `시즌 패스 · ${p.name}`), h('small', null, n ? `받을 보상 ${n}개` : '주간·일일 미션 → ★5 선택권')),
+      h('span', { class: 'ps-lv' }, h('small', null, 'Lv'), h('b', { class: 'num' }, String(lv)), h('i', { class: 'ps-bar' }, h('i', { style: { width: (st.passXpInLevel() / p.xpPerLevel) * 100 + '%' } }))),
+      n ? h('i', { class: 'badge' }, String(n)) : null,
+    );
+  }
   const tile = (icon: string, label: string, sub: string, fn: () => void, o: { lock?: boolean; badge?: number; hot?: boolean } = {}) =>
     h(
       'button',
@@ -153,7 +166,8 @@ export function lobbyScreen(): Screen {
     'nav',
     { class: 'lobby-menu' },
     btn('모험', () => ui.show('WorldMap'), { cls: 'big primary menu-main enter', icon: I.map, sub: '조각세계 지도 · 미니게임' }),
-    btn('차원 균열', () => ui.show('Gacha'), { cls: 'big primary menu-main gacha enter', icon: I.rift, sub: st.save.totalPulls === 0 ? '첫 소환 ★4 이상 확정!' : '소환 · 한정 균열' }),
+    btn('차원 균열', () => ui.show('Gacha'), { cls: 'big primary menu-main gacha enter' + (st.freePullLeft() && st.freePullBanner() ? ' has-free' : ''), icon: I.rift, sub: st.save.totalPulls === 0 ? '첫 소환 ★4 이상 확정!' : st.freePullLeft() && st.freePullBanner() ? '오늘 무료 소환 1회 남음!' : '소환 · 한정 균열' }),
+    st.passActive() ? passStrip() : null,
     h(
       'div',
       { class: 'tile-grid enter' },

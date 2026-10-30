@@ -144,7 +144,8 @@ export function domainScreen(data: { id: string }): Screen {
       h('div', { class: 'gc-head' }, h('span', { class: 'tag' }, g.genre), stars(rec?.stars ?? 0, 3, 16)),
       h('h3', null, g.name),
       h('p', null, g.rule),
-      h('div', { class: 'gc-foot' }, h('span', { class: rec ? 'num' : 'faint' }, rec ? `최고 ${fmt(rec.best)}` : '도전 전'), h('span', { class: 'gc-go' }, svg(I.play), ' 플레이')),
+      h('div', { class: 'gc-foot' }, h('span', { class: rec ? 'num' : 'faint' }, rec ? `최고 ${fmt(rec.best)}${rec.hardBest ? ` · H ${fmt(rec.hardBest)}` : ''}` : '도전 전'), h('span', { class: 'gc-go' }, svg(I.play), ' 플레이')),
+      st.hardUnlocked(gid) ? h('span', { class: 'tag hard gc-hard' }, 'HARD') : null,
     );
   });
 
@@ -183,7 +184,7 @@ export function domainScreen(data: { id: string }): Screen {
 }
 
 // ---------------------------------------------------------------- 준비
-export function prepScreen(data: { mode?: string; game?: string; domain: string; sel?: string[] }): Screen {
+export function prepScreen(data: { mode?: string; game?: string; domain: string; sel?: string[]; hard?: boolean }): Screen {
   const st = App.store;
   const mode = data.mode ?? 'normal';
   const info = modeInfo(mode, data.domain, data.game);
@@ -199,17 +200,26 @@ export function prepScreen(data: { mode?: string; game?: string; domain: string;
     const rec = st.save.scores[g.id];
     const bgA2 = bgArt(d.id);
     const bgU = bgA2.url;
+    const hardOpen = st.hardUnlocked(g.id);
+    const hard = !!data.hard && hardOpen;
+    const thresholds = hard ? st.hardStars(g.id) : g.stars;
     infoCard = h(
       'section',
-      { class: 'prep-info panel pad enter', vars: { c: info.color } },
+      { class: 'prep-info panel pad enter' + (hard ? ' hard' : ''), vars: { c: hard ? '#ff4b6e' : info.color } },
       h('div', { class: 'prep-art' + (bgA2.pixel ? ' pixel' : ''), style: bgU ? { backgroundImage: `url(${bgU})` } : {} }),
       h('div', { class: 'eyebrow' }, `${d.name} · ${g.genre}`),
-      h('h2', null, g.name),
+      h('h2', null, g.name, hard ? h('span', { class: 'tag hard' }, 'HARD') : null),
       h('p', { class: 'prep-rule' }, g.rule),
       h('p', { class: 'prep-ctrl' }, svg(I.info), ' ', g.controls),
-      h('div', { class: 'prep-stars' }, h('span', { class: 'dim' }, '별 기준'), g.stars.map((s, i) => h('span', { class: 'prep-star' }, stars(i + 1, i + 1, 14), h('b', { class: 'num' }, fmt(s))))),
-      h('div', { class: 'prep-rec' }, rec ? [stars(rec.stars, 3, 18), h('span', null, `최고 ${fmt(rec.best)}점 · ${rec.plays}회 플레이`)] : h('span', { class: 'faint' }, '아직 도전하지 않았어요')),
-      h('p', { class: 'faint' }, `목숨 ${g.lives}개 · 제한시간 45초`),
+      h(
+        'div',
+        { class: 'mode-switch' },
+        btn('보통', () => ui.show('Prep', { ...data, hard: false }, { instant: true }), { cls: 'sm' + (hard ? ' ghost' : ' primary'), silent: true }),
+        btn('어려움', () => (hardOpen ? ui.show('Prep', { ...data, hard: true }, { instant: true }) : ui.toast('이 게임에서 ★3을 받으면 열려요')), { cls: 'sm' + (hard ? ' primary' : ' ghost'), color: '#ff4b6e', icon: hardOpen ? I.bolt : I.lock, silent: true, sub: hardOpen ? '코인 ×1.5 · 더 빠름' : '★3 달성 시' }),
+      ),
+      h('div', { class: 'prep-stars' }, h('span', { class: 'dim' }, hard ? '별 기준 (어려움)' : '별 기준'), thresholds.map((s, i) => h('span', { class: 'prep-star' }, stars(i + 1, i + 1, 14), h('b', { class: 'num' }, fmt(s))))),
+      h('div', { class: 'prep-rec' }, rec ? [stars(rec.stars, 3, 18), h('span', null, `최고 ${fmt(rec.best)}점${rec.hardBest ? ` · 어려움 ${fmt(rec.hardBest)}점` : ''} · ${rec.plays}회 플레이`)] : h('span', { class: 'faint' }, '아직 도전하지 않았어요')),
+      h('p', { class: 'faint' }, `목숨 ${g.lives}개 · 제한시간 45초${hard ? ' · 어려움: 속도 ↑ 보상 ×1.5' : ''}`),
     );
   } else {
     const bossId = mode === 'boss' ? App.content.domain(data.domain)?.gatekeeper : mode === 'final' ? 'architect' : null;
@@ -249,7 +259,7 @@ export function prepScreen(data: { mode?: string; game?: string; domain: string;
 
   const start = async () => {
     const used = await st.useItems([...sel]);
-    ui.startPlay({ mode, game: data.game, domain: data.domain, items: used.map((u) => u.id) });
+    ui.startPlay({ mode, game: data.game, domain: data.domain, items: used.map((u) => u.id), hard: !!data.hard && mode === 'normal' && st.hardUnlocked(data.game!) });
   };
   const bgKey = mode === 'normal' ? App.content.game(data.game!).domain : mode === 'boss' ? data.domain : 'rift';
   const el = h(
@@ -293,8 +303,8 @@ export function resultScreen(r: RunResult): Screen {
     switch (r.mode) {
       case 'normal': {
         const g = App.content.game(r.game!);
-        const res = await st.recordResult(g.id, r.score, g.domain, r.coinPct);
-        title = r.success ? '타임 업!' : '게임 오버';
+        const res = await st.recordResult(g.id, r.score, g.domain, r.coinPct, !!r.hard);
+        title = (r.hard ? '[어려움] ' : '') + (r.success ? '타임 업!' : '게임 오버');
         titleCls = r.success ? 'good' : 'bad';
         coins = res.coins;
         starsN = res.stars;
@@ -305,7 +315,7 @@ export function resultScreen(r: RunResult): Screen {
         const d = App.content.domain(g.domain)!;
         if (st.bossUnlocked(d.id) && !st.save.cleared[d.id]) lines.push({ t: `${d.name}의 보스 스테이지에 도전할 수 있어요!`, c: 'accent' });
         next = { key: 'Domain', data: { id: g.domain } };
-        retry = { key: 'Prep', data: { mode: 'normal', game: g.id, domain: g.domain } };
+        retry = { key: 'Prep', data: { mode: 'normal', game: g.id, domain: g.domain, hard: !!r.hard } };
         break;
       }
       case 'boss':

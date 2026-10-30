@@ -265,6 +265,26 @@ export function makeCharTextures(scene: Phaser.Scene, content: Content) {
 /** 임시 카드로 대신한 ★4·★5 일러스트 */
 export const placeholderFull = new Set<string>();
 
+/** 스킨 임시 그림: 기본 그림의 색조를 돌려서 만든다 (직접 넣는 자리(manual)는 만들지 않음) */
+export function makeSkinTextures(scene: Phaser.Scene, content: Content) {
+  for (const sk of content.skins.skins) {
+    if (sk.manual && !content.skinFiles.has(sk.id)) continue;
+    const deg = 40 + (hashStr(sk.id) % 280);
+    for (const kind of ['art', 'full', 'sprite'] as const) {
+      const key = `skin_${sk.id}_${kind}`;
+      if (scene.textures.exists(key)) continue;
+      const baseKey = kind === 'sprite' ? 'spr_' + sk.char : kind + '_' + sk.char;
+      if (!scene.textures.exists(baseKey)) continue;
+      const src = scene.textures.get(baseKey).getSourceImage() as HTMLImageElement | HTMLCanvasElement;
+      const { c, g } = canvas(src.width, src.height);
+      g.filter = `hue-rotate(${deg}deg) saturate(1.15)`;
+      g.drawImage(src, 0, 0);
+      g.filter = 'none';
+      scene.textures.addCanvas(key, c);
+    }
+  }
+}
+
 /** 도감·대화·결과 화면에 쓰는 기본 일러스트 */
 export function portraitKey(scene: Phaser.Scene, id: string) {
   return scene.textures.exists('art_' + id) ? 'art_' + id : 'spr_' + id;

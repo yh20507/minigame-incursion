@@ -32,6 +32,18 @@ export function shuffle<T>(arr: T[], r: () => number = Math.random): T[] {
   return a;
 }
 
+/** 월요일 시작 주 키 (예: 2026-W44) */
+export function weekKey() {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  const day = (d.getDay() + 6) % 7; // 월=0
+  d.setDate(d.getDate() - day + 3); // 그 주의 목요일
+  const y = d.getFullYear();
+  const jan4 = new Date(y, 0, 4);
+  const wk = 1 + Math.round(((d.getTime() - jan4.getTime()) / 86400000 - 3 + ((jan4.getDay() + 6) % 7)) / 7);
+  return `${y}-W${String(wk).padStart(2, '0')}`;
+}
+
 export function todayKey() {
   const d = new Date();
   const p = (n: number) => String(n).padStart(2, '0');

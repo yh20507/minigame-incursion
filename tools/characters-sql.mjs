@@ -9,6 +9,8 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const chars = JSON.parse(readFileSync(join(root, 'public/data/characters.json'), 'utf8'));
 const gacha = JSON.parse(readFileSync(join(root, 'public/data/gacha.json'), 'utf8'));
 const items = JSON.parse(readFileSync(join(root, 'public/data/items.json'), 'utf8'));
+const rewards = JSON.parse(readFileSync(join(root, 'public/data/rewards.json'), 'utf8'));
+const tickets = Object.fromEntries(rewards.tickets.map((t) => [t.id, { world: t.world, rarity: t.rarity ?? 5 }]));
 const q = (s) => `'${String(s).replace(/'/g, "''")}'`;
 
 const rows = chars.map((c) => `  (${q(c.id)}, ${q(c.origin)}, ${q(c.domain)}, ${c.rarity}, ${c.pool ? 'true' : 'false'})`).join(',\n');
@@ -19,7 +21,8 @@ on conflict (id) do update set origin = excluded.origin, domain = excluded.domai
 
 insert into public.mi_config (key, value) values
   ('gacha', ${q(JSON.stringify(gacha))}::jsonb),
-  ('items', ${q(JSON.stringify(items))}::jsonb)
+  ('items', ${q(JSON.stringify(items))}::jsonb),
+  ('tickets', ${q(JSON.stringify(tickets))}::jsonb)
 on conflict (key) do update set value = excluded.value;
 `;
 writeFileSync(join(root, 'supabase/seed.sql'), sql);

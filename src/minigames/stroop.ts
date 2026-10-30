@@ -61,7 +61,7 @@ export class StroopGame extends MiniGame {
     }
     this.word.setText(COLORS[a].name).setColor(COLORS[b].hex).setScale(1.2);
     this.s.tweens.add({ targets: this.word, scale: 1, duration: 100 });
-    const hard = this.h.difficulty > 1 || this.h.t > 15;
+    const hard = this.h.difficulty > 1 || this.h.t > 10;
     if (hard) {
       const c = COLORS[Math.floor(r() * COLORS.length)];
       this.decoy.setText(COLORS[Math.floor(r() * COLORS.length)].name).setColor(c.hex);

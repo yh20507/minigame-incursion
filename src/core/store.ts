@@ -1,8 +1,8 @@
 import type { Backend, SaveEvent } from './backend';
 import type { Content } from './content';
 import { addDupe, rollPulls } from './gacha';
-import type { BannerDef, Bonus, CharDef, DomainDef, ItemDef, PullResult, SaveData, TitleDef } from './types';
-import { todayKey } from './rng';
+import type { BannerDef, Bonus, CharDef, DomainDef, ItemDef, MissionDef, MissionType, PullResult, SaveData, SkinDef, SkinGrade, SkinPull, TitleDef } from './types';
+import { todayKey, weekKey } from './rng';
 
 export function defaultSave(content: Content): SaveData {
   return {
@@ -31,6 +31,9 @@ export function defaultSave(content: Content): SaveData {
       titles: { claimed: [], equipped: '' },
       tickets: [],
       eventRewards: [],
+      skins: { owned: [], equipped: {}, shards: 0, pity: 0, pulls: 0 },
+      pass: { season: '', xp: 0, claimed: [], week: '', weekly: {}, day: '', daily: {}, done: [], freePull: '', attendDays: [] },
+      hardBest: {},
     },
   };
 }
@@ -54,6 +57,10 @@ export class Store {
 
   /** 데이터 파일이 바뀌어 사라진 캐릭터 등을 정리 */
   private sanitize() {
+    for (const [g, n] of Object.entries(this.save.extra.hardBest ?? {})) {
+      const rec = (this.save.scores[g] ??= { best: 0, stars: 0, plays: 0 });
+      rec.hardBest = Math.max(rec.hardBest ?? 0, n);
+    }
     for (const id of Object.keys(this.save.owned)) if (!this.content.hasChar(id)) delete this.save.owned[id];
     const max = this.content.gacha.enhance.max;
     for (const o of Object.values(this.save.owned)) {
@@ -212,21 +219,42 @@ export class Store {
   }
 
   // ---------- 변경 ----------
-  async recordResult(gameId: string, score: number, domainId: string, extraCoinPct = 0) {
+  /** 어려움 모드 별 기준 (일반의 1.5배) */
+  hardStars(gameId: string): [number, number, number] {
+    return this.content.game(gameId).stars.map((s) => Math.round(s * 1.5)) as [number, number, number];
+  }
+  hardUnlocked(gameId: string) {
+    return (this.save.scores[gameId]?.stars ?? 0) >= 3;
+  }
+  /** 어려움 모드에서 ★3 기준을 넘긴 게임 수 */
+  hardCleared() {
+    return this.content.games.filter((g) => (this.save.scores[g.id]?.hardBest ?? 0) >= this.hardStars(g.id)[2]).length;
+  }
+  async recordResult(gameId: string, score: number, domainId: string, extraCoinPct = 0, hard = false) {
     const g = this.content.game(gameId);
     const rec = this.save.scores[gameId] ?? { best: 0, stars: 0, plays: 0 };
-    const stars = g.stars.filter((s) => score >= s).length;
+    const thresholds = hard ? this.hardStars(gameId) : g.stars;
+    const stars = thresholds.filter((s) => score >= s).length;
     const newStars = Math.max(0, stars - rec.stars);
-    const newBest = score > rec.best;
+    const newBest = hard ? score > (rec.hardBest ?? 0) : score > rec.best;
     const bonus = this.bonus(domainId);
-    const coins = Math.floor(score * g.coinRate * (1 + (bonus.coin + extraCoinPct) / 100)) + newStars * 100;
-    rec.best = Math.max(rec.best, score);
+    const coins = Math.floor(score * g.coinRate * (hard ? 1.5 : 1) * (1 + (bonus.coin + extraCoinPct) / 100)) + newStars * 100;
+    if (hard) {
+      rec.hardBest = Math.max(rec.hardBest ?? 0, score);
+      this.save.extra.hardBest[gameId] = rec.hardBest;
+    }
+    else rec.best = Math.max(rec.best, score);
     rec.stars = Math.max(rec.stars, stars);
     rec.plays += 1;
     this.save.scores[gameId] = rec;
     this.save.coins += coins;
-    await this.commit({ t: 'result', game: gameId, score, stars, coins });
-    return { stars, newStars, newBest, coins, best: rec.best, coinBonus: bonus.coin + extraCoinPct };
+    await this.commit({ t: 'result', game: gameId, score: hard ? 0 : score, stars, coins });
+    this.passTrack('play', 1);
+    this.passTrack('earn', coins);
+    if (stars >= 3) this.passTrack('star3', 1);
+    if (hard) this.passTrack('hard', 1);
+    if (hard) await this.saveMeta();
+    return { stars, newStars, newBest, coins, best: hard ? (rec.hardBest ?? 0) : rec.best, coinBonus: bonus.coin + extraCoinPct };
   }
 
   async addCoins(n: number) {
@@ -256,6 +284,7 @@ export class Store {
     a.days = Math.min(28, a.days + 1);
     a.total += 1;
     a.last = today;
+    this.passTrack('attend', 1);
     const r = this.content.rewards.attendance[a.days - 1] ?? { day: a.days };
     await this.saveMeta();
     if (r.coins) await this.addCoins(r.coins);
@@ -286,6 +315,10 @@ export class Store {
         return { cur: this.save.cleared[c.key!] ? 1 : 0, need: 1 };
       case 'attend':
         return { cur: this.save.extra.attend.total, need: c.n! };
+      case 'skins':
+        return { cur: this.save.extra.skins.owned.length, need: c.n! };
+      case 'hard':
+        return { cur: this.hardCleared(), need: c.n! };
     }
     return { cur: 0, need: 1 };
   }
@@ -318,12 +351,12 @@ export class Store {
   ticketChoices(ticketId: string) {
     const tk = this.content.rewards.tickets.find((t) => t.id === ticketId);
     if (!tk) return [];
-    return this.content.chars.filter((c) => c.domain === tk.world && c.rarity === 5 && c.pool);
+    return this.content.chars.filter((c) => (tk.world === 'any' || c.domain === tk.world) && c.rarity === (tk.rarity ?? 5) && c.pool);
   }
   /** 선택권을 쓸 수 있는 세계관 = 균열이 한 번이라도 열린 곳 */
   availableTickets() {
     const seen = new Set(this.visibleWorlds().map((w) => w.id));
-    return this.content.rewards.tickets.filter((t) => seen.has(t.world));
+    return this.content.rewards.tickets.filter((t) => (t.pass ? this.passTicketUnlocked(t.id) : seen.has(t.world)));
   }
   async claimTicket(ticketId: string, charId: string) {
     if (this.save.extra.tickets.includes(ticketId)) throw new Error('이미 쓴 선택권이에요');
@@ -339,6 +372,222 @@ export class Store {
     await this.commit({ t: 'ticket', ticket: ticketId, char: charId });
     await this.saveMeta();
     return { isNew, ...r };
+  }
+
+  // ---------- 시즌 패스 · 미션 ----------
+  passActive() {
+    const p = this.content.pass;
+    const t = todayKey();
+    return !!p.season && p.start <= t && t <= p.end;
+  }
+  /** 주기 키가 바뀌었으면 진행도를 비운다 (시즌·주·일) */
+  private passRoll() {
+    const ps = this.save.extra.pass;
+    const p = this.content.pass;
+    if (ps.season !== p.season) {
+      ps.season = p.season;
+      ps.xp = 0;
+      ps.claimed = [];
+      ps.done = [];
+    }
+    const wk = weekKey();
+    if (ps.week !== wk) {
+      ps.week = wk;
+      ps.weekly = {};
+      ps.attendDays = [];
+      ps.done = ps.done.filter((id) => !id.startsWith('w_'));
+    }
+    const dk = todayKey();
+    if (ps.day !== dk) {
+      ps.day = dk;
+      ps.daily = {};
+      ps.done = ps.done.filter((id) => !id.startsWith('d_'));
+    }
+    return ps;
+  }
+  /** 미션 진행도 올리기. 보상은 화면에서 받는다 */
+  passTrack(type: MissionType, n: number) {
+    if (!this.passActive()) return;
+    const ps = this.passRoll();
+    if (type === 'attend') {
+      const t = todayKey();
+      if (ps.attendDays.includes(t)) return;
+      ps.attendDays.push(t);
+      n = 1;
+    }
+    for (const m of this.content.pass.weekly) if (m.type === type) ps.weekly[m.id] = Math.min(m.n, (ps.weekly[m.id] ?? 0) + n);
+    for (const m of this.content.pass.daily) if (m.type === type) ps.daily[m.id] = Math.min(m.n, (ps.daily[m.id] ?? 0) + n);
+    this.emit();
+  }
+  missionProgress(m: MissionDef) {
+    const ps = this.passRoll();
+    const cur = m.id.startsWith('w_') ? (ps.weekly[m.id] ?? 0) : (ps.daily[m.id] ?? 0);
+    return { cur: Math.min(cur, m.n), need: m.n, done: ps.done.includes(m.id), ready: cur >= m.n && !ps.done.includes(m.id) };
+  }
+  claimableMissions() {
+    if (!this.passActive()) return 0;
+    return [...this.content.pass.weekly, ...this.content.pass.daily].filter((m) => this.missionProgress(m).ready).length;
+  }
+  async claimMission(id: string) {
+    const m = [...this.content.pass.weekly, ...this.content.pass.daily].find((x) => x.id === id);
+    if (!m) throw new Error('없는 미션');
+    const ps = this.passRoll();
+    const p = this.missionProgress(m);
+    if (!p.ready) throw new Error('아직이에요');
+    ps.done.push(id);
+    ps.xp = Math.min(this.content.pass.maxLevel * this.content.pass.xpPerLevel, ps.xp + m.xp);
+    await this.saveMeta();
+    return m.xp;
+  }
+  passLevel() {
+    const p = this.content.pass;
+    const ps = this.passRoll();
+    return Math.min(p.maxLevel, Math.floor(ps.xp / p.xpPerLevel));
+  }
+  passXpInLevel() {
+    const p = this.content.pass;
+    const ps = this.passRoll();
+    return this.passLevel() >= p.maxLevel ? p.xpPerLevel : ps.xp % p.xpPerLevel;
+  }
+  passClaimable() {
+    const lv = this.passLevel();
+    const ps = this.passRoll();
+    return this.content.pass.levels.filter((l) => l.lv <= lv && !ps.claimed.includes(l.lv));
+  }
+  passTicketUnlocked(ticketId: string) {
+    const ps = this.save.extra.pass;
+    return this.content.pass.levels.some((l) => l.ticket === ticketId && ps.claimed.includes(l.lv));
+  }
+  async claimPassLevel(lv: number) {
+    const l = this.content.pass.levels.find((x) => x.lv === lv);
+    const ps = this.passRoll();
+    if (!l || lv > this.passLevel() || ps.claimed.includes(lv)) throw new Error('아직 받을 수 없어요');
+    ps.claimed.push(lv);
+    if (l.skinShards) this.save.extra.skins.shards += l.skinShards;
+    await this.saveMeta();
+    if (l.coins) await this.addCoins(l.coins);
+    if (l.items) await this.addItems(l.items);
+    return l;
+  }
+  /** 패스에서 아직 안 받은 것 + 받을 수 있는 미션 수 (로비 배지) */
+  passBadge() {
+    if (!this.passActive()) return 0;
+    return this.passClaimable().length + this.claimableMissions();
+  }
+
+  // ---------- 코인 쓰기 ----------
+  async spendCoins(n: number, reason: string) {
+    if (this.save.coins < n) throw new Error('코인이 부족해요');
+    this.save.coins -= n;
+    await this.commit({ t: 'spend', n, reason });
+  }
+
+  // ---------- 스킨 ----------
+  /** 그림이 준비된 스킨인가 (직접 넣는 자리는 파일이 있어야, 나머지는 임시 그림 허용) */
+  skinAvailable(sk: SkinDef) {
+    return this.content.skinFiles.has(sk.id) || !sk.manual;
+  }
+  /** 지금 뽑힐 수 있는 스킨 (준비됨 + 시즌 한정이면 그 시즌 진행 중) */
+  skinInPool(sk: SkinDef) {
+    if (!this.skinAvailable(sk)) return false;
+    if (sk.season) {
+      const today = todayKey();
+      const s = this.content.updates.find((u) => u.id === sk.season);
+      if (!s || s.start > today || (s.end && s.end < today)) return false;
+    }
+    return true;
+  }
+  skinPool() {
+    return this.content.skins.skins.filter((s) => this.skinInPool(s));
+  }
+  ownsSkin(id: string) {
+    return this.save.extra.skins.owned.includes(id);
+  }
+  equippedSkin(charId: string): SkinDef | null {
+    const id = this.save.extra.skins.equipped[charId];
+    if (!id || !this.ownsSkin(id)) return null;
+    return this.content.skin(id) ?? null;
+  }
+  async equipSkin(charId: string, skinId: string | null) {
+    if (skinId && !this.ownsSkin(skinId)) return;
+    if (skinId) this.save.extra.skins.equipped[charId] = skinId;
+    else delete this.save.extra.skins.equipped[charId];
+    await this.saveMeta();
+  }
+  /** 픽업: 지금 열린 세계관 균열의 스킨은 가중치 ×pickupMult */
+  skinPickup(sk: SkinDef) {
+    const ch = this.content.char(sk.char);
+    return this.content.banners.some((b) => b.type === 'world' && b.world === ch.domain && this.bannerActive(b));
+  }
+  rollSkins(count: number, rng: () => number = Math.random): SkinPull[] {
+    const cfg = this.content.skins.config;
+    const pool = this.skinPool();
+    const sk = this.save.extra.skins;
+    const out: SkinPull[] = [];
+    const pick = (grades: SkinGrade[]) => {
+      const cands = pool.filter((s) => grades.includes(s.grade));
+      if (!cands.length) return null;
+      const w = cands.map((s) => (this.skinPickup(s) ? cfg.pickupMult : 1));
+      let x = rng() * w.reduce((a, b) => a + b, 0);
+      for (let i = 0; i < cands.length; i++) {
+        if (x < w[i]) return cands[i];
+        x -= w[i];
+      }
+      return cands[cands.length - 1];
+    };
+    let gotA = false;
+    for (let i = 0; i < count; i++) {
+      sk.pity += 1;
+      sk.pulls += 1;
+      let grade: SkinGrade | null = null;
+      let pity = false;
+      if (sk.pity >= cfg.pity && pick(['S', 'SS'])) {
+        grade = 'S';
+        pity = true;
+      } else {
+        const x = rng() * 100;
+        if (x < cfg.rates.S) grade = 'S';
+        else if (x < cfg.rates.S + cfg.rates.A) grade = 'A';
+      }
+      if (count > 1 && i === count - 1 && !gotA && !grade) grade = 'A';
+      const chosen = grade === 'S' ? pick(['S', 'SS']) : grade === 'A' ? pick(['A']) : null;
+      if (!chosen) {
+        const n = cfg.shardRoll[0] + Math.floor(rng() * (cfg.shardRoll[1] - cfg.shardRoll[0] + 1));
+        sk.shards += n;
+        out.push({ kind: 'shard', id: 'shard', isNew: false, shards: n, pity: false });
+        continue;
+      }
+      gotA = true;
+      if (chosen.grade !== 'A') sk.pity = 0;
+      const isNew = !sk.owned.includes(chosen.id);
+      let shards = 0;
+      if (isNew) sk.owned.push(chosen.id);
+      else {
+        shards = cfg.dupShards[chosen.grade];
+        sk.shards += shards;
+      }
+      out.push({ kind: 'skin', id: chosen.id, grade: chosen.grade, isNew, shards, pity });
+    }
+    return out;
+  }
+  async pullSkins(multi: boolean): Promise<SkinPull[]> {
+    const cfg = this.content.skins.config;
+    const cost = multi ? cfg.cost.multi : cfg.cost.single;
+    if (!this.skinPool().length) throw new Error('지금 뽑을 수 있는 스킨이 없어요');
+    await this.spendCoins(cost, 'skin');
+    const res = this.rollSkins(multi ? cfg.cost.multiCount : 1);
+    this.passTrack('skinpull', res.length);
+    await this.saveMeta();
+    return res;
+  }
+  async exchangeSkin(id: string) {
+    const skd = this.content.skin(id);
+    if (!skd || this.ownsSkin(id) || !this.skinAvailable(skd)) throw new Error('교환할 수 없어요');
+    const need = this.content.skins.config.exchange[skd.grade];
+    if (this.save.extra.skins.shards < need) throw new Error(`스킨 조각이 ${need}개 필요해요`);
+    this.save.extra.skins.shards -= need;
+    this.save.extra.skins.owned.push(id);
+    await this.saveMeta();
   }
 
   // ---------- 이벤트 ----------
@@ -375,16 +624,25 @@ export class Store {
     return !(this.save.firstMulti ?? []).includes(bannerId);
   }
 
-  async pull(bannerId: string, multi: boolean): Promise<PullResult[]> {
+  /** 오늘의 무료 소환(상시 균열 1회)이 남았나 */
+  freePullLeft() {
+    return this.save.extra.pass.freePull !== todayKey();
+  }
+  freePullBanner() {
+    return this.content.banners.find((b) => b.type === 'standard' && this.bannerActive(b)) ?? null;
+  }
+  async pull(bannerId: string, multi: boolean, free = false): Promise<PullResult[]> {
     const cfg = this.content.gacha;
-    const cost = multi ? cfg.cost.multi : cfg.cost.single;
+    const banner = this.content.banners.find((b) => b.id === bannerId)!;
+    free = free && !multi && banner.type === 'standard' && this.freePullLeft();
+    const cost = free ? 0 : multi ? cfg.cost.multi : cfg.cost.single;
     const count = multi ? cfg.cost.multiCount : 1;
     if (this.save.coins < cost) throw new Error('코인이 부족해요');
-    const banner = this.content.banners.find((b) => b.id === bannerId)!;
     if (!this.bannerActive(banner)) throw new Error('지금은 닫힌 균열이에요');
     const pool = this.gachaPool(bannerId);
+    if (free) this.save.extra.pass.freePull = todayKey();
 
-    const online = await this.backend.pull(bannerId, pool.map((c) => c.id), multi);
+    const online = await this.backend.pull(bannerId, pool.map((c) => c.id), multi, free);
     let results: PullResult[];
     if (online) {
       results = online.results;
@@ -412,6 +670,7 @@ export class Store {
       ...results.map((r) => ({ id: r.id, r: r.rarity, banner: bannerId, at: now })).reverse(),
       ...this.save.extra.log,
     ].slice(0, 300);
+    this.passTrack('pull', count);
     await this.commit({ t: 'meta' });
     return results;
   }
@@ -456,6 +715,7 @@ export class Store {
   }
 
   async setBest(key: 'microBest' | 'marathonBest', v: number) {
+    this.passTrack('challenge', 1);
     const better = v > this.save.extra[key];
     if (better) {
       this.save.extra[key] = v;

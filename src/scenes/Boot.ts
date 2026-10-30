@@ -1,13 +1,13 @@
 import Phaser from 'phaser';
 import { App, C, H, W } from '../core/app';
 import { Content } from '../core/content';
-import { makeBgTextures, makeCharTextures, makeIconTextures, makeItemTextures } from '../core/art';
+import { makeBgTextures, makeCharTextures, makeIconTextures, makeItemTextures, makeSkinTextures } from '../core/art';
 import { LocalBackend, SupabaseBackend, loadOnlineConfig } from '../core/backend';
 import { Store } from '../core/store';
 import { T, domNavigate } from '../core/ui';
 import { audio } from '../core/audio';
 
-const DATA = ['domains', 'minigames', 'characters', 'gacha', 'banners', 'synergies', 'challenges', 'story', 'worlds', 'items', 'updates', 'frontier', 'rewards'];
+const DATA = ['domains', 'minigames', 'characters', 'gacha', 'banners', 'synergies', 'challenges', 'story', 'worlds', 'items', 'updates', 'frontier', 'rewards', 'skins', 'pass'];
 
 export class BootScene extends Phaser.Scene {
   constructor() {
@@ -31,6 +31,11 @@ export class BootScene extends Phaser.Scene {
       this.load.image('art_' + ch.id, `assets/chars/${ch.id}_art.png`);
       if (ch.rarity >= 4) this.load.image('full_' + ch.id, `assets/chars/${ch.id}_full.png`);
     }
+    for (const sk of App.content.skins.skins) {
+      this.load.image('skin_' + sk.id + '_art', `assets/chars/skins/${sk.id}_art.png`);
+      this.load.image('skin_' + sk.id + '_full', `assets/chars/skins/${sk.id}_full.png`);
+      this.load.image('skin_' + sk.id + '_sprite', `assets/chars/skins/${sk.id}_sprite.png`);
+    }
     for (const id of [...App.content.domains.map((d) => d.id), 'rift', ...App.content.worlds.map((w) => w.id)]) {
       this.load.image('bg_' + id, `assets/bg/${id}.png`); // 미니게임용 (픽셀 640×360)
       this.load.image('bghd_' + id, `assets/bg/${id}_hd.png`); // 메뉴 화면용 고해상도 (선택)
@@ -42,10 +47,15 @@ export class BootScene extends Phaser.Scene {
   }
 
   async finish() {
+    for (const sk of App.content.skins.skins) {
+      const k = 'skin_' + sk.id + '_art';
+      if (this.textures.exists(k) && this.textures.get(k).getSourceImage() instanceof HTMLImageElement) App.content.skinFiles.add(sk.id);
+    }
     makeIconTextures(this);
     makeCharTextures(this, App.content);
     makeBgTextures(this, App.content);
     makeItemTextures(this, App.content);
+    makeSkinTextures(this, App.content);
 
     for (const c of App.content.chars) if (c.voice) audio.voices.set(c.id, c.voice);
     await audio.scan(

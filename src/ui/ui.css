@@ -156,6 +156,11 @@ h1, h2, h3, p { margin: 0; }
 .tag.gold { background: var(--gold); border-color: var(--gold); color: #2a1a00; }
 .tag.good { background: var(--good); border-color: var(--good); color: #002a10; }
 .tag.cyan { background: var(--accent2); border-color: var(--accent2); color: #002a2e; }
+.tag.hard { background: #ff4b6e; border-color: #ff4b6e; color: #fff; }
+.gc-hard { position: absolute; right: 14px; top: 14px; }
+.mode-switch { display: flex; gap: 8px; }
+.prep-info.hard { border-top-color: #ff4b6e; }
+.prep-info h2 .tag { vertical-align: middle; margin-left: 14px; }
 .tag.dimmed { color: var(--dim); background: rgba(255,255,255,0.04); }
 
 /* ---------- 탭 ---------- */
@@ -661,7 +666,9 @@ input[type=range].slider::-webkit-slider-thumb { -webkit-appearance: none; width
 .tr-coin { display: flex; align-items: center; justify-content: flex-end; gap: 6px; font-size: 22px; }
 .title-row .btn { justify-self: end; min-width: 150px; justify-content: center; }
 .rw-pager { display: flex; justify-content: flex-end; margin-top: 14px; }
-.ticket-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.tickets { height: 100%; overflow-y: auto; padding-right: 6px; }
+.ticket-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding-bottom: 20px; }
+.ticket.pass-ticket { grid-column: 1 / -1; }
 .ticket { padding: 24px 28px; --cut: 20px; border-color: color-mix(in srgb, var(--c) 50%, transparent); }
 .ticket.used { opacity: 0.5; }
 .ticket-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
@@ -894,3 +901,133 @@ input[type=range].slider::-webkit-slider-thumb { -webkit-appearance: none; width
 .join-text { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .join-text b { font-size: 40px; font-weight: 900; }
 .join-text span { font-size: 22px; color: var(--gold); }
+
+/* ============================================================ 스킨 */
+.skcard { position: relative; aspect-ratio: 3 / 4; background: #0c0a18; border: 1px solid color-mix(in srgb, var(--c) 55%, transparent); overflow: hidden; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%); transition: transform 0.15s, box-shadow 0.15s; }
+.skcard.sm { width: 128px; } .skcard.md { width: 170px; }
+.skcard.clickable { cursor: pointer; }
+.skcard.clickable:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 0 1px var(--c); z-index: 2; }
+.skcard.sel { box-shadow: 0 0 0 2px #fff, 0 0 24px var(--c); }
+.skcard-art { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 30%, color-mix(in srgb, var(--c) 30%, transparent), transparent 70%); display: grid; place-items: center; }
+.skcard-art img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.skcard-art img.pixel { object-fit: contain; padding: 10%; image-rendering: pixelated; }
+.skcard-empty { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--faint); font-size: 13px; }
+.skcard-empty .ico { font-size: 34px; }
+.skcard-top { position: absolute; left: 6px; top: 6px; right: 6px; display: flex; gap: 4px; flex-wrap: wrap; }
+.skcard .tag.grade { background: var(--c); border-color: var(--c); color: #111; font-size: 12px; height: 22px; }
+.skcard:not(.owned) .skcard-art img { filter: grayscale(0.8) brightness(0.45); }
+.skcard-lock { position: absolute; right: 8px; bottom: 44px; font-size: 20px; color: rgba(255,255,255,0.5); }
+.skcard.notready { border-style: dashed; }
+.skcard.gSS.owned::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.22) 45%, transparent 60%); background-size: 250% 100%; animation: holo 3s linear infinite; mix-blend-mode: screen; }
+.sk-body { position: absolute; left: 40px; right: 40px; top: 116px; bottom: 150px; display: flex; }
+.sk-hero { flex: 1; --cut: 28px; overflow: hidden; }
+.sk-hero-text { position: relative; z-index: 2; padding: 40px 50px 0; max-width: 820px; }
+.sk-hero-text h2 { font-size: 64px; font-weight: 900; letter-spacing: -0.03em; line-height: 1; margin: 8px 0 14px; }
+.sk-rates { display: flex; align-items: center; gap: 10px; margin-top: 16px; flex-wrap: wrap; font-size: 14px; }
+.rate-chip { display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border: 1px solid color-mix(in srgb, var(--c) 60%, transparent); border-left: 4px solid var(--c); background: rgba(255,255,255,0.04); font-size: 15px; }
+.rate-chip i { font-style: normal; color: var(--c); font-size: 17px; }
+.sk-pickup { display: flex; align-items: center; gap: 10px; margin-top: 14px; font-size: 15px; color: var(--ink); }
+.sk-showcase { position: absolute; right: 40px; top: 40px; width: 600px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; z-index: 2; }
+.sk-showcase .skcard { width: auto; }
+.skins .gb-pity { bottom: 36px; }
+.shard-pill.big { height: 56px; font-size: 26px; gap: 10px; margin-right: 10px; }
+.shard-pill small { font-size: 13px; color: var(--dim); margin-left: 4px; }
+.skin-entry .skin-ico { display: grid; place-items: center; font-size: 44px; color: var(--c); background: radial-gradient(ellipse at 50% 50%, color-mix(in srgb, var(--c) 30%, transparent), transparent 70%); }
+.skin-detail { display: flex; gap: 30px; }
+.skin-detail-art { width: 420px; height: 560px; flex: none; display: grid; place-items: center; background: radial-gradient(ellipse at 50% 40%, color-mix(in srgb, var(--c) 30%, transparent), #0c0a18 75%); border: 1px solid color-mix(in srgb, var(--c) 50%, transparent); overflow: hidden; }
+.skin-detail-art img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.skin-detail-art img.pixel { width: 70%; height: 70%; }
+.skin-detail-text { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.skin-detail-text h2 { font-size: 48px; font-weight: 900; letter-spacing: -0.02em; }
+.skin-desc { font-size: 18px; line-height: 1.6; margin-top: 6px; }
+.skin-detail-btns { margin-top: auto; display: flex; gap: 10px; flex-wrap: wrap; }
+.skin-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; max-height: 700px; overflow: auto; padding: 4px; }
+.skin-grid .skcard { width: auto; }
+.skin-ex { display: flex; flex-direction: column; gap: 6px; }
+.skin-ex-cost { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 16px; color: var(--faint); }
+.skin-ex-cost.ok { color: var(--violet); }
+.cd-skins { margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--line); }
+.cd-skins-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; font-size: 14px; }
+.cd-skins-row { display: flex; gap: 10px; }
+.cd-skin { display: flex; flex-direction: column; gap: 4px; }
+.cd-skin small { font-size: 12px; }
+.cd-skin .skcard.sm { width: 96px; }
+
+/* ---------- 시즌 패스 ---------- */
+.tag.free { background: #4be37a; border-color: #4be37a; color: #06130a; }
+.pull-btn.free { --c: #4be37a; }
+.menu-main.gacha.has-free::after { content: 'FREE'; position: absolute; right: 18px; top: 12px; font: 800 13px/1 Rajdhani, sans-serif; letter-spacing: 0.2em; color: #06130a; background: #4be37a; padding: 4px 8px; }
+.pass-strip { position: relative; display: flex; align-items: center; gap: 14px; height: 64px; padding: 0 18px; text-align: left; color: var(--ink); background: linear-gradient(90deg, rgba(90,66,10,0.85), rgba(28,24,52,0.9) 60%); border: 1px solid rgba(255,200,69,0.45); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%); transition: transform 0.12s, border-color 0.15s; overflow: hidden; }
+.pass-strip::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, transparent 0 18px, rgba(255,200,69,0.05) 18px 20px); pointer-events: none; }
+.pass-strip:hover { border-color: #ffc845; transform: translateX(-4px); }
+.pass-strip.hot { box-shadow: inset 0 0 0 1px rgba(255,200,69,0.5); }
+.ps-ico { font-size: 28px; color: #ffc845; flex: none; }
+.ps-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.ps-text b { font-size: 17px; }
+.ps-text small { font-size: 12px; color: var(--dim); }
+.ps-lv { display: flex; align-items: baseline; gap: 4px; flex-wrap: wrap; width: 110px; justify-content: flex-end; }
+.ps-lv small { font-size: 11px; color: #ffc845; letter-spacing: 0.1em; }
+.ps-lv b { font-size: 26px; color: #ffc845; }
+.ps-bar { display: block; width: 100%; height: 4px; background: rgba(255,255,255,0.12); margin-top: 2px; }
+.ps-bar i { display: block; height: 100%; background: #ffc845; }
+.pass-strip .badge { position: absolute; right: 10px; top: 8px; }
+.pass-body { position: absolute; left: 40px; right: 40px; top: 118px; bottom: 30px; display: grid; grid-template-columns: 1fr 560px; gap: 20px; }
+.pass-left { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.pass-head { display: grid; grid-template-columns: 90px 1fr 300px auto; align-items: center; gap: 24px; --c: #ffc845; }
+.pass-emblem { width: 90px; height: 90px; display: grid; place-items: center; font-size: 48px; color: #ffc845; background: radial-gradient(circle, rgba(255,200,69,0.25), transparent 70%); }
+.pass-head h2 { font-size: 34px; margin: 2px 0 6px; }
+.pass-head p { margin: 0; font-size: 14px; }
+.pass-level { display: flex; flex-direction: column; gap: 6px; }
+.pl-top { display: flex; align-items: baseline; gap: 8px; }
+.pl-top b { font-size: 44px; color: #ffc845; line-height: 1; }
+.pl-xp { font-size: 12px; text-align: right; }
+.pass-noclaim { font-size: 13px; max-width: 180px; text-align: right; }
+.pass-track-wrap { flex: none; display: flex; flex-direction: column; padding: 18px 0 6px; }
+.pt-head { display: flex; justify-content: space-between; padding: 0 24px 12px; }
+.pass-track { flex: 1; display: flex; gap: 10px; overflow-x: auto; overflow-y: hidden; padding: 10px 24px 14px; scroll-behavior: smooth; align-items: flex-start; }
+.pass-track::-webkit-scrollbar { height: 8px; }
+.pass-track::-webkit-scrollbar-thumb { background: rgba(255,200,69,0.4); }
+.pass-node { position: relative; flex: none; width: 128px; height: 196px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 8px; padding: 14px 8px 12px; color: var(--ink); background: linear-gradient(180deg, rgba(28,24,52,0.9), rgba(12,10,24,0.9)); border: 1px solid var(--line); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%); animation: enter 0.4s both; opacity: 0.55; transition: transform 0.12s; }
+.pass-node.big { width: 150px; background: linear-gradient(180deg, rgba(80,60,10,0.9), rgba(20,16,30,0.95)); border-color: rgba(255,200,69,0.5); }
+.pass-node.ready { opacity: 1; border-color: #ffc845; box-shadow: 0 0 24px rgba(255,200,69,0.25); }
+.pass-node.got { opacity: 0.85; }
+.pass-node.next { opacity: 0.9; border-color: rgba(255,255,255,0.35); }
+.pass-node:hover { transform: translateY(-3px); }
+.pn-lv { font-size: 13px; letter-spacing: 0.15em; color: var(--dim); }
+.pass-node.big .pn-lv, .pass-node.ready .pn-lv { color: #ffc845; }
+.pn-reward { width: 56px; height: 56px; display: grid; place-items: center; font-size: 34px; }
+.pn-reward .item-ico { width: 48px; height: 48px; font-size: 28px; }
+.pn-coin { color: #ffc845; }
+.pn-skin { color: #b48cff; }
+.pn-ticket { color: var(--c); font-size: 40px; filter: drop-shadow(0 0 8px var(--c)); }
+.pn-label { font-size: 12px; color: var(--dim); text-align: center; line-height: 1.3; min-height: 30px; }
+.pass-node.big .pn-label { color: #ffe8a8; font-weight: 700; }
+.pn-check, .pn-dot, .pn-lock { position: absolute; right: 8px; top: 8px; font-size: 14px; }
+.pn-check { color: #4be37a; }
+.pn-lock { color: var(--dim); opacity: 0.6; }
+.pn-dot { width: 10px; height: 10px; background: #ffc845; border-radius: 50%; box-shadow: 0 0 10px #ffc845; animation: pulse 1.2s infinite; }
+.pass-missions { display: flex; flex-direction: column; padding: 18px 22px; min-height: 0; }
+.pm-tabs { display: flex; gap: 8px; }
+.pm-tab { position: relative; flex: 1; height: 46px; font: 700 16px/1 Pretendard, sans-serif; color: var(--dim); background: rgba(255,255,255,0.04); border: 1px solid var(--line); }
+.pm-tab.on { color: #06130a; background: #ffc845; border-color: #ffc845; }
+.pm-tab .badge { position: absolute; right: 8px; top: -8px; }
+.pm-reset { font-size: 12px; padding: 10px 2px 6px; }
+.pm-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+.pm-row { display: grid; grid-template-columns: 1fr 70px 120px; align-items: center; gap: 14px; padding: 14px 16px; background: rgba(255,255,255,0.04); border: 1px solid var(--line); animation: enter 0.35s both; }
+.pm-row.ready { border-color: #ffc845; background: rgba(255,200,69,0.08); }
+.pm-row.done { opacity: 0.5; }
+.pm-text b { display: block; font-size: 15px; margin-bottom: 8px; }
+.pm-prog { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; font-size: 12px; }
+.pm-xp { text-align: center; color: #ffc845; }
+.pm-xp b { display: block; font-size: 20px; line-height: 1; }
+.pm-xp small { font-size: 10px; letter-spacing: 0.15em; }
+.pm-row .btn { justify-self: end; min-width: 110px; justify-content: center; }
+.pm-done { justify-self: end; width: 36px; height: 36px; display: grid; place-items: center; color: #4be37a; font-size: 18px; }
+.ticket-chars { overflow-x: auto; }
+.pass-info { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.pass-info .panel { padding: 20px 24px; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+.pi-list { display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: var(--dim); }
+.pi-list li { display: flex; gap: 10px; align-items: center; list-style: none; }
+.pi-list b { color: #ffc845; min-width: 64px; font-family: Rajdhani, sans-serif; font-size: 16px; }
+.pi-feat { display: flex; gap: 10px; flex-wrap: wrap; overflow: hidden; }
+.pi-feat .char-card { flex: none; }

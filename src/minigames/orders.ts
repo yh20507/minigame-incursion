@@ -89,7 +89,7 @@ export class OrdersGame extends MiniGame {
   }
 
   newCustomer(seat: Seat) {
-    const maxItems = this.h.micro ? 1 : Math.min(4, 1 + Math.floor(this.h.t / 12) + (this.h.difficulty - 1));
+    const maxItems = this.h.micro ? 1 : Math.min(4, 1 + Math.floor(this.h.t / 9) + Math.round(this.h.difficulty - 1));
     const n = 1 + Math.floor(this.h.rng() * maxItems);
     seat.order = [...Array(n)].map(() => Math.floor(this.h.rng() * 4)).sort();
     seat.max = Math.max(6, 13 - this.h.t * 0.08 - (this.h.difficulty - 1) * 2) + n * 1.5;

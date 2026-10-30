@@ -98,7 +98,7 @@ export class MemoryGame extends MiniGame {
     this.cards = [];
     this.open = [];
     const sizes = this.h.micro ? [[2, 2]] : [[4, 3], [4, 4], [5, 4], [6, 4]];
-    const [cols, rows] = sizes[Math.min(this.level, sizes.length - 1)];
+    const [cols, rows] = sizes[Math.min(this.level + (this.h.difficulty > 1.5 ? 1 : 0), sizes.length - 1)];
     this.cols = cols;
     const pairs = (cols * rows) / 2;
     const syms = Phaser.Utils.Array.Shuffle([...Array(10).keys()]).slice(0, pairs);
@@ -137,7 +137,7 @@ export class MemoryGame extends MiniGame {
       this.add(c);
       this.cards.push({ c, back, face, sym, up: true, done: false, x, y });
     });
-    this.preview = this.h.micro ? 0.9 : 1.2 + this.level * 0.2;
+    this.preview = this.h.micro ? 0.9 : (1.2 + this.level * 0.2) / (1 + (this.h.difficulty - 1) * 0.6);
     this.cursor = 0;
   }
 

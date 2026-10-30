@@ -12,7 +12,8 @@ import type {
   Frontier,
   Synergies,
   RewardsDef,
-} from './types';
+  SkinDef,
+  SkinsData, PassDef } from './types';
 
 /** 게임 콘텐츠(데이터 파일). public/data/*.json 에서 불러온다. */
 export class Content {
@@ -29,6 +30,11 @@ export class Content {
   updates: Season[] = [];
   frontier!: Frontier;
   rewards!: RewardsDef;
+  skins!: SkinsData;
+  pass!: PassDef;
+  /** 실제 그림 파일이 있는 스킨 id (Boot 이 채움) */
+  skinFiles = new Set<string>();
+  private skinMap = new Map<string, SkinDef>();
 
   private charMap = new Map<string, CharDef>();
   private gameMap = new Map<string, GameDef>();
@@ -49,6 +55,8 @@ export class Content {
     c.updates = cache.get('updates') ?? [];
     c.frontier = cache.get('frontier');
     c.rewards = cache.get('rewards') ?? { attendance: [], titles: [], tickets: [] };
+    c.skins = cache.get('skins') ?? { config: {}, grades: {}, skins: [] };
+    c.pass = cache.get('pass') ?? { season: '', name: '', sub: '', start: '', end: '', xpPerLevel: 100, maxLevel: 0, levels: [], weekly: [], daily: [] };
     c.index();
     return c;
   }
@@ -57,12 +65,19 @@ export class Content {
     this.chars.forEach((ch) => this.charMap.set(ch.id, ch));
     this.games.forEach((g) => this.gameMap.set(g.id, g));
     this.domains.forEach((d) => this.domainMap.set(d.id, d));
+    this.skins.skins.forEach((s) => this.skinMap.set(s.id, s));
   }
 
   char(id: string): CharDef {
     const c = this.charMap.get(id);
     if (!c) throw new Error('unknown character ' + id);
     return c;
+  }
+  skin(id: string): SkinDef | undefined {
+    return this.skinMap.get(id);
+  }
+  skinsOf(charId: string) {
+    return this.skins.skins.filter((s) => s.char === charId);
   }
   hasChar(id: string) {
     return this.charMap.has(id);
