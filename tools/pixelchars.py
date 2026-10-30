@@ -14,7 +14,8 @@ import sys
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-W, H = 24, 23
+W, H = 24, 24
+YOFF = 1  # 맨 윗줄 한 칸은 후광·뿔·귀 자리
 
 
 def hexc(s):
@@ -44,6 +45,7 @@ class Px:
         self.g = [[None] * W for _ in range(H)]
 
     def set(self, x, y, c):
+        y += YOFF
         if 0 <= x < W and 0 <= y < H and c is not None:
             self.g[y][x] = hexc(c)
 
@@ -59,6 +61,7 @@ class Px:
         self.rect(x, y0, x, y1, c)
 
     def get(self, x, y):
+        y += YOFF
         if 0 <= x < W and 0 <= y < H:
             return self.g[y][x]
         return None
@@ -73,7 +76,7 @@ class Px:
                 for x in range(W):
                     if self.g[y][x]:
                         continue
-                    if any(self.get(x + dx, y + dy) for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+                    if any(self.get(x + dx, y + dy - YOFF) for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
                         for dy in range(2):
                             for dx in range(2):
                                 px[x * 2 + dx, oy + y * 2 + dy] = gc
@@ -151,6 +154,10 @@ def draw(p):
         for i, (x, y) in enumerate(((2, 12), (3, 9), (5, 7), (18, 7), (20, 9), (21, 12), (3, 15), (20, 15), (12, 6))):
             P.rect(x, y, x + 1, y + 3, tc)
             P.set(x, y, shade(tc, -0.15))
+    elif tails == "fox1":
+        tc = hexc(p.get("tailColor", "#c9b6ee")); P.rect(18, 15, 20, 21, tc); P.set(21, 17, tc); P.rect(19, 20, 20, 21, shade(tc, 0.4))
+    elif tails == "dragon":
+        tc = hexc(p.get("tailColor", "#4a3a5a")); P.rect(18, 18, 21, 19, tc); P.set(22, 17, tc); P.set(23, 16, tc); P.set(20, 18, shade(tc, 0.25))
     elif tails == "cat":
         tc = hexc(p.get("tailColor", hair))
         P.vline(19, 16, 21, tc); P.set(20, 15, tc); P.set(20, 14, shade(tc, 0.3))
@@ -164,7 +171,7 @@ def draw(p):
         draw_prop(P, pr, skin, back=True)
 
     # ---------- 뒷머리
-    if hs in ("long", "twin", "longwavy", "longinner", "sideponytail", "braid", "lowtwin", "ponytail", "halfup", "wavybob", "longbangs"):
+    if hs in ("long", "twin", "longwavy", "longinner", "sideponytail", "braid", "braid2", "lowtwin", "ponytail", "halfup", "wavybob", "longbangs"):
         P.rect(5, 6, 6, 16, hair)
         P.rect(17, 6, 18, 16, hair)
         P.rect(7, 6, 16, 12, hair)
@@ -186,6 +193,11 @@ def draw(p):
             P.rect(17, 5, 20, 7, hair); P.rect(18, 8, 21, 14, hair); P.rect(19, 15, 21, 18, hair); P.set(20, 10, hair_l); P.set(21, 13, hair_d)
         if hs == "ponytail":
             P.rect(10, 0, 13, 1, hair); P.rect(16, 2, 19, 4, hair); P.rect(18, 5, 20, 14, hair); P.set(19, 8, hair_l)
+        if hs == "braid2":
+            for x in (4, 18):
+                P.rect(x, 13, x + 1, 20, hair)
+                for y in (14, 16, 18):
+                    P.set(x, y, hair_d); P.set(x + 1, y + 1, hair_d)
         if hs == "braid":
             P.rect(18, 13, 19, 20, hair)
             for y in (14, 16, 18):
@@ -342,6 +354,31 @@ def draw(p):
                 P.rect(9, 19, 10, 19, bot); P.rect(13, 19, 14, 19, bot); P.rect(9, 20, 10, 21, skin); P.rect(13, 20, 14, 21, skin)
         shoe = hexc(p.get("shoes", "#2a2230"))
         P.rect(9, 22, 10, 22, shoe); P.rect(13, 22, 14, 22, shoe)
+    if p.get("skirt"):  # 셔츠·재킷류 위에 치마
+        sc = hexc(p["skirt"]); P.rect(tx0 - 1, 19, tx1 + 1, 20, sc); P.hline(tx0 - 1, tx1 + 1, 20, shade(sc, -0.2))
+        if p.get("plaid"):
+            pc = hexc(p["plaid"]); P.set(tx0, 19, pc); P.set(tx0 + 3, 19, pc); P.set(tx1, 19, pc); P.set(tx0 + 1, 20, pc); P.set(tx0 + 4, 20, pc)
+        if p.get("skirtFrill"):
+            P.hline(tx0 - 1, tx1 + 1, 21, hexc(p["skirtFrill"]))
+    if p.get("socks"):
+        sc = hexc(p["socks"]); y0 = p.get("socksTop", 21); P.rect(9, y0, 10, 21, sc); P.rect(13, y0, 14, 21, sc)
+    if p.get("stripedLegs"):
+        a_, b_ = hexc(p["stripedLegs"][0]), hexc(p["stripedLegs"][1])
+        for y in range(19, 22):
+            c = a_ if y % 2 else b_
+            P.rect(9, y, 10, y, c); P.rect(13, y, 14, y, c)
+    if p.get("oneSock"):
+        P.rect(13, 19, 14, 21, hexc(p["oneSock"]))
+    if p.get("wideSleeves"):
+        wc = hexc(p["wideSleeves"]); P.rect(4, 14, 6, 19, wc); P.rect(17, 14, 19, 19, wc); P.hline(4, 6, 19, shade(wc, -0.2)); P.hline(17, 19, 19, shade(wc, -0.2)); P.set(7, 13, wc); P.set(16, 13, wc)
+        if p.get("sleeveTrim"):
+            tc = hexc(p["sleeveTrim"]); P.hline(4, 6, 18, tc); P.hline(17, 19, 18, tc)
+    if p.get("apron"):
+        ac = hexc(p["apron"]); P.rect(10, 15, 13, 20, ac); P.hline(10, 13, 20, shade(ac, -0.15)); P.set(11, 17, hexc(p.get("apronMark", ac)))
+    if p.get("bowTie"):
+        bc = hexc(p["bowTie"]); P.set(10, 13, bc); P.set(13, 13, bc); P.set(11, 14, bc); P.set(12, 14, bc)
+    if p.get("bigBowChest"):
+        bc = hexc(p["bigBowChest"]); P.rect(9, 14, 10, 15, bc); P.rect(13, 14, 14, 15, bc); P.set(11, 14, shade(bc, -0.3)); P.set(12, 15, shade(bc, -0.3))
     if p.get("belt"):
         P.hline(tx0, tx1, 18, hexc(p["belt"])); P.set(11, 18, hexc("#ffd84b"))
     if p.get("sash"):
@@ -456,6 +493,8 @@ def draw(p):
             P.rect(8, 8, 10, 10, hair); P.set(10, 10, skin)
         if p.get("bangs") == "coverR":
             P.rect(13, 8, 15, 10, hair); P.set(13, 10, skin)
+        if p.get("bangs") == "eyes":
+            P.rect(7, 6, 16, 10, hair); P.set(8, 10, hair_d); P.set(12, 10, hair_d); P.set(15, 10, hair_d)
         if eyes == "glasses" or "glasses" in acc:
             gc = hexc(p.get("glassColor", "#e8e8f0"))
             P.hline(7, 10, 8, gc); P.hline(13, 16, 8, gc); P.set(7, 9, gc); P.set(10, 9, gc); P.set(13, 9, gc); P.set(16, 9, gc); P.hline(11, 12, 8, gc)
@@ -528,7 +567,7 @@ def draw(p):
     elif ears == "fox":
         ec = hexc(p.get("earColor", hair)); P.rect(5, -1, 7, 1, ec); P.set(6, -2, ec); P.rect(16, -1, 18, 1, ec); P.set(17, -2, ec); P.set(6, 0, WHITE); P.set(17, 0, WHITE)
     elif ears == "tiger":
-        ec = hexc(p.get("earColor", "#c9c9d0")); P.rect(6, 0, 8, 1, ec); P.rect(15, 0, 17, 1, ec); P.set(7, 1, hexc("#f7b7c6")); P.set(16, 1, hexc("#f7b7c6"))
+        ec = hexc(p.get("earColor", "#c9c9d0")); P.rect(6, -1, 8, 1, shade(ec, -0.25)); P.rect(15, -1, 17, 1, shade(ec, -0.25)); P.set(7, 1, hexc("#f7b7c6")); P.set(16, 1, hexc("#f7b7c6")); P.set(6, -1, hexc("#2a2230")); P.set(17, -1, hexc("#2a2230"))
     elif ears == "pointy":
         P.set(5, 7, skin); P.set(4, 6, skin); P.set(18, 7, skin); P.set(19, 6, skin)
     elif ears == "round":
@@ -538,7 +577,7 @@ def draw(p):
     if horns == "demon":
         hc, ht = hexc(p.get("hornColor", "#4a4452")), hexc("#9a93a6"); P.set(6, 2, hc); P.set(5, 1, hc); P.set(5, 0, ht); P.set(17, 2, hc); P.set(18, 1, hc); P.set(18, 0, ht)
     elif horns == "unicorn":
-        P.rect(12, 0, 12, 1, hexc("#e8dcff")); P.set(12, 0, hexc("#c9b6ff")); P.set(12, -1, hexc("#e8dcff"))
+        P.rect(11, 0, 12, 1, hexc("#e8dcff")); P.set(12, -1, hexc("#c9b6ff")); P.set(11, 1, hexc("#c9b6ff"))
     elif horns == "small":
         P.set(8, 0, hexc(p.get("hornColor", "#ffd84b"))); P.set(15, 0, hexc(p.get("hornColor", "#ffd84b")))
 
@@ -589,7 +628,7 @@ def draw(p):
         for i, x in enumerate(range(6, 18, 2)):
             P.set(x, 2, hexc(("#ff8fa3", "#ffd27a", "#ffffff")[i % 3])); P.set(x + 1, 2, hexc("#6fcf7a"))
     elif hat == "halo":
-        P.hline(9, 14, -2, hexc("#ffe08a")); P.set(8, -1, hexc("#ffe08a")); P.set(15, -1, hexc("#ffe08a"))
+        P.hline(8, 15, -1, hexc("#ffe08a")); P.set(9, 0, hexc("#ffd84b")); P.set(14, 0, hexc("#ffd84b"))
     elif hat == "maid":
         P.hline(7, 16, 1, WHITE); P.set(7, 0, WHITE); P.set(10, 0, WHITE); P.set(13, 0, WHITE); P.set(16, 0, WHITE)
     elif hat == "peakedcap":
@@ -617,6 +656,8 @@ def draw(p):
     elif hat == "origamicrown":
         cc = hexc("#f2e9d0"); P.hline(7, 16, 1, cc); P.set(8, 0, cc); P.set(12, 0, cc); P.set(15, 0, cc); P.set(12, -1, cc)
 
+    if ears == "cat" and hat:
+        ec = hexc(p.get("earColor", hair)); P.rect(6, -1, 8, 0, ec); P.set(7, -2, ec); P.rect(15, -1, 17, 0, ec); P.set(16, -2, ec); P.set(7, 0, hexc("#f7b7c6")); P.set(16, 0, hexc("#f7b7c6"))
     # 작은 장식
     if "hibiscus" in acc:
         fc = hexc(p.get("flower", "#ff3366")); P.rect(4, 2, 6, 4, fc); P.set(5, 3, hexc("#ffd84b")); P.set(4, 2, shade(fc, 0.3))
@@ -628,6 +669,12 @@ def draw(p):
         P.rect(16, 1, 18, 3, WHITE); P.set(17, 2, hexc("#ffd84b"))
     if "blackflower" in acc:
         P.rect(4, 1, 5, 2, hexc("#2b2232")); P.set(18, 1, hexc("#2b2232")); P.set(19, 2, hexc("#2b2232"))
+    if "sunglasses_head_pink" in acc:
+        P.hline(7, 16, 3, hexc("#ff8fd0")); P.rect(8, 4, 10, 4, hexc("#2a2230")); P.rect(13, 4, 15, 4, hexc("#2a2230"))
+    if "catgoggle" in acc:
+        P.rect(6, -1, 7, 0, hexc("#f4f4ff")); P.rect(16, -1, 17, 0, hexc("#f4f4ff"))
+    if "tiebar" in acc:
+        P.set(11, 15, hexc("#dfe6ee"))
     if "toaclips" in acc:
         P.rect(5, 3, 6, 4, hexc("#e9c6ff")); P.set(5, 3, hexc("#ff8fd0")); P.set(8, 3, hexc("#ff8fd0")); P.set(8, 4, hexc("#ff8fd0"))
     if "xclip" in acc:
@@ -877,6 +924,10 @@ def draw_prop(P, pr, skin, back=False):
         c = hexc("#ff7fb0"); P.rect(0, 17, 23, 20, c); P.rect(0, 7, 2, 16, c); P.rect(0, 5, 3, 7, c); P.set(4, 6, hexc("#2a2230")); P.set(1, 6, OUTLINE)
     elif kind == "towel":
         P.rect(4, 11, 5, 19, WHITE); P.rect(18, 11, 19, 19, WHITE); P.set(4, 19, hexc("#ff7fb0")); P.set(19, 19, hexc("#ff7fb0"))
+    elif kind == "bandage":
+        P.hline(13, 14, 20, hexc("#f4f4ff")); P.hline(9, 10, 21, hexc("#f4f4ff"))
+    elif kind == "broom":
+        P.vline(3, 6, 20, hexc("#8a5a2a")); P.rect(2, 20, 4, 22, hexc("#5a3a2a"))
     elif kind == "glove_long":
         c = col or hexc("#c84ad8"); P.rect(16, 15, 16, 18, c); P.rect(7, 15, 7, 18, hexc("#ffffff"))
 
@@ -1039,22 +1090,36 @@ CHARS = {
     "lol_yasuo": dict(skin="tan", hair="#1b1b24", hairStyle="ponytail", eye="#2a2230", beard="stubble", outfit="tunic", top="#2a4a8a", bottom="#5a3a2a", sleeve="none", props=[("katana", "#dfe6ee"), "wind"], mouth="flat", sash="#c62828"),
     "lol_ahri": dict(hair="#1b1b24", hairStyle="long", eye="#ffd84b", ears="fox", earColor="#1b1b24", tails="fox9", tailColor="#f4f4ff", acc=["whiskers"], outfit="dress", top="#c62828", bottom="#f4f4ff", props=[("orb", "#5fd3e0")], mouth="smirk"),
     "lol_kaisa": dict(hair="#3a2a6a", hairStyle="long", eye="#b48cff", eyes="glow", outfit="bodysuit", top="#3a1a5a", bottom="#2a1040", suitLine="#b48cff", props=[("sparkle", "#b48cff")], glow="#8a3ad8", mouth="flat"),
-    # ---- 스텔라이브 (공식 의상 기준의 색·장식)
-    "sl_yuni": dict(hair="#f4f4ff", hairStyle="braid", eye="#b48cff", horns="unicorn", rainbow=True, outfit="jacket", top="#f4f4ff", shirt="#5fb3ff", acc=["ribbon"], ribbonColor="#5fb3ff", mouth="smile", chest="#9fe0ff"),
-    "sl_huya": dict(hair="#7a4fd0", hairStyle="longwavy", eye="#ffd84b", horns="demon", ears="pointy", hat="beret", hatColor="#5a3a9a", acc=["starclip"], choker="#2a2230", outfit="dress", top="#f4f4ff", bottom="#3a2a5a", sleeve="short", necklace="#ffd84b", mouth="smile"),
-    "sl_gangzi": dict(hair="#141622", hairStyle="longinner", hairInner="#2a6cff", bangs="eyes" if False else "straight", eye="#e2c23a", hat="headband", hatColor="#2a2230", acc=["ribbon"], ribbonColor="#2a2230", choker="#2a2230", outfit="dress", top="#f4f4ff", bottom="#1b1b24", sleeve="none", mouth="flat"),
-    "sl_hina": dict(hair="#1b1a22", hairStyle="braid", eye="#3b7bd6", acc=["bigbow", "heartclip"], ribbonColor="#e23a3a", outfit="vest", top="#d9c9a0", shirt="#f4f4ff", tie="#c62828", mouth="smile"),
-    "sl_mashiro": dict(hair="#b9b9c2", hairStyle="bob", streak="#e0383f", eye="#e03a3a", ears="cat", earColor="#b9b9c2", hat="peakedcap", hatColor="#1b1b24", outfit="jacket", top="#1b1b24", shirt="#f4f4ff", tie="#c62828", mouth="smirk"),
-    "sl_toa": dict(hair="#15141f", hairTip="#8a5fd6", hairStyle="lowtwin", bangs="side", eye="#b48cff", acc=["toaclips"], outfit="jacket", top="#1b2a4a", shirt="#9a9aaa", tie="#ff8fd0", mouth="smile"),
-    "sl_lize": dict(hair="#c62828", hairStyle="long", streak="#e8c05a", eye="#9a9aaa", acc=["mole", "batclip"], choker="#2a2230", outfit="dress", top="#1b1b24", bottom="#8a1f1f", mouth="smirk"),
-    "sl_tabi": dict(hair="#9fe0ff", hairStyle="twin", eye="#5aa0d0", acc=["goggles_fore", "ribbon"], goggleColor="#ffd84b", ribbonColor="#5fb3ff", outfit="hoodie", top="#f4f4ff", emblem="#d9a93a", mouth="open"),
-    "sl_shibuki": dict(hair="#c9b6ee", hairStyle="buns", eye="#5aa0d0", eye2="#ff8a3a", acc=["ahoge", "pompom"], outfit="dress", top="#f4f4ff", bottom="#c9b6ee", props=[("handfan", "#ff8fa3")], mouth="smile"),
-    "sl_rang": dict(hair="#c9c9d0", hairStyle="longinner", hairInner="#d9a93a", eye="#ffd84b", ears="tiger", tails="tiger", acc=["bell"], outfit="dress", top="#1b1b24", bottom="#d9a93a", mouth="grin", scarf="#f4f4ff"),
-    "sl_rin": dict(hair="#f4f4ff", hairStyle="sideponytail", streak="#5fb3ff", eye="#5aa0d0", hat="maid", acc=["cloudclip", "ribbon"], ribbonColor="#5fb3ff", outfit="dress", top="#2a4a8a", bottom="#f4f4ff", mouth="smile"),
-    "sl_nana": dict(hair="#ff8fd0", hairStyle="long", streak="#5fd3e0", streak2="#6fcf7a", eye="#6fcf7a", hat="beret", hatColor="#1b1b24", acc=["xclip"], clipColor="#ffd84b", outfit="jacket", top="#1b1b24", shirt="#ff8fd0", mouth="grin"),
-    "sl_riko": dict(hair="#b9f0b0", hairStyle="twin", eye="#b48cff", hat="halo", outfit="coat", top="#f4f4ff", shirt="#1b1b24", mouth="smile", choker="#9a9aaa"),
-    "sl_hiyori": dict(hair="#d9c7a0", hairStyle="long", eye="#ff8fb0", hat="veil", acc=["whiteflower"], outfit="dress", top="#f4f4ff", bottom="#f4f4ff", mouth="smile"),
-    "sl_meri": dict(hair="#e8c05a", hairStyle="longwavy", bangs="eyes", eye="#5aa0d0", acc=["ahoge", "ribbon"], ribbonColor="#5fd3e0", choker="#2a2230", outfit="dress", top="#f4f4ff", bottom="#2a2230", mouth="smile"),
+    # ---- 스텔라이브 (공식 전신 일러스트 기준)
+    "sl_shibuki": dict(hair="#c9b6ee", hairStyle="long", bangs="parted", eye="#e8c05a", eye2="#ff8fb0", acc=["ahoge", "pompom"], ears="cat", earColor="#c9b6ee", tails="fox1", tailColor="#d9c9f2",
+                       outfit="shirt", top="#f4f4ff", sleeve="none", wideSleeves="#f4f4ff", sleeveTrim="#e24b4b", bowTie="#e24b4b", skirt="#c62828", stripedLegs=("#5fb3ff", "#f4f4ff"), shoes="#f4f4ff", mouth="open"),
+    "sl_yuni": dict(hair="#f4f4ff", hairStyle="longwavy", eye="#b48cff", horns="unicorn", wings="angel", acc=["ribbon"], ribbonColor="#5fb3ff",
+                    outfit="dress", top="#f4f4ff", bottom="#bfe6ff", sleeve="long", socks="#f4f4ff", mouth="smile", glow=None),
+    "sl_riko": dict(hair="#b9f0b0", hairStyle="twin", eye="#9aa0aa", hat="halo", acc=["xclip"], clipColor="#6fcf7a",
+                    outfit="jacket", top="#f4f4ff", shirt="#1b1b24", skirt="#f4f4ff", belt="#2a2230", props=[("sword", "#dfe6ee")], socks="#f4f4ff", mouth="flat"),
+    "sl_nana": dict(hair="#ff8fd0", hairStyle="long", eye="#6fcf7a", hat="beret", hatColor="#1b1b24", acc=["xclip", "sunglasses_head_pink"], clipColor="#ffd84b",
+                    outfit="jacket", top="#1b1b24", shirt="#1b1b24", bowTie="#c62828", skirt="#1b1b24", oneSock="#5a5a6a", shoes="#1b1b24", mouth="grin"),
+    "sl_huya": dict(hair="#5b3a9a", hairStyle="twin", eye="#ffd84b", horns="demon", ears="pointy", wings="bat", wingColor="#c84ad8", tails="dragon", tailColor="#3a2a4a",
+                    outfit="dress", top="#f4f4ff", bottom="#5a3a9a", sleeve="short", choker="#2a2230", necklace="#ffd84b", socks="#f4f4ff", mouth="smile", acc=["starclip"]),
+    "sl_tabi": dict(hair="#5fb3ff", hairStyle="twin", eye="#5aa0d0", hat="goggles", goggleColor="#9fe0ff", acc=["catgoggle"],
+                    outfit="hoodie", top="#f4f4ff", bowTie="#5fb3ff", emblem="#c62828", skirt="#9a9aaa", belt="#2a2230", mouth="smile"),
+    "sl_lize": dict(hair="#b5302a", hairStyle="long", streak="#e8c05a", eye="#9aa0aa", acc=["mole", "batclip"],
+                    outfit="jacket", top="#5a5a66", shirt="#1b1b24", skirt="#1b1b24", belt="#dfe6ee", socks="#f4f4ff", socksTop=20, mouth="smirk"),
+    "sl_hina": dict(hair="#1b1a22", hairStyle="long", eye="#3b7bd6", acc=["bigbow", "heartclip"], ribbonColor="#c62828",
+                    outfit="vest", top="#e8e0cc", shirt="#f4f4ff", bowTie="#c62828", skirt="#8a2a2a", plaid="#c9a24a", legs="#1b1b24", shoes="#5a3a2a", mouth="flat"),
+    "sl_hiyori": dict(hair="#d9c7a0", hairTip="#ff8fb0", hairStyle="lowtwin", eye="#ff8fb0", hat="veil", acc=["whiteflower"],
+                      outfit="dress", top="#f4f4ff", bottom="#f4f4ff", sleeve="long", socks="#f4f4ff", socksTop=19, props=[("sparkle", "#ff8fb0")], mouth="open"),
+    "sl_meri": dict(hair="#e8c05a", hairStyle="longwavy", bangs="eyes", eye="#5aa0d0", acc=["ahoge", "ribbon"], ribbonColor="#2a4a8a", choker="#2a2230",
+                    outfit="dress", top="#1b1b24", bottom="#f4f4ff", sleeve="long", bigBowChest="#2a4a8a", apron="#f4f4ff", socks="#f4f4ff", mouth="smile"),
+    "sl_rang": dict(hair="#c9c9d0", hairStyle="longinner", hairInner="#d9a93a", eye="#e8c05a", ears="tiger", earColor="#c9c9d0", tails="tiger", acc=["bell", "ahoge"],
+                    outfit="bikini", top="#1b1b24", bottom="#d9a93a", frill=False, wideSleeves="#f4f4ff", sleeveTrim="#d9a93a", necklace="#ffd84b", chest="#d9a93a", shoes="#1b1b24", mouth="flat", props=["bandage"]),
+    "sl_toa": dict(hair="#15141f", hairTip="#8a5fd6", hairStyle="lowtwin", bangs="side", eye="#b48cff", acc=["toaclips"],
+                   outfit="jacket", top="#1b2a4a", shirt="#f4f4ff", bowTie="#ff8fd0", skirt="#8a3ad8", plaid="#b48cff", socks="#1b1b24", socksTop=19, mouth="smile", necklace="#dfe6ee"),
+    "sl_mashiro": dict(hair="#b9b9c2", hairStyle="bob", streak="#e0383f", eye="#e03a3a", ears="cat", earColor="#b9b9c2", hat="peakedcap", hatColor="#1b1b24",
+                       outfit="coat", top="#1b1b24", shirt="#f4f4ff", tie="#c62828", mouth="flat", acc=["tiebar"]),
+    "sl_gangzi": dict(hair="#1b2a4a", hairStyle="braid2", eye="#e2c23a", hat="maid", outfit="jacket", top="#4a4a55", shirt="#2a2a33", apron="#f4f4ff", apronMark="#1b1b24", skirt="#2a2a33", socks="#f4f4ff", socksTop=20, mouth="open"),
+    "sl_rin": dict(hair="#f4f4ff", hairStyle="sideponytail", streak="#2a63d8", streak2="#2a63d8", eye="#5aa0d0", hat="maid", acc=["ribbon"], ribbonColor="#2a63d8",
+                   outfit="dress", top="#9a9aaa", bottom="#2a63d8", sleeve="short", apron="#f4f4ff", socks="#f4f4ff", socksTop=19, props=[("broom",)], mouth="smile"),
     # ---- 서리 시계탑
     "ur": dict(hair="#3a3a3a", hairStyle="short", bangs="messy", eye="#5aa0d0", hat="cap", hatColor="#4a4a5a", acc=["snow"], scarf="#c62828", outfit="coat", top="#3a3a4a", props=["brush"], mouth="smile", skin="pale"),
     "nell": dict(hair="#c9a24a", hairStyle="braid", eye="#6fcf7a", outfit="apron", top="#f4f4ff", under="#5a7a9a", props=["teapot"], mouth="smile"),
@@ -1183,8 +1248,8 @@ def main():
             continue
         if sk["id"] not in SKINS:
             continue
-        p = dict(params_for(sk["char"], by))
-        p.update(SKINS[sk["id"]])
+        # 스텔라이브 스킨은 일러스트 기준으로 따로 정의돼 있어 기본값을 섞지 않는다
+        p = dict(SKINS[sk["id"]]) if sk["id"].startswith("sk_sl_") else {**params_for(sk["char"], by), **SKINS[sk["id"]]}
         jobs.append((sk["id"], p, os.path.join(a.out, "skins", f"{sk['id']}_sprite.png")))
     imgs = []
     for sid, p, dst in jobs:
