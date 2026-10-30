@@ -31,7 +31,7 @@ export function defaultSave(content: Content): SaveData {
       titles: { claimed: [], equipped: '' },
       tickets: [],
       eventRewards: [],
-      skins: { owned: [], equipped: {}, shards: 0, pity: 0, pulls: 0 },
+      skins: { owned: [], equipped: {}, shards: 0, pity: 0, ssPity: 0, pulls: 0 },
       pass: { season: '', xp: 0, claimed: [], week: '', weekly: {}, day: '', daily: {}, done: [], freePull: '', attendDays: [] },
       hardBest: {},
       records: [],
@@ -194,6 +194,26 @@ export class Store {
         if (p.type === 'time') b.time += Math.round(v * 2) / 2;
         else b[p.type] += Math.round(v);
       }
+    }
+    // 입힌 의상 효과 (리더 전부 · 서포터 절반)
+    const skinEff = this.content.skins.config.effects;
+    for (const m of team) {
+      const sk = this.equippedSkin(m.id);
+      if (!sk || !this.content.hasChar(m.id)) continue;
+      const e = skinEff?.[sk.grade];
+      if (!e) continue;
+      const parts: string[] = [];
+      if (e.score) {
+        const v = Math.round(e.score * m.f);
+        b.score += v;
+        parts.push(`점수 +${v}%`);
+      }
+      if (e.coin) {
+        const v = Math.round(e.coin * m.f);
+        b.coin += v;
+        parts.push(`코인 +${v}%`);
+      }
+      if (parts.length) b.notes.push(`의상 「${sk.name}」(${sk.grade}): ${parts.join(' ')}`);
     }
     if (domainId) {
       const poolChars = this.content.chars.filter((c) => c.pool && c.domain === domainId);
@@ -550,19 +570,25 @@ export class Store {
     let gotA = false;
     for (let i = 0; i < count; i++) {
       sk.pity += 1;
+      sk.ssPity = (sk.ssPity ?? 0) + 1;
       sk.pulls += 1;
       let grade: SkinGrade | null = null;
       let pity = false;
-      if (sk.pity >= cfg.pity && pick(['S', 'SS'])) {
+      if (sk.ssPity >= cfg.ssPity && pick(['SS'])) {
+        grade = 'SS';
+        pity = true;
+      } else if (sk.pity >= cfg.pity && pick(['S'])) {
         grade = 'S';
         pity = true;
       } else {
         const x = rng() * 100;
-        if (x < cfg.rates.S) grade = 'S';
-        else if (x < cfg.rates.S + cfg.rates.A) grade = 'A';
+        if (x < cfg.rates.SS) grade = 'SS';
+        else if (x < cfg.rates.SS + cfg.rates.S) grade = 'S';
+        else if (x < cfg.rates.SS + cfg.rates.S + cfg.rates.A) grade = 'A';
       }
       if (count > 1 && i === count - 1 && !gotA && !grade) grade = 'A';
-      const chosen = grade === 'S' ? pick(['S', 'SS']) : grade === 'A' ? pick(['A']) : null;
+      // SS 풀이 비어 있으면 S 로, S 풀이 비어 있으면 SS 로 내려/올려 준다
+      const chosen = grade === 'SS' ? pick(['SS']) ?? pick(['S']) : grade === 'S' ? pick(['S']) ?? pick(['SS']) : grade === 'A' ? pick(['A']) : null;
       if (!chosen) {
         const n = cfg.shardRoll[0] + Math.floor(rng() * (cfg.shardRoll[1] - cfg.shardRoll[0] + 1));
         sk.shards += n;
@@ -571,6 +597,7 @@ export class Store {
       }
       gotA = true;
       if (chosen.grade !== 'A') sk.pity = 0;
+      if (chosen.grade === 'SS') sk.ssPity = 0;
       const isNew = !sk.owned.includes(chosen.id);
       let shards = 0;
       if (isNew) sk.owned.push(chosen.id);
@@ -754,6 +781,17 @@ export function effectLabel(type: string, v: number) {
       return `보호막 ${v}회`;
   }
   return '';
+}
+
+/** 스킨 등급 효과 한 줄 ("점수 +4% · 코인 +4%") */
+export function skinEffectLabel(content: Content, grade: SkinGrade, half = false) {
+  const e = content.skins.config.effects?.[grade];
+  if (!e) return '';
+  const f = half ? 0.5 : 1;
+  const parts: string[] = [];
+  if (e.score) parts.push(`점수 +${Math.round(e.score * f)}%`);
+  if (e.coin) parts.push(`코인 +${Math.round(e.coin * f)}%`);
+  return parts.join(' · ');
 }
 
 export function passiveLabel(p: { type: string; value: number; domain?: string }, domainName?: string) {

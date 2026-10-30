@@ -69,7 +69,7 @@ export function teamScreen(data: { back?: { scene: string; data?: object }; slot
         skillCard(lead.id),
         h('div', { class: 'team-pass' }, lead.passives.map((p) => h('div', null, svg(I.sparkle), ' ', passiveLabel(p, App.content.domainName(p.domain ?? ''))))),
         h('div', { class: 'sec-title', style: { marginTop: '18px' } }, h('b', null, '팀 보너스'), h('span', null, '모든 영역 공통분')),
-        h('div', { class: 'bonus-chips' }, bonusLines(b).map((l) => h('span', { class: 'tag good' }, l))),
+        h('div', { class: 'bonus-chips' }, bonusLines(b).map((l) => h('span', { class: 'tag good' }, l)), b.notes.map((n) => h('span', { class: 'tag gold' }, n))),
         h('div', { class: 'sec-title', style: { marginTop: '18px' } }, h('b', null, '크로스오버'), h('span', null, '특정 조합을 함께 편성하면 발동')),
         crossRows.length ? h('div', { class: 'cross-list' }, crossRows) : h('p', { class: 'faint' }, '아직 발견한 조합이 없어요.'),
       ),

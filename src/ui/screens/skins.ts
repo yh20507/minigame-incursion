@@ -1,6 +1,7 @@
 /** 의상 균열: 스킨 뽑기 · 조각 교환 */
 import { App } from '../../core/app';
 import { audio } from '../../core/audio';
+import { skinEffectLabel } from '../../core/store';
 import type { SkinDef, SkinPull } from '../../core/types';
 import { bgArt, skinArt, ui, type Screen } from '../app';
 import { RC, bar, btn, itemIcon, topBar } from '../components';
@@ -30,7 +31,8 @@ export function skinCard(sk: SkinDef, o: { onClick?: () => void; size?: 'sm' | '
     h('div', { class: 'skcard-art' }, art ? h('img', { src: art.url, class: art.pixel ? 'pixel' : '', alt: '' }) : h('div', { class: 'skcard-empty' }, svg(I.image), h('span', null, '준비 중'))),
     h('div', { class: 'ccard-shade' }),
     h('div', { class: 'skcard-top' }, h('span', { class: 'tag grade' }, sk.grade), st.skinPickup(sk) && !owned ? h('span', { class: 'tag hot' }, 'PICK UP') : null, equipped ? h('span', { class: 'tag good' }, '장착') : null),
-    h('div', { class: 'ccard-name' }, h('b', null, sk.name), h('small', null, o.showOwner === false ? '' : ch.name)),
+    h('div', { class: 'ccard-name' }, h('b', null, sk.name), h('small', null, o.showOwner === false ? skinEffectLabel(App.content, sk.grade) : ch.name)),
+    o.showOwner === false ? null : h('div', { class: 'skcard-eff' }, skinEffectLabel(App.content, sk.grade)),
     !owned && ready ? h('div', { class: 'skcard-lock' }, svg(I.lock)) : null,
   );
 }
@@ -60,14 +62,16 @@ export function skinGachaScreen(): Screen {
       h('div', { class: 'eyebrow' }, 'WARDROBE RIFT'),
       h('h2', null, '의상 균열'),
       h('p', { class: 'gb-desc' }, '동료들의 새 의상이 나오는 균열. 꽝은 없어요 — 스킨이 아니면 스킨 조각이 나오고, 조각을 모으면 원하는 스킨과 바꿀 수 있어요. 아직 없는 동료의 스킨도 나오며, 그 동료를 만나면 바로 입힐 수 있어요.'),
-      h('div', { class: 'sk-rates' }, rateChip('S · SS', `${cfg.rates.S}%`, SKIN_COL('S')), rateChip('A', `${cfg.rates.A}%`, SKIN_COL('A')), rateChip('조각', `${100 - cfg.rates.S - cfg.rates.A}%`, '#b48cff'), h('span', { class: 'dim' }, `10+1회는 A 이상 1개 보장 · ${cfg.pity}회 안에 S 이상 확정`)),
+      h('div', { class: 'sk-rates' }, rateChip('SS', `${cfg.rates.SS}%`, SKIN_COL('SS')), rateChip('S', `${cfg.rates.S}%`, SKIN_COL('S')), rateChip('A', `${cfg.rates.A}%`, SKIN_COL('A')), rateChip('조각', `${Math.round((100 - cfg.rates.SS - cfg.rates.S - cfg.rates.A) * 10) / 10}%`, '#b48cff'), h('span', { class: 'dim' }, `10+1회는 A 이상 1개 보장 · ${cfg.pity}회 안에 S, ${cfg.ssPity}회 안에 SS 확정`)),
+      h('div', { class: 'sk-effects' }, h('span', { class: 'eyebrow' }, '의상 효과'), (['A', 'S', 'SS'] as const).map((g) => h('span', { class: 'tag', style: { color: SKIN_COL(g), borderColor: SKIN_COL(g) } }, `${g} ${skinEffectLabel(App.content, g)}`)), h('small', { class: 'dim' }, cfg.effectNote)),
       pickups.length ? h('div', { class: 'sk-pickup' }, h('span', { class: 'tag hot' }, 'PICK UP'), h('span', null, `열린 세계관 균열의 스킨 ${pickups.length}종은 확률 ${cfg.pickupMult}배 (${[...new Set(pickups.map((s) => App.content.domainName(App.content.char(s.char).domain)))].join(' · ')})`)) : null,
     ),
     h('div', { class: 'sk-showcase' }, showcase.map((s) => skinCard(s, { size: 'sm', onClick: () => detail(s) }))),
     h(
       'div',
       { class: 'gb-pity' },
-      h('div', { class: 'pity-row', vars: { c: SKIN_COL('S') } }, h('div', { class: 'pity-label' }, h('span', null, 'S 이상 확정까지'), h('b', { class: 'num' }, `${Math.max(0, cfg.pity - sk.pity)}회`)), bar(sk.pity / cfg.pity, SKIN_COL('S'), 'thin')),
+      h('div', { class: 'pity-row', vars: { c: SKIN_COL('S') } }, h('div', { class: 'pity-label' }, h('span', null, 'S 확정까지'), h('b', { class: 'num' }, `${Math.max(0, cfg.pity - sk.pity)}회`)), bar(sk.pity / cfg.pity, SKIN_COL('S'), 'thin')),
+      h('div', { class: 'pity-row', vars: { c: SKIN_COL('SS') } }, h('div', { class: 'pity-label' }, h('span', null, 'SS 확정까지'), h('b', { class: 'num' }, `${Math.max(0, cfg.ssPity - (sk.ssPity ?? 0))}회`)), bar((sk.ssPity ?? 0) / cfg.ssPity, SKIN_COL('SS'), 'thin')),
       h('div', { class: 'gb-pity-note' }, `보유 스킨 ${owned} / ${all.length} · 소환 ${fmt(sk.pulls)}회`, h('button', { class: 'link', onclick: () => exchangeModal() }, svg(I.swap), ' 조각 교환')),
     ),
   );
@@ -172,6 +176,7 @@ export function skinGachaScreen(): Screen {
           h('h2', null, s.name),
           h('p', { class: 'dim' }, `${ch.name} · ${ch.title}`),
           h('p', { class: 'skin-desc' }, s.desc),
+          h('div', { class: 'skin-eff-row', vars: { c: SKIN_COL(s.grade) } }, svg(I.sparkle), h('b', null, skinEffectLabel(App.content, s.grade)), h('small', { class: 'dim' }, cfg.effectNote)),
           h('div', { class: 'skin-detail-btns' },
             owned
               ? st.owns(s.char)

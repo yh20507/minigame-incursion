@@ -157,11 +157,17 @@ export interface SkinDef {
 export interface SkinsData {
   config: {
     cost: { single: number; multi: number; multiCount: number };
-    rates: { S: number; A: number };
+    rates: { SS: number; S: number; A: number };
     shardRoll: [number, number];
     dupShards: Record<SkinGrade, number>;
     exchange: Record<SkinGrade, number>;
+    /** S 이상 확정 */
     pity: number;
+    /** SS 확정 */
+    ssPity: number;
+    /** 등급별 장착 효과 (%) — 출전 팀에 입힌 동료가 있으면 적용 */
+    effects: Record<SkinGrade, { score?: number; coin?: number }>;
+    effectNote: string;
     pickupMult: number;
     multiGuarantee: SkinGrade;
   };
@@ -280,7 +286,7 @@ export interface SaveData {
     titles: { claimed: string[]; equipped: string };
     tickets: string[];
     eventRewards: string[];
-    skins: { owned: string[]; equipped: Record<string, string>; shards: number; pity: number; pulls: number };
+    skins: { owned: string[]; equipped: Record<string, string>; shards: number; pity: number; ssPity?: number; pulls: number };
     /** 시즌 패스·미션. week/day 는 주기 키, weekly/daily 는 미션별 진행도, done 은 보상 받은 미션 */
     pass: { season: string; xp: number; claimed: number[]; week: string; weekly: Record<string, number>; day: string; daily: Record<string, number>; done: string[]; freePull: string; attendDays: string[] };
     /** 어려움 모드 최고 점수 (온라인 저장용) */

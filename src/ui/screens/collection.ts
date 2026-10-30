@@ -1,7 +1,7 @@
 /** 도감 */
 import { App } from '../../core/app';
 import { audio } from '../../core/audio';
-import { passiveLabel } from '../../core/store';
+import { passiveLabel, skinEffectLabel } from '../../core/store';
 import type { CharDef } from '../../core/types';
 import { bestArt, ui, type Screen } from '../app';
 import { RC, badge, bar, btn, charCard, charImg, itemIcon, pager, rarityName, rarityStars, skillCard, tabs, topBar } from '../components';
@@ -232,7 +232,8 @@ export function collectionScreen(data: { tab?: string; sel?: string; page?: numb
     return h(
       'div',
       { class: 'cd-skins' },
-      h('div', { class: 'cd-skins-head' }, h('span', { class: 'eyebrow' }, 'SKINS'), h('span', { class: 'dim' }, eq ? `입은 의상: ${eq.name}` : '기본 의상'), eq && own ? h('button', { class: 'link', onclick: async () => { await st.equipSkin(id, null); reopen(); } }, '기본으로') : null),
+      h('div', { class: 'cd-skins-head' }, h('span', { class: 'eyebrow' }, 'SKINS'), h('span', { class: 'dim' }, eq ? `입은 의상: ${eq.name}` : '기본 의상'), eq ? h('span', { class: 'tag', style: { color: SKIN_COL(eq.grade), borderColor: SKIN_COL(eq.grade) } }, `${eq.grade} · ${skinEffectLabel(App.content, eq.grade)}`) : null, eq && own ? h('button', { class: 'link', onclick: async () => { await st.equipSkin(id, null); reopen(); } }, '기본으로') : null),
+      h('div', { class: 'cd-skins-eff' }, (['A', 'S', 'SS'] as const).map((g) => h('span', { style: { color: SKIN_COL(g) } }, `${g} ${skinEffectLabel(App.content, g)}`)), h('small', { class: 'dim' }, App.content.skins.config.effectNote)),
       h(
         'div',
         { class: 'cd-skins-row' },

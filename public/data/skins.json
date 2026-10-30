@@ -6,26 +6,42 @@
    "multiCount": 11
   },
   "rates": {
+   "SS": 0.6,
    "S": 3,
    "A": 22
   },
   "shardRoll": [
-   10,
-   30
+   8,
+   24
   ],
   "dupShards": {
-   "A": 30,
-   "S": 100,
-   "SS": 200
+   "A": 40,
+   "S": 150,
+   "SS": 400
   },
   "exchange": {
-   "A": 100,
-   "S": 300,
-   "SS": 600
+   "A": 300,
+   "S": 1000,
+   "SS": 2000
   },
-  "pity": 50,
+  "pity": 60,
   "pickupMult": 2,
-  "multiGuarantee": "A"
+  "multiGuarantee": "A",
+  "ssPity": 200,
+  "effects": {
+   "A": {
+    "coin": 3
+   },
+   "S": {
+    "score": 4,
+    "coin": 4
+   },
+   "SS": {
+    "score": 8,
+    "coin": 8
+   }
+  },
+  "effectNote": "입힌 동료가 출전 팀에 있으면 적용 (서포터는 절반)"
  },
  "grades": {
   "A": {
