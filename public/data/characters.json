@@ -2030,5 +2030,1029 @@
   "desc": "사람들에게 불운을 가져다주던 저주 인형. 자신의 목소리로 긍정적인 감정을 나눌 수 있다는 것을 깨닫고 합류했다. 두 눈을 가린 모습이 특징.",
   "look": "stellive, 1girl, blonde hair, long hair, wavy hair, hair over eyes, ahoge, yellow button hair ornament, striped hair ribbon, teal ribbon, black choker, white sailor collar, white dress, large black bow, black sleeves, teal button",
   "line": ""
+ },
+ {
+  "id": "ur",
+  "name": "우르",
+  "title": "굴뚝 청소부",
+  "origin": "original",
+  "domain": "frost",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "얼어붙은 도시에서 유일하게 연기가 나는 굴뚝을 찾아다니는 소년. 따뜻한 곳엔 아직 시간이 흐른다고 믿는다.",
+  "look": "soot-covered boy, oversized scarf, chimney brush, snow on cap, pixel style",
+  "line": "연기 나는 굴뚝은 아직 살아 있는 집이에요."
+ },
+ {
+  "id": "nell",
+  "name": "넬",
+  "title": "찻집 소녀",
+  "origin": "original",
+  "domain": "frost",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "시계탑 아래 찻집에서 식지 않는 차를 내는 소녀. 손님의 시간은 멈췄지만 찻잔은 아직 따뜻하다.",
+  "look": "girl in apron holding steaming teapot, frost on window behind, warm lantern light",
+  "line": "차 한 잔 드실래요? 식을 틈이 없어서요."
+ },
+ {
+  "id": "gretel",
+  "name": "그레텔",
+  "title": "톱니 수리공",
+  "origin": "original",
+  "domain": "frost",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   },
+   {
+    "type": "coin",
+    "value": 6
+   }
+  ],
+  "desc": "탑의 톱니를 손보던 수리공. 멈춘 시계를 고치려다 손끝만 시간 속에 갇혔다.",
+  "look": "mechanic woman with goggles, brass gears on belt, one frozen glowing hand",
+  "line": "톱니 하나가 빠지면 전부 멈춰요. 세계도 그래요."
+ },
+ {
+  "id": "bastian",
+  "name": "바스티안",
+  "title": "얼음 조각가",
+  "origin": "original",
+  "domain": "frost",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "얼음으로 멈춘 순간을 깎아 보존하는 조각가. 녹지 않는 눈을 재료 삼아 도시 사람들의 마지막 표정을 남긴다.",
+  "look": "ice sculptor with chisel, frost beard, carving a translucent statue",
+  "line": "녹지 않으니까 영원하지. 그게 좋은 건지는 모르겠지만."
+ },
+ {
+  "id": "isu",
+  "name": "이스",
+  "title": "시간 기록관",
+  "origin": "original",
+  "domain": "frost",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 4
+   }
+  ],
+  "desc": "탑의 시계가 멈춘 정확한 순간을 기록한 유일한 사람. 그 뒤로 매 순간을 적으며 시간이 흐른다는 증거를 모은다.",
+  "look": "archivist in long coat, quill and pocket watch, stacks of frozen pages, calm eyes",
+  "line": "기록하는 한, 시간은 흐른 거예요.",
+  "voice": {
+   "pitch": 240,
+   "speed": 0.9,
+   "wave": "triangle",
+   "formant": 1.0
+  }
+ },
+ {
+  "id": "kairos",
+  "name": "카이로스",
+  "title": "멈춘 시계의 기사",
+  "origin": "original",
+  "domain": "frost",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "시계탑을 지키던 기사. 시계가 멈추던 순간 검을 휘두르고 있었고, 그 한 번의 베기가 아직 끝나지 않았다.",
+  "look": "knight with clock-face shield, frost-blue armor, sword mid-swing frozen in ice shards",
+  "line": "내 검은 아직 그 순간을 베고 있다.",
+  "voice": {
+   "pitch": 140,
+   "speed": 0.85,
+   "wave": "sawtooth",
+   "formant": 0.8
+  },
+  "skill": {
+   "id": "last_moment",
+   "kind": "late_bloom",
+   "name": "마지막 순간",
+   "p": {
+    "last": 15,
+    "mult": 1.8
+   }
+  }
+ },
+ {
+  "id": "chrono",
+  "name": "크로노",
+  "title": "시계탑의 심장",
+  "origin": "original",
+  "domain": "frost",
+  "rarity": 5,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 15
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "탑의 가장 깊은 곳에서 태어난 태엽 아이. 멈춘 시계의 초침 하나를 품고 있어, 세계가 멈춰도 혼자 움직인다.",
+  "look": "small automaton child with glass chest showing a ticking heart, brass and frost, oversized key on back, gentle glow",
+  "line": "째깍. ...들려? 나만 들리는 거야?",
+  "voice": {
+   "pitch": 360,
+   "speed": 1.1,
+   "wave": "triangle",
+   "formant": 1.2
+  },
+  "skill": {
+   "id": "time_stop",
+   "kind": "time_stop",
+   "name": "태엽 멈춤",
+   "active": true,
+   "p": {
+    "dur": 2
+   }
+  }
+ },
+ {
+  "id": "halma",
+  "name": "할마",
+  "title": "태엽지기",
+  "origin": "special",
+  "domain": "frost",
+  "rarity": 4,
+  "pool": false,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "shield",
+    "value": 1
+   },
+   {
+    "type": "coin",
+    "value": 10
+   }
+  ],
+  "desc": "탑의 큰 시계를 돌리던 늙은 자동인형. 관측자가 시계를 멈추자 스스로를 문지기로 삼아 누구도 탑에 오르지 못하게 막았다.",
+  "look": "old clockwork automaton grandmother, brass joints, shawl of gears, lantern with frozen flame",
+  "line": "시계를 다시 돌리면, 끝도 다시 다가온단다.",
+  "unlock": "서리 시계탑 보스 스테이지 클리어",
+  "voice": {
+   "pitch": 170,
+   "speed": 0.7,
+   "wave": "sawtooth",
+   "formant": 0.75
+  },
+  "skill": {
+   "id": "slow_gear",
+   "kind": "chill",
+   "name": "태엽 감속",
+   "p": {
+    "dur": 3,
+    "factor": 0.5
+   }
+  }
+ },
+ {
+  "id": "moss",
+  "name": "모스",
+  "title": "조개 줍는 아이",
+  "origin": "original",
+  "domain": "abyss",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "등대 발치에서 빛나는 조개를 줍는 아이. 조개 속 빛으로 집에 가는 길을 표시한다.",
+  "look": "small kid with glowing shell bucket, diving goggles on forehead, bioluminescent freckles",
+  "line": "이 조개는 아직 빛나요. 이쪽이 집이에요."
+ },
+ {
+  "id": "lilia",
+  "name": "릴리아",
+  "title": "심해 요리사",
+  "origin": "original",
+  "domain": "abyss",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "어둠 속에서도 냄새만으로 요리하는 해저 마을의 요리사. 등불이 꺼진 집에 따뜻한 국을 돌린다.",
+  "look": "cheerful cook with glowing jellyfish lamp hat, ladle, bubbles around",
+  "line": "불 없이도 끓일 수 있어요. 방법이 있죠."
+ },
+ {
+  "id": "harold",
+  "name": "해롤드",
+  "title": "잠수부",
+  "origin": "original",
+  "domain": "abyss",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "등대의 꺼진 등불을 되살릴 연료를 찾아 더 깊은 곳으로 내려가는 잠수부. 매번 조금씩 더 늦게 돌아온다.",
+  "look": "old diver in brass helmet, rope around waist, carrying glowing fuel canister",
+  "line": "밑에는 아직 빛이 있어. 멀어서 그렇지."
+ },
+ {
+  "id": "yur",
+  "name": "유르",
+  "title": "소라 음악가",
+  "origin": "original",
+  "domain": "abyss",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   },
+   {
+    "type": "coin",
+    "value": 6
+   }
+  ],
+  "desc": "소라 껍데기로 바다 밑의 소리를 연주하는 음악가. 어둠 속에서 길을 잃은 사람은 그 소리를 따라온다.",
+  "look": "musician with giant conch horn, flowing seaweed hair, sound ripples visible",
+  "line": "빛이 없으면 소리로 길을 내면 돼."
+ },
+ {
+  "id": "sasha",
+  "name": "사샤",
+  "title": "난파선 수색가",
+  "origin": "original",
+  "domain": "abyss",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 12
+   }
+  ],
+  "desc": "심해에 가라앉은 배들에서 이름 잃은 물건을 건져 올린다. 이름을 되찾아 주면 물건은 다시 빛난다.",
+  "look": "salvager woman with headlamp, net full of glowing relics, scar on cheek, determined",
+  "line": "이름을 불러 주면 돌아와요. 물건도, 사람도.",
+  "voice": {
+   "pitch": 230,
+   "speed": 1.0,
+   "wave": "square",
+   "formant": 1.0
+  }
+ },
+ {
+  "id": "nerei",
+  "name": "네레이",
+  "title": "심해의 노래꾼",
+  "origin": "original",
+  "domain": "abyss",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "coin",
+    "value": 10
+   }
+  ],
+  "desc": "바다 밑 깊은 곳에서 등대를 향해 노래하는 존재. 노랫소리가 닿는 곳의 등불은 꺼지지 않는다.",
+  "look": "deep-sea singer with long teal hair, lantern-fish companions, flowing robes of light, ethereal (modest clothing)",
+  "line": "들려요? 아직 꺼지지 않았어요.",
+  "voice": {
+   "pitch": 290,
+   "speed": 0.85,
+   "wave": "sine",
+   "formant": 1.1
+  },
+  "skill": {
+   "id": "echo",
+   "kind": "echo",
+   "name": "메아리",
+   "p": {
+    "ratio": 0.5,
+    "delay": 1
+   }
+  }
+ },
+ {
+  "id": "bell",
+  "name": "벨",
+  "title": "등대지기",
+  "origin": "special",
+  "domain": "abyss",
+  "rarity": 4,
+  "pool": false,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "time",
+    "value": 4
+   },
+   {
+    "type": "coin",
+    "value": 10
+   }
+  ],
+  "desc": "마지막 등불을 지키는 등대지기. 관측자가 빛을 거두자 자신의 기억을 태워 등불을 밝히고 있다.",
+  "look": "lighthouse keeper in weathered coat, holding a lantern that burns with white memory-flame, tired kind smile",
+  "line": "이름은 잊었어도, 불은 안 꺼뜨렸어.",
+  "unlock": "심해 등대 보스 스테이지 클리어",
+  "voice": {
+   "pitch": 120,
+   "speed": 0.8,
+   "wave": "sawtooth",
+   "formant": 0.8
+  },
+  "skill": {
+   "id": "lamp",
+   "kind": "shield_regen",
+   "name": "등불",
+   "p": {
+    "every": 12
+   }
+  }
+ },
+ {
+  "id": "toby",
+  "name": "토비",
+  "title": "구름 목동",
+  "origin": "original",
+  "domain": "sky",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "구름 양떼를 몰고 섬 사이를 건너는 소년. 양이 떨어지면 구름이 되어 돌아온다고 믿는다.",
+  "look": "shepherd boy with crook, fluffy cloud sheep, windblown hair, floating island edge",
+  "line": "양들아, 가장자리는 조심!"
+ },
+ {
+  "id": "mia",
+  "name": "미아",
+  "title": "씨앗 장수",
+  "origin": "original",
+  "domain": "sky",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "섬마다 다니며 씨앗을 파는 소녀. 떨어지는 섬에도 꼭 씨앗 하나를 심고 떠난다.",
+  "look": "girl with seed pouches, flower crown, paper umbrella catching wind",
+  "line": "떨어져도 어딘가에 뿌리는 내려요."
+ },
+ {
+  "id": "rufe",
+  "name": "루프",
+  "title": "새 조련사",
+  "origin": "original",
+  "domain": "sky",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   },
+   {
+    "type": "coin",
+    "value": 6
+   }
+  ],
+  "desc": "섬 사이를 오가는 전령새를 기르는 조련사. 새들이 돌아오지 않는 섬이 늘고 있다.",
+  "look": "falconer with huge messenger bird on arm, leather gloves, goggles",
+  "line": "새가 안 돌아오면 그 섬은 이미 없는 거야."
+ },
+ {
+  "id": "enya",
+  "name": "엔야",
+  "title": "바람 측정사",
+  "origin": "original",
+  "domain": "sky",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "바람의 세기를 재서 섬이 떨어질 날을 계산하는 측정사. 계산이 맞을 때마다 조금씩 말수가 줄었다.",
+  "look": "girl with wind gauge instruments, ribbons measuring wind, notebook, serious face",
+  "line": "...사흘. 이 섬은 사흘이에요."
+ },
+ {
+  "id": "cedric",
+  "name": "세드릭",
+  "title": "공중 정원사",
+  "origin": "original",
+  "domain": "sky",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 10
+   },
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "떨어진 섬의 정원을 다른 섬에 옮겨 심는 정원사. 꽃이 뿌리내리면 섬 하나가 살아남은 셈이라고 말한다.",
+  "look": "gardener with pruning shears and watering can, moss on shoulders, vines wrapping his arms",
+  "line": "꽃이 살면 섬도 산 거야. 그렇게 치자.",
+  "voice": {
+   "pitch": 180,
+   "speed": 0.95,
+   "wave": "triangle",
+   "formant": 1.0
+  }
+ },
+ {
+  "id": "aurel",
+  "name": "아우렐",
+  "title": "바람 기수",
+  "origin": "original",
+  "domain": "sky",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "바람 그 자체를 타는 기수. 떨어지는 섬 사이를 날며 주민을 실어 나른다. 바람이 멎으면 함께 떨어질 것을 안다.",
+  "look": "wind rider in flowing cape riding a current of visible wind, goggles, light armor, dynamic pose",
+  "line": "바람이 있는 동안은 아무도 안 떨어뜨려.",
+  "voice": {
+   "pitch": 200,
+   "speed": 1.1,
+   "wave": "sawtooth",
+   "formant": 0.95
+  },
+  "skill": {
+   "id": "gust",
+   "kind": "invuln",
+   "name": "돌풍",
+   "active": true,
+   "p": {
+    "dur": 2.5,
+    "mult": 1.5,
+    "cd": 18
+   }
+  }
+ },
+ {
+  "id": "zephy",
+  "name": "제피",
+  "title": "바람의 정원사",
+  "origin": "special",
+  "domain": "sky",
+  "rarity": 4,
+  "pool": false,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 10
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "섬들을 바람으로 묶어 둔 첫 정원사. 관측자가 바람을 거두자 자기 숨으로 섬을 붙들고 있었다.",
+  "look": "ancient gardener spirit made of leaves and wind, long beard of petals, staff that is a living branch",
+  "line": "숨이 다하기 전에 와 줬구나.",
+  "unlock": "하늘 정원 보스 스테이지 클리어",
+  "voice": {
+   "pitch": 130,
+   "speed": 0.75,
+   "wave": "sine",
+   "formant": 0.8
+  },
+  "skill": {
+   "id": "steady",
+   "kind": "steady",
+   "name": "잔잔한 바람",
+   "p": {
+    "every": 10,
+    "sec": 3
+   }
+  }
+ },
+ {
+  "id": "dar",
+  "name": "다르",
+  "title": "유리 장인 견습",
+  "origin": "original",
+  "domain": "glass",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "모래를 녹여 거울을 만드는 공방의 견습. 자기가 만든 거울엔 절대 자기 얼굴을 비추지 않는다.",
+  "look": "apprentice glassblower with blowpipe, sand-dusted apron, nervous eyes",
+  "line": "제 거울은 안 봐요. 뭐가 나올지 몰라서."
+ },
+ {
+  "id": "sahara",
+  "name": "사하라",
+  "title": "대상 소녀",
+  "origin": "original",
+  "domain": "glass",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "사막을 건너는 대상(隊商)의 막내. 신기루와 진짜 오아시스를 구별하는 눈을 가졌다.",
+  "look": "desert caravan girl with headscarf, holding a small compass, camel silhouette behind",
+  "line": "저건 가짜예요. 그림자가 없잖아요."
+ },
+ {
+  "id": "omar",
+  "name": "오마르",
+  "title": "모래 항해사",
+  "origin": "original",
+  "domain": "glass",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   },
+   {
+    "type": "coin",
+    "value": 6
+   }
+  ],
+  "desc": "유리 모래 위를 미끄러지는 썰매배의 항해사. 별이 두 개로 보이는 밤엔 출항하지 않는다.",
+  "look": "sand sailor with wide hat, sled-ship wheel, star charts",
+  "line": "별이 두 개면 하나는 거짓이야. 그날은 안 가."
+ },
+ {
+  "id": "rina",
+  "name": "리나",
+  "title": "신기루 안내인",
+  "origin": "original",
+  "domain": "glass",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "길 잃은 사람을 신기루 밖으로 데려다주는 안내인. 자신도 한 번 신기루에서 나온 적이 있다고, 아마도.",
+  "look": "guide with veil and lantern, footprints that shimmer, reflective eyes",
+  "line": "이쪽이 진짜 길이에요. ...아마도요."
+ },
+ {
+  "id": "kasim",
+  "name": "카심",
+  "title": "거울 상인",
+  "origin": "original",
+  "domain": "glass",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 20
+   }
+  ],
+  "desc": "거울 속에서 꺼내 온 물건을 파는 상인. 물건마다 \"원본은 아님\"이라는 꼬리표를 정직하게 붙인다.",
+  "look": "merchant with cart of mirrors, rings on every finger, sly but honest grin",
+  "line": "원본은 아니지만, 쓰는 데는 문제없어요.",
+  "voice": {
+   "pitch": 190,
+   "speed": 1.05,
+   "wave": "square",
+   "formant": 1.0
+  }
+ },
+ {
+  "id": "silvan",
+  "name": "실반",
+  "title": "거울 검사",
+  "origin": "original",
+  "domain": "glass",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "coin",
+    "value": 10
+   }
+  ],
+  "desc": "거울 속에서 나온 자신과 매일 밤 검을 겨루는 검사. 어느 쪽이 이기든 다음 날 아침엔 한 사람만 남는다.",
+  "look": "swordsman with mirrored blade, half of face reflected differently, dusk desert",
+  "line": "어젯밤엔 내가 이겼다. 아마도 내가.",
+  "voice": {
+   "pitch": 150,
+   "speed": 0.9,
+   "wave": "sawtooth",
+   "formant": 0.85
+  },
+  "skill": {
+   "id": "vengeance",
+   "kind": "vengeance",
+   "name": "되갚음",
+   "p": {
+    "dur": 5,
+    "mult": 2
+   }
+  }
+ },
+ {
+  "id": "aina",
+  "name": "아이나",
+  "title": "반영의 여왕",
+  "origin": "special",
+  "domain": "glass",
+  "rarity": 4,
+  "pool": false,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "shield",
+    "value": 1
+   },
+   {
+    "type": "coin",
+    "value": 10
+   }
+  ],
+  "desc": "거울 속 사막을 다스리는 여왕. 관측자가 원본의 세계를 지우자, 비친 쪽을 진짜로 만들어 사람들을 살려 두었다.",
+  "look": "queen of reflections, crown of glass shards, gown that mirrors the sky, regal and sad",
+  "line": "비친 것도 살아 있어. 그걸 가짜라 부르지 마.",
+  "unlock": "유리 사막 보스 스테이지 클리어",
+  "voice": {
+   "pitch": 250,
+   "speed": 0.8,
+   "wave": "triangle",
+   "formant": 1.0
+  },
+  "skill": {
+   "id": "reflect",
+   "kind": "rewrite",
+   "name": "반영",
+   "p": {
+    "n": 1
+   }
+  }
+ },
+ {
+  "id": "ink",
+  "name": "잉크",
+  "title": "소품 담당",
+  "origin": "original",
+  "domain": "paper",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "무대 뒤에서 소품을 챙기는 아이. 대본에 없는 소품을 몰래 올려 두는 버릇이 있다.",
+  "look": "stagehand kid with ink-stained hands, carrying too many props, mischievous",
+  "line": "이건 대본에 없는데... 재밌잖아요."
+ },
+ {
+  "id": "fold",
+  "name": "폴드",
+  "title": "접는 아이",
+  "origin": "original",
+  "domain": "paper",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "종이를 접어 무대 세트를 만드는 아이. 접은 것은 펼 수 있다고, 도시도 그렇다고 믿는다.",
+  "look": "child folding origami buildings, paper crane on shoulder, focused",
+  "line": "접은 건 다시 펼 수 있어요. 전부 다요."
+ },
+ {
+  "id": "marion",
+  "name": "마리온",
+  "title": "무대 조명사",
+  "origin": "original",
+  "domain": "paper",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   },
+   {
+    "type": "coin",
+    "value": 6
+   }
+  ],
+  "desc": "조명으로 배우의 표정을 만드는 조명사. 조명이 꺼진 자리는 대본에서도 사라진다는 걸 안다.",
+  "look": "lighting technician on catwalk, spotlight in hands, headset, warm glow",
+  "line": "빛이 닿는 동안은 네 장면이야."
+ },
+ {
+  "id": "theo",
+  "name": "테오",
+  "title": "대본 필경사",
+  "origin": "original",
+  "domain": "paper",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "대본을 베껴 쓰는 필경사. 베끼는 중에 몰래 한 줄씩 고치고 있다. 아직 아무도 눈치채지 못했다.",
+  "look": "scribe with quill and scroll, ink pot, candlelight, guilty smile",
+  "line": "한 줄쯤 바꿔도 아무도 몰라. ...아직은."
+ },
+ {
+  "id": "viola",
+  "name": "비올라",
+  "title": "그림자 연극 배우",
+  "origin": "original",
+  "domain": "paper",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 10
+   },
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "그림자만으로 연기하는 배우. 실체가 없어서 막이 내려도 사라지지 않는다고 스스로를 위로한다.",
+  "look": "shadow puppeteer actress, silhouette with glowing eyes, paper screen behind, elegant",
+  "line": "그림자는 막이 내려도 남아. 그렇지?",
+  "voice": {
+   "pitch": 260,
+   "speed": 0.9,
+   "wave": "triangle",
+   "formant": 1.0
+  }
+ },
+ {
+  "id": "colette",
+  "name": "콜레트",
+  "title": "종이 인형사",
+  "origin": "original",
+  "domain": "paper",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "종이 인형에게 배역을 주는 인형사. 대본에 없는 배역을 만들어 주면 인형이 살아난다는 걸 처음 알아낸 사람.",
+  "look": "puppeteer woman with paper marionettes, cross-bar strings, flowing ribbons, theatrical costume",
+  "line": "배역이 있으면 살아 있는 거야. 내가 줄게.",
+  "voice": {
+   "pitch": 270,
+   "speed": 1.0,
+   "wave": "square",
+   "formant": 1.05
+  },
+  "skill": {
+   "id": "revise",
+   "kind": "rewrite",
+   "name": "대본 수정",
+   "p": {
+    "n": 1
+   }
+  }
+ },
+ {
+  "id": "orphe",
+  "name": "오르페",
+  "title": "종이 극장의 주연",
+  "origin": "original",
+  "domain": "paper",
+  "rarity": 5,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "모든 대본의 주연을 맡아 온 종이 배우. 마지막 장이 쓰이는 지금, 처음으로 대본에 없는 대사를 하려 한다.",
+  "look": "paper-crafted lead actor, origami crown, cloak of script pages, dramatic spotlight, confident smile",
+  "line": "이 대사는 대본에 없어. 내 거야.",
+  "voice": {
+   "pitch": 210,
+   "speed": 0.95,
+   "wave": "sawtooth",
+   "formant": 0.95
+  },
+  "skill": {
+   "id": "finale",
+   "kind": "finale",
+   "name": "피날레",
+   "p": {
+    "last": 10,
+    "mult": 2
+   }
+  }
+ },
+ {
+  "id": "fin",
+  "name": "핀",
+  "title": "극단장",
+  "origin": "special",
+  "domain": "paper",
+  "rarity": 4,
+  "pool": false,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 10
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "종이 극장의 극단장. 관측자가 마지막 장을 쓰기 시작하자 막을 내리지 않으려고 같은 장면을 수천 번 반복시켰다.",
+  "look": "theater director with top hat and cane, coat covered in script text, dramatic gesture, stage curtains",
+  "line": "막은 내리지 않아. 내가 내리지 않는 한.",
+  "unlock": "종이 극장 보스 스테이지 클리어",
+  "voice": {
+   "pitch": 160,
+   "speed": 0.9,
+   "wave": "sawtooth",
+   "formant": 0.85
+  },
+  "skill": {
+   "id": "interlude",
+   "kind": "periodic",
+   "name": "막간극",
+   "p": {
+    "every": 12,
+    "dur": 4,
+    "mult": 2
+   }
+  }
+ },
+ {
+  "id": "observer",
+  "name": "관측자",
+  "title": "이야기를 덮는 자",
+  "origin": "special",
+  "domain": "library",
+  "rarity": 5,
+  "pool": false,
+  "passives": [
+   {
+    "type": "score",
+    "value": 25
+   },
+   {
+    "type": "coin",
+    "value": 25
+   },
+   {
+    "type": "time",
+    "value": 4
+   }
+  ],
+  "desc": "끝난 이야기를 읽고 덮어 서가에 꽂는 존재. 조각세계의 마지막 장을 쓰려 했으나, 읽는 사람이 있는 책은 덮을 수 없다는 걸 배웠다.",
+  "look": "tall robed figure made of drifting pages, a single lantern eye, holding an open book, endless library behind, serene",
+  "line": "...다음 장은 네가 써. 나는 읽을게.",
+  "unlock": "관측자의 서재 클리어",
+  "voice": {
+   "pitch": 110,
+   "speed": 0.7,
+   "wave": "sine",
+   "formant": 0.7
+  },
+  "skill": {
+   "id": "borrow",
+   "kind": "borrow",
+   "name": "열람",
+   "p": {}
+  }
  }
 ]

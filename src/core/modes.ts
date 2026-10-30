@@ -1,4 +1,5 @@
 import { App, C } from './app';
+import { currentFrontier } from './explore';
 import type { Bonus } from './types';
 
 export function bonusLines(b: Bonus, withTime = true) {
@@ -24,7 +25,7 @@ export function modeInfo(mode: string, domain: string, game?: string) {
     case 'final':
       return { title: '최종장 · 설계자', sub: '조각세계의 중심', color: C.accent, bg: 'rift', lines: [`모든 영역의 시련 ${ch.final.segments}개가 뒤섞여 나온다.`, `목숨 ${ch.final.lives}개 공유, 시련마다 통과 점수가 있다.`, `첫 클리어: 설계자 합류 + ${ch.final.reward.toLocaleString()} 코인`] };
     case 'landing': {
-      const f = App.content.frontier;
+      const f = currentFrontier();
       return { title: `상륙전 · ${f.name}`, sub: '균열 너머 해역', color: f.color, bg: 'rift', lines: [`경계의 수호자가 모든 영역의 시련 ${ch.landing.segments}개를 섞어 낸다.`, `목숨 ${ch.landing.lives}개 공유, 시련마다 통과 점수가 있다.`, `첫 상륙: ${ch.landing.reward.toLocaleString()} 코인 + 대륙 발견`] };
     }
     case 'micro':

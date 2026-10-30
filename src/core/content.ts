@@ -9,7 +9,7 @@ import type {
   StoryData,
   WorldDef,
   Season,
-  Frontier,
+  FrontierData,
   Synergies,
   RewardsDef,
   SkinDef,
@@ -28,7 +28,7 @@ export class Content {
   worlds: WorldDef[] = [];
   items: ItemDef[] = [];
   updates: Season[] = [];
-  frontier!: Frontier;
+  frontier!: FrontierData;
   rewards!: RewardsDef;
   skins!: SkinsData;
   pass!: PassDef;
@@ -75,6 +75,15 @@ export class Content {
   }
   skin(id: string): SkinDef | undefined {
     return this.skinMap.get(id);
+  }
+  /** 구현된 미니게임인지 (registry 가 Boot 때 등록) */
+  playableIds = new Set<string>();
+  playable(gameId: string) {
+    return this.playableIds.size === 0 || this.playableIds.has(gameId);
+  }
+  /** 1부(조각세계) / 2부(균열 너머) 영역 */
+  domainsOf(part: 1 | 2) {
+    return this.domains.filter((d) => (d.part ?? 1) === part);
   }
   skinsOf(charId: string) {
     return this.skins.skins.filter((s) => s.char === charId);

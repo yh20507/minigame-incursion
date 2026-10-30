@@ -1,47 +1,282 @@
 [
-  {
-    "id": "ashen",
-    "name": "잿빛 왕관",
-    "subtitle": "몰락한 기사 왕국",
-    "desc": "잿빛 하늘 아래 무너진 성벽이 끝없이 이어진 왕국. 왕은 설계자에게 사로잡혀 시련의 문지기가 되었다.",
-    "color": "#d9a066",
-    "dark": "#3b2a22",
-    "sky": ["#5a5560", "#2b2530"],
-    "games": ["jump", "memory", "throw", "shuffle"],
-    "bossStars": 6,
-    "gatekeeper": "orden",
-    "unlockAfter": null,
-    "mapPos": [150, 210],
-    "music": { "root": 57, "scale": "minor", "tempo": 96 }
-  },
-  {
-    "id": "neon",
-    "name": "네온 하버",
-    "subtitle": "비가 그치지 않는 항구 도시",
-    "desc": "네온 간판이 물웅덩이 위에서 번지는 사이버펑크 항구. 항구 관리 AI가 도시 전체를 시련장으로 바꿔버렸다.",
-    "color": "#ff4fa8",
-    "dark": "#1c1433",
-    "sky": ["#2a1a4a", "#0d0a1c"],
-    "games": ["runner", "rhythm", "stroop", "hockey"],
-    "bossStars": 6,
-    "gatekeeper": "adel",
-    "unlockAfter": "ashen",
-    "mapPos": [330, 120],
-    "music": { "root": 50, "scale": "dorian", "tempo": 118 }
-  },
-  {
-    "id": "nebula",
-    "name": "성운 표류선",
-    "subtitle": "별 사이를 떠도는 정거장",
-    "desc": "성운 사이를 떠도는 거대한 정거장 겸 시장. 함장이 사로잡힌 뒤로 운석과 화물과 드론이 날뛴다.",
-    "color": "#5fd3e0",
-    "dark": "#101a2e",
-    "sky": ["#1b2450", "#070a18"],
-    "games": ["dodge", "stack", "target", "orders"],
-    "bossStars": 6,
-    "gatekeeper": "vorex",
-    "unlockAfter": "neon",
-    "mapPos": [500, 220],
-    "music": { "root": 53, "scale": "lydian", "tempo": 104 }
+ {
+  "id": "ashen",
+  "name": "잿빛 왕관",
+  "subtitle": "몰락한 기사 왕국",
+  "desc": "잿빛 하늘 아래 무너진 성벽이 끝없이 이어진 왕국. 왕은 설계자에게 사로잡혀 시련의 문지기가 되었다.",
+  "color": "#d9a066",
+  "dark": "#3b2a22",
+  "sky": [
+   "#5a5560",
+   "#2b2530"
+  ],
+  "games": [
+   "jump",
+   "memory",
+   "throw",
+   "shuffle"
+  ],
+  "bossStars": 6,
+  "gatekeeper": "orden",
+  "unlockAfter": null,
+  "mapPos": [
+   150,
+   210
+  ],
+  "music": {
+   "root": 57,
+   "scale": "minor",
+   "tempo": 96
   }
+ },
+ {
+  "id": "neon",
+  "name": "네온 하버",
+  "subtitle": "비가 그치지 않는 항구 도시",
+  "desc": "네온 간판이 물웅덩이 위에서 번지는 사이버펑크 항구. 항구 관리 AI가 도시 전체를 시련장으로 바꿔버렸다.",
+  "color": "#ff4fa8",
+  "dark": "#1c1433",
+  "sky": [
+   "#2a1a4a",
+   "#0d0a1c"
+  ],
+  "games": [
+   "runner",
+   "rhythm",
+   "stroop",
+   "hockey"
+  ],
+  "bossStars": 6,
+  "gatekeeper": "adel",
+  "unlockAfter": "ashen",
+  "mapPos": [
+   330,
+   120
+  ],
+  "music": {
+   "root": 50,
+   "scale": "dorian",
+   "tempo": 118
+  }
+ },
+ {
+  "id": "nebula",
+  "name": "성운 표류선",
+  "subtitle": "별 사이를 떠도는 정거장",
+  "desc": "성운 사이를 떠도는 거대한 정거장 겸 시장. 함장이 사로잡힌 뒤로 운석과 화물과 드론이 날뛴다.",
+  "color": "#5fd3e0",
+  "dark": "#101a2e",
+  "sky": [
+   "#1b2450",
+   "#070a18"
+  ],
+  "games": [
+   "dodge",
+   "stack",
+   "target",
+   "orders"
+  ],
+  "bossStars": 6,
+  "gatekeeper": "vorex",
+  "unlockAfter": "neon",
+  "mapPos": [
+   500,
+   220
+  ],
+  "music": {
+   "root": 53,
+   "scale": "lydian",
+   "tempo": 104
+  }
+ },
+ {
+  "id": "frost",
+  "name": "서리 시계탑",
+  "subtitle": "시간이 얼어붙은 탑 도시",
+  "part": 2,
+  "desc": "거대한 시계탑을 중심으로 나선처럼 감긴 도시. 어느 날 탑의 큰 시계가 멈추자 도시의 시간도 함께 얼어붙었다. 녹지 않는 눈 속에서 태엽 소리만 들린다.",
+  "color": "#9fe0ff",
+  "dark": "#1b2838",
+  "sky": [
+   "#2a3f5c",
+   "#0d1422"
+  ],
+  "games": [
+   "pendulum",
+   "gears",
+   "icicle",
+   "snowball"
+  ],
+  "bossStars": 6,
+  "gatekeeper": "halma",
+  "unlockAfter": "final",
+  "landing": true,
+  "mapPos": [
+   260,
+   230
+  ],
+  "music": {
+   "root": 62,
+   "scale": "minor",
+   "tempo": 84
+  }
+ },
+ {
+  "id": "abyss",
+  "name": "심해 등대",
+  "subtitle": "빛이 꺼져 가는 바다",
+  "part": 2,
+  "desc": "바다 밑바닥에 세워진 등대와 그 둘레의 해저 마을. 등불이 하나씩 꺼지고, 어둠이 마을을 삼키고 있다. 빛이 닿지 않는 곳의 것들은 이름을 잃는다.",
+  "color": "#4fd1c5",
+  "dark": "#0f2a2e",
+  "sky": [
+   "#0a3038",
+   "#030c10"
+  ],
+  "games": [
+   "sonar",
+   "lighthouse",
+   "dive",
+   "cipher"
+  ],
+  "bossStars": 6,
+  "gatekeeper": "bell",
+  "unlockAfter": "frost",
+  "landing": true,
+  "mapPos": [
+   640,
+   380
+  ],
+  "music": {
+   "root": 55,
+   "scale": "dorian",
+   "tempo": 72
+  }
+ },
+ {
+  "id": "sky",
+  "name": "하늘 정원",
+  "subtitle": "떠 있는 섬들의 정원",
+  "part": 2,
+  "desc": "구름 위에 떠 있는 수십 개의 섬. 섬마다 정원이 있고, 정원사가 바람으로 섬을 묶어 두었다. 바람이 약해지며 섬들이 하나씩 떨어지기 시작했다.",
+  "color": "#b8f28b",
+  "dark": "#1d3320",
+  "sky": [
+   "#6fb0e8",
+   "#2d5a8a"
+  ],
+  "games": [
+   "hop",
+   "farm",
+   "flock",
+   "climb"
+  ],
+  "bossStars": 6,
+  "gatekeeper": "zephy",
+  "unlockAfter": "abyss",
+  "landing": true,
+  "mapPos": [
+   1020,
+   180
+  ],
+  "music": {
+   "root": 64,
+   "scale": "lydian",
+   "tempo": 104
+  }
+ },
+ {
+  "id": "glass",
+  "name": "유리 사막",
+  "subtitle": "모든 것이 비치는 거울의 땅",
+  "part": 2,
+  "desc": "모래 대신 유리 가루가 깔린 사막. 밤이면 모래가 거울처럼 하늘을 비춘다. 거울 속의 것들이 진짜를 대신하기 시작했고, 누구도 자신이 원본인지 확신하지 못한다.",
+  "color": "#f2c4ff",
+  "dark": "#2e1f36",
+  "sky": [
+   "#5a3f6e",
+   "#1a1022"
+  ],
+  "games": [
+   "mirror",
+   "spot",
+   "storm",
+   "shatter"
+  ],
+  "bossStars": 6,
+  "gatekeeper": "aina",
+  "unlockAfter": "sky",
+  "landing": true,
+  "mapPos": [
+   1400,
+   340
+  ],
+  "music": {
+   "root": 59,
+   "scale": "phrygian",
+   "tempo": 92
+  }
+ },
+ {
+  "id": "paper",
+  "name": "종이 극장",
+  "subtitle": "막이 내리지 않는 무대",
+  "part": 2,
+  "desc": "종이로 접은 건물과 종이 인형 배우들의 도시. 모든 주민이 배역을 가지고 있고, 대본이 끝나면 막이 내린다. 지금, 마지막 장이 쓰이고 있다.",
+  "color": "#ffb3a7",
+  "dark": "#3a2222",
+  "sky": [
+   "#6b3a3a",
+   "#241212"
+  ],
+  "games": [
+   "lines",
+   "stage",
+   "plane",
+   "spotlight"
+  ],
+  "bossStars": 6,
+  "gatekeeper": "fin",
+  "unlockAfter": "glass",
+  "landing": true,
+  "mapPos": [
+   1700,
+   560
+  ],
+  "music": {
+   "root": 60,
+   "scale": "major",
+   "tempo": 112
+  }
+ },
+ {
+  "id": "library",
+  "name": "관측자의 서재",
+  "subtitle": "모든 이야기가 꽂히는 곳",
+  "part": 2,
+  "final": true,
+  "desc": "끝난 이야기들이 책이 되어 꽂히는 끝없는 서가. 관측자는 여기서 세계를 읽고, 다 읽은 세계를 덮는다. 조각세계의 책은 아직 펼쳐져 있다.",
+  "color": "#ffe08a",
+  "dark": "#2a2418",
+  "sky": [
+   "#3a2f18",
+   "#120e06"
+  ],
+  "games": [
+   "pages"
+  ],
+  "bossStars": 0,
+  "gatekeeper": "observer",
+  "unlockAfter": "paper",
+  "landing": true,
+  "mapPos": [
+   1000,
+   760
+  ],
+  "music": {
+   "root": 57,
+   "scale": "minor",
+   "tempo": 76
+  }
+ }
 ]

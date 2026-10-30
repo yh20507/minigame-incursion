@@ -1,3 +1,4 @@
+import { GAMES } from '../minigames/registry';
 import Phaser from 'phaser';
 import { App, C, H, W } from '../core/app';
 import { Content } from '../core/content';
@@ -47,6 +48,7 @@ export class BootScene extends Phaser.Scene {
   }
 
   async finish() {
+    for (const k of Object.keys(GAMES)) App.content.playableIds.add(k);
     for (const sk of App.content.skins.skins) {
       const k = 'skin_' + sk.id + '_art';
       if (this.textures.exists(k) && this.textures.get(k).getSourceImage() instanceof HTMLImageElement) App.content.skinFiles.add(sk.id);

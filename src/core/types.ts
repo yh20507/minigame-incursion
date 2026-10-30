@@ -42,6 +42,11 @@ export interface DomainDef {
   bossStars: number;
   gatekeeper: string;
   unlockAfter: string | null;
+  /** 2부 대륙: 원정대 상륙이 필요 */
+  landing?: boolean;
+  part?: number;
+  /** 보스만 있는 최종 대륙 */
+  final?: boolean;
   mapPos: [number, number];
   music: { root: number; scale: string; tempo: number };
 }
@@ -334,15 +339,19 @@ export interface Season {
   notes: string[];
 }
 
-export interface Frontier {
+export interface FrontierDef {
   id: string;
   name: string;
   subtitle: string;
   color: string;
   need: number;
+  /** 이 대륙 탐사가 열리는 조건 (cleared 키) */
   unlockAfter: string;
   stages: { at: number; text: string }[];
   landed: string;
+}
+export interface FrontierData {
   shards: { normalPerStar: number; normalClear: number; boss: number; daily: number; microPer: number; marathonPerSeg: number };
   expedition: { hours: number[]; shardsPerHour: number; coinsPerHour: number; itemEvery: number };
+  list: FrontierDef[];
 }

@@ -92,7 +92,9 @@ export class Store {
     return this.save.coins;
   }
   isDomainUnlocked(d: DomainDef) {
-    return !d.unlockAfter || !!this.save.cleared[d.unlockAfter];
+    if (d.unlockAfter && !this.save.cleared[d.unlockAfter]) return false;
+    if (d.landing && !this.save.extra.explore.landed.includes(d.id)) return false;
+    return true;
   }
   unlockedDomains() {
     return this.content.domains.filter((d) => this.isDomainUnlocked(d));
@@ -110,13 +112,18 @@ export class Store {
     return this.domainStars(domainId) >= d.bossStars;
   }
   finalUnlocked() {
-    return this.content.domains.every((d) => this.save.cleared[d.id]);
+    return this.content.domainsOf(1).every((d) => this.save.cleared[d.id]);
+  }
+  /** 2부 최종(서재) 입장: 다섯 대륙 해방 + 상륙 */
+  library() {
+    return this.content.domains.find((d) => d.final) ?? null;
   }
   modeUnlocked(mode: 'micro' | 'daily' | 'marathon') {
     return !!this.save.cleared[this.content.challenges.unlock[mode]];
   }
+  /** 플레이 가능한(구현된) 열린 미니게임 */
   unlockedGames() {
-    return this.unlockedDomains().flatMap((d) => d.games);
+    return this.unlockedDomains().filter((d) => !d.final).flatMap((d) => d.games).filter((g) => this.content.playable(g));
   }
   /** 균열별 캐릭터 풀: 상시 = 오리지널, 세계관 = 그 세계관 */
   gachaPool(bannerId: string): CharDef[] {

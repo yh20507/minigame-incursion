@@ -149,8 +149,9 @@ export class PlayScene extends Phaser.Scene {
       case 'final':
       case 'landing': {
         const cfg = this.rushCfg();
-        const per = App.content.domains.map((d) => pick(d.games));
-        const rest = shuffle(App.content.games.map((g) => g.id).filter((g) => !per.includes(g)));
+        const openDoms = st.unlockedDomains().filter((d) => !d.final && d.games.some((g) => !!GAMES[g]));
+        const per = openDoms.map((d) => pick(d.games.filter((g) => !!GAMES[g])));
+        const rest = shuffle(st.unlockedGames().filter((g) => !!GAMES[g] && !per.includes(g)));
         this.queue = shuffle([...per, ...rest]).slice(0, cfg.segments);
         this.bonus = st.bonus(null);
         this.lives = cfg.lives;

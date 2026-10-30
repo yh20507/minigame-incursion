@@ -24,7 +24,13 @@ export type SkillKind =
   | 'rhythm' // window초 내 연속 득점 콤보 +step% (최대 max%)
   | 'endure' // 피격 뒤 dur초 무적 + 시간 +refund
   | 'time_stop' // (액티브) dur초 완전 정지, 1회
-  | 'rewrite'; // 피격 1회 취소 (N회)
+  | 'rewrite' // 피격 1회 취소 (N회)
+  | 'chill' // 피격 뒤 dur초 자동 슬로우
+  | 'echo' // 득점 delay초 뒤 ratio 만큼 한 번 더
+  | 'steady' // every초 무피격마다 시간 +sec
+  | 'vengeance' // 피격 뒤 dur초 점수 ×M
+  | 'finale' // 마지막 last초 무적 + 점수 ×M
+  | 'borrow'; // 시작 시 다른 ★4·★5 스킬 하나를 빌림
 
 export interface SkillDef {
   id: string;
@@ -41,7 +47,7 @@ export function skillParams(s: SkillDef, b: number) {
   const o: Record<string, number> = {};
   for (const [k, v] of Object.entries(s.p)) {
     if (k === 'cd') o[k] = Math.round(v * (1 - 0.08 * b) * 10) / 10;
-    else if (k === 'mult' || k === 'factor' || k === 'max' || k === 'per' || k === 'every' || k === 'n' || k === 'last' || k === 'window') o[k] = v;
+    else if (k === 'mult' || k === 'factor' || k === 'max' || k === 'per' || k === 'every' || k === 'n' || k === 'last' || k === 'window' || k === 'ratio' || k === 'delay') o[k] = v;
     else o[k] = Math.round(v * up * 10) / 10;
   }
   if (b >= 3 && (s.kind === 'extra_life' || s.kind === 'rewrite')) o.n = (o.n ?? 1) + 1;
@@ -98,6 +104,18 @@ export function skillDesc(s: SkillDef, b = 0) {
       return `[액티브] ${p.dur}초 동안 시간 정지 · 판마다 1회`;
     case 'rewrite':
       return `피격 ${p.n ?? 1}회 취소 (없던 일로)`;
+    case 'chill':
+      return `피격 뒤 ${p.dur}초 동안 모든 게 ${Math.round(p.factor * 100)}% 속도`;
+    case 'echo':
+      return `득점 ${p.delay}초 뒤 그 ${Math.round(p.ratio * 100)}%를 한 번 더`;
+    case 'steady':
+      return `${p.every}초 동안 안 맞을 때마다 시간 +${p.sec}초`;
+    case 'vengeance':
+      return `피격 뒤 ${p.dur}초 동안 점수 ×${p.mult}`;
+    case 'finale':
+      return `마지막 ${p.last}초 무적 · 점수 ×${p.mult}`;
+    case 'borrow':
+      return `시작할 때 다른 ★4·★5 동료의 스킬 하나를 무작위로 빌린다`;
   }
 }
 

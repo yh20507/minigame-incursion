@@ -26,8 +26,8 @@ interface PlayLike {
 }
 
 export class SkillRuntime {
-  readonly def: SkillDef;
-  readonly p: Record<string, number>;
+  def: SkillDef;
+  p: Record<string, number>;
   readonly color: string;
   /** 룰렛으로 뽑힌 실제 동작 (한 판 더) */
   kind: string;
@@ -49,6 +49,8 @@ export class SkillRuntime {
   combo = 0; // combo / rhythm 콤보 수
   rhythmT = 0;
   bankAcc = 0;
+  steadyT = 0;
+  vengT = 0;
   huntAcc = 0;
   huntLv = 0;
   active = false; // 액티브 발동 중 표시
@@ -75,8 +77,18 @@ export class SkillRuntime {
       (this as any).rouletteName = r.name;
       this.revives = 1;
     }
-    if (def.kind === 'revive_plus' || def.kind === 'live_start') this.revives = 1;
-    if (def.kind === 'rewrite') this.rewrites = this.p.n ?? 1;
+    if (def.kind === 'borrow') {
+      const pool = App.content.chars.filter((c) => c.skill && c.skill.kind !== 'borrow' && c.skill.kind !== 'roulette');
+      const pick = pool[Math.floor(this.rng() * pool.length)];
+      if (pick?.skill) {
+        this.def = { ...pick.skill, name: `열람 · ${pick.skill.name}` };
+        this.p = skillParams(pick.skill, level);
+        this.kind = pick.skill.kind;
+        (this as any).rouletteName = pick.name;
+      }
+    }
+    if (this.kind === 'revive_plus' || this.kind === 'live_start') this.revives = 1;
+    if (this.kind === 'rewrite') this.rewrites = this.p.n ?? 1;
   }
 
   get isActive() {
@@ -107,9 +119,12 @@ export class SkillRuntime {
     this.combo = 0;
     this.rhythmT = 0;
     this.bankAcc = 0;
+    this.steadyT = 0;
+    this.vengT = 0;
     this.huntAcc = 0;
     this.huntLv = 0;
     this.active = false;
+    (this as any).finaleOn = false;
     if (this.kind === 'start_boost') this.boostT = this.p.dur;
     if (this.kind === 'live_start') {
       this.invulnT = this.p.dur;
@@ -208,6 +223,22 @@ export class SkillRuntime {
         case 'time_bank':
           ratio = (this.bankAcc % this.p.per) / this.p.per;
           break;
+        case 'steady':
+          ratio = this.steadyT / this.p.every;
+          text = Math.ceil(this.p.every - this.steadyT) + 's';
+          break;
+        case 'vengeance':
+          ratio = this.vengT / this.p.dur;
+          text = this.vengT > 0 ? `×${this.p.mult}!` : '';
+          break;
+        case 'chill':
+          ratio = this.slowT / this.p.dur;
+          text = this.slowT > 0 ? '감속' : '';
+          break;
+        case 'finale':
+          ratio = (this as any).finaleOn ? 1 : 0;
+          text = (this as any).finaleOn ? '피날레!' : '';
+          break;
         default:
           ratio = 0;
       }
@@ -262,6 +293,21 @@ export class SkillRuntime {
       if (this.rhythmT <= 0) this.combo = 0;
     }
     if (this.lastStandT >= 0) this.lastStandT -= dt;
+    if (this.vengT > 0) this.vengT = Math.max(0, this.vengT - dt);
+    if (this.kind === 'steady') {
+      this.steadyT += dt;
+      if (this.steadyT >= this.p.every) {
+        this.steadyT = 0;
+        this.play.timeAdj += this.p.sec;
+        this.play.float(`+${this.p.sec}초`, W / 2, 60, '#4be37a');
+      }
+    }
+    if (this.kind === 'finale' && this.invulnT <= 0 && this.play.segDur + this.play.timeAdj - this.play.segT <= this.p.last && !(this as any).finaleOn) {
+      (this as any).finaleOn = true;
+      this.invulnT = this.p.last + 1;
+      this.invulnMult = this.p.mult;
+      this.announce('피날레!');
+    }
     this.drawHud();
   }
 
@@ -296,6 +342,7 @@ export class SkillRuntime {
     if (this.kind === 'hunt') m *= 1 + 0.2 * this.huntLv;
     if (this.kind === 'late_bloom' && this.play.segDur + this.play.timeAdj - this.play.segT <= this.p.last) m *= this.p.mult;
     if (this.lastStandT >= 0) m *= this.p.mult;
+    if (this.kind === 'vengeance' && this.vengT > 0) m *= this.p.mult;
     if (this.kind === 'crit' && this.rng() * 100 < this.p.chance) {
       m *= this.p.mult;
       (this as any).critNow = true;
@@ -305,6 +352,13 @@ export class SkillRuntime {
 
   /** 점수가 실제로 들어간 뒤 */
   onScore(v: number) {
+    if (this.kind === 'echo' && !(this as any).echoing) {
+      this.play.sc.time.delayedCall(this.p.delay * 1000, () => {
+        (this as any).echoing = true;
+        (this.play as any).addScore?.(Math.round(v * this.p.ratio), W / 2, 70);
+        (this as any).echoing = false;
+      });
+    }
     if (this.kind === 'combo') this.combo++;
     if (this.kind === 'rhythm') {
       this.combo++;
@@ -348,6 +402,9 @@ export class SkillRuntime {
 
   /** 실제로 목숨이 깎인 뒤 */
   afterHit() {
+    this.steadyT = 0;
+    if (this.kind === 'vengeance') this.vengT = this.p.dur;
+    if (this.kind === 'chill') this.slowT = this.p.dur;
     if (this.kind === 'combo') this.combo = 0;
     if (this.kind === 'rhythm') this.combo = 0;
     if (this.kind === 'endure') {

@@ -1,7 +1,7 @@
 /** 모험: 조각세계 지도 → 영역 → 준비 → (미니게임) → 결과 */
 import { App } from '../../core/app';
 import { audio } from '../../core/audio';
-import { addShards, exploreOpen, exploreProgress, landed, shardsFor } from '../../core/explore';
+import { addShards, currentFrontier, exploreOpen, exploreProgress, landed, markLanded, shardsFor } from '../../core/explore';
 import { USABLE, modeInfo } from '../../core/modes';
 import type { DomainDef } from '../../core/types';
 import type { RunResult } from '../../scenes/Play';
@@ -16,7 +16,7 @@ import { teamStrip } from './misc';
 export function worldMapScreen(): Screen {
   const st = App.store;
   audio.bgm('map', 50, 'dorian', 92);
-  const doms = App.content.domains;
+  const doms = App.content.domainsOf(1);
   // 1920×1080 기준 섬 위치
   const POS: Record<string, [number, number]> = { ashen: [430, 420], neon: [960, 300], nebula: [1480, 430] };
   const center: [number, number] = [960, 720];
@@ -94,7 +94,7 @@ export function worldMapScreen(): Screen {
 
   let frontier: HTMLElement | null = null;
   if (exploreOpen()) {
-    const f = App.content.frontier;
+    const f = currentFrontier();
     const p = exploreProgress();
     frontier = h(
       'button',
@@ -352,12 +352,12 @@ export function resultScreen(r: RunResult): Screen {
         break;
       }
       case 'landing': {
-        const f = App.content.frontier;
+        const f = currentFrontier();
         const cfg = ch.landing;
         if (r.success) {
-          const first = !landed();
+          const first = !landed(f);
           if (first) {
-            st.save.extra.explore.landed.push(f.id);
+            markLanded(f);
             await st.saveMeta();
           }
           title = '상륙 성공!';

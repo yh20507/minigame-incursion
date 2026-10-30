@@ -1,7 +1,7 @@
 /** 원정대 · 새 대륙 탐사 */
 import { App } from '../../core/app';
 import { audio } from '../../core/audio';
-import { exploreOpen, exploreProgress, expeditionReward, landed } from '../../core/explore';
+import { currentFrontier, exploreOpen, exploreProgress, expeditionReward, frontierOpen, landed } from '../../core/explore';
 import { rollItem } from '../../core/gacha';
 import { ui, type Screen } from '../app';
 import { bar, btn, charCard, itemIcon, pager, topBar } from '../components';
@@ -11,7 +11,7 @@ import { I } from '../icons';
 
 export function expeditionScreen(data: { sel?: string[]; hours?: number; page?: number }): Screen {
   const st = App.store;
-  const f = App.content.frontier;
+  const f = currentFrontier();
   audio.bgm('expedition', 50, 'lydian', 84, ['expedition', 'map']);
   const timers: number[] = [];
   const reopen = (o: Partial<typeof data> = {}) => ui.show('Expedition', { ...data, ...o }, { instant: true });
@@ -36,9 +36,10 @@ export function expeditionScreen(data: { sel?: string[]; hours?: number; page?: 
       h('h2', null, p >= 0.5 ? f.name : '???'),
       p >= 0.5 ? h('p', { class: 'dim' }, f.subtitle) : null,
       h('div', { class: 'frontier-prog' }, h('div', { class: 'fp-label' }, h('span', null, '좌표 조각'), h('b', { class: 'num' }, `${Math.min(e.shards, f.need)} / ${f.need}`)), bar(p, f.color)),
-      h('p', { class: 'frontier-stage' }, landed() ? f.landed : stage.text),
-      !landed() ? h('p', { class: 'faint' }, '조각은 미니게임 별·클리어, 보스, 도전 모드, 원정으로 모여요.') : null,
-      !landed() && p >= 1 ? btn('상륙전 도전!', () => ui.show('Prep', { mode: 'landing', domain: 'rift' }), { cls: 'primary pulse', color: f.color, icon: I.sword }) : null,
+      h('p', { class: 'frontier-stage' }, landed() ? f.landed : !frontierOpen(f) ? `${App.content.domainName(f.unlockAfter)}을(를) 해방하면 다음 대륙 탐사가 시작돼요.` : stage.text),
+      !landed() && frontierOpen(f) ? h('p', { class: 'faint' }, '조각은 미니게임 별·클리어, 보스, 도전 모드, 원정으로 모여요.') : null,
+      !landed() && frontierOpen(f) && p >= 1 ? btn('상륙전 도전!', () => ui.show('Prep', { mode: 'landing', domain: 'rift' }), { cls: 'primary pulse', color: f.color, icon: I.sword }) : null,
+      h('div', { class: 'frontier-list' }, App.content.frontier.list.map((x) => h('span', { class: 'tag ' + (landed(x) ? 'good' : x.id === f.id ? 'hot' : 'dimmed') }, landed(x) ? x.name : x.id === f.id && p >= 0.5 ? x.name : '???'))),
     ),
   );
 
@@ -75,7 +76,7 @@ export function expeditionScreen(data: { sel?: string[]; hours?: number; page?: 
     );
   } else {
     const sel = data.sel ?? [];
-    const hours = data.hours ?? f.expedition.hours[0];
+    const hours = data.hours ?? App.content.frontier.expedition.hours[0];
     const owned = st.ownedChars().sort((a, b) => b.rarity - a.rarity);
     const per = 12;
     const page = data.page ?? 0;
@@ -92,7 +93,7 @@ export function expeditionScreen(data: { sel?: string[]; hours?: number; page?: 
           return charCard(c.id, { size: 'sm', selected: on, showLevel: false, onClick: () => { const next = on ? sel.filter((s) => s !== c.id) : sel.length >= 3 ? sel : [...sel, c.id]; if (!on && sel.length >= 3) ui.toast('3명까지예요', 'bad'); reopen({ sel: next }); } });
         }),
       ),
-      h('div', { class: 'exped-hours' }, f.expedition.hours.map((hr) => btn(`${hr}시간`, () => reopen({ hours: hr }), { cls: 'sm' + (hours === hr ? ' primary' : ' ghost'), silent: true }))),
+      h('div', { class: 'exped-hours' }, App.content.frontier.expedition.hours.map((hr) => btn(`${hr}시간`, () => reopen({ hours: hr }), { cls: 'sm' + (hours === hr ? ' primary' : ' ghost'), silent: true }))),
       h('div', { class: 'exped-reward dim' }, sel.length ? ['예상 보상: ', h('b', { class: 'gold' }, `조각 ${rw.shards} · 코인 ${fmt(rw.coins)}`)] : '보낼 동료를 고르세요'),
       btn(`원정 보내기 (${sel.length}/3)`, async () => { st.save.extra.expedition = { members: sel, start: Date.now(), hours }; await st.saveMeta(); audio.sfx('go'); reopen({ sel: [] }); }, { cls: 'primary wide', icon: I.compass, disabled: sel.length !== 3 }),
     );
