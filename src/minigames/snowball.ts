@@ -40,7 +40,7 @@ export class SnowballGame extends MiniGame {
     this.guide = this.gfx();
     this.ball = this.gfx().setDepth(2);
     this.pl = this.player(this.bx, 330, 40);
-    this.label = this.text(320, 326, '', 10, '#1b2838');
+    this.label = this.text(320, 12, '', 10, '#1b2838');
     this.setPins();
   }
 

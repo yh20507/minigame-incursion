@@ -16,3 +16,4 @@ public/assets/audio/chars/lol_*
 public/assets/audio/chars/sl_*
 public/assets/audio/worlds/
 public/assets/audio/bgm/gacha_*
+__pycache__/
