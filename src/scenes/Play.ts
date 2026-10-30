@@ -141,7 +141,12 @@ export class PlayScene extends Phaser.Scene {
         break;
       case 'boss': {
         const d = App.content.domain(this.domain)!;
-        this.queue = shuffle(d.games).slice(0, ch.boss.segments);
+        {
+          const gs = d.games.filter((g) => !!GAMES[g]);
+          const q: string[] = [];
+          while (q.length < ch.boss.segments && gs.length) q.push(...shuffle(gs));
+          this.queue = q.slice(0, ch.boss.segments);
+        }
         this.bonus = st.bonus(this.domain);
         this.lives = ch.boss.lives;
         break;

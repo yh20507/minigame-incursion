@@ -9,6 +9,7 @@ import { fmt, h, svg } from '../dom';
 import { I } from '../icons';
 import { showReveal } from '../reveal';
 import { SKIN_COL, skinCard } from './skins';
+import { hasRecord, personalStories, recordsOf } from '../../core/storyflow';
 
 interface Tab {
   id: string;
@@ -25,7 +26,10 @@ export function collectionScreen(data: { tab?: string; sel?: string; page?: numb
     { id: 'special', name: '특별', color: '#b48cff', chars: all.filter((c) => c.origin === 'special') },
     ...st.visibleWorlds().map((w) => ({ id: w.id, name: w.name, color: w.color, chars: all.filter((c) => c.origin === 'world' && c.domain === w.id) })),
   ];
+  const RECORDS_TAB: Tab = { id: 'records', name: '기록', color: '#ffe08a', chars: [] };
+  if (App.content.records.length) tabList.push(RECORDS_TAB);
   const tab = tabList.find((t) => t.id === data?.tab) ?? tabList[0];
+  if (tab.id === 'records') return recordsView();
   const page = data?.page ?? 0;
   const list = [...tab.chars].sort((a, b) => b.rarity - a.rarity);
   const per = 15;
@@ -68,7 +72,7 @@ export function collectionScreen(data: { tab?: string; sel?: string; page?: numb
     'div',
     { class: 'col-left' },
     tabs(
-      tabList.map((t) => ({ id: t.id, label: t.name, color: t.color, sub: `${t.chars.filter((c) => st.owns(c.id)).length}/${t.chars.length}` })),
+      tabList.map((t) => ({ id: t.id, label: t.name, color: t.color, sub: t.id === 'records' ? `${st.save.extra.records.length}/${App.content.records.length}` : `${t.chars.filter((c) => st.owns(c.id)).length}/${t.chars.length}` })),
       tab.id,
       (id) => ui.show('Collection', { tab: id }, { instant: true }),
       'enter',
@@ -159,9 +163,66 @@ export function collectionScreen(data: { tab?: string; sel?: string; page?: numb
             )
           : null,
         h('div', { class: 'cd-actions' }, actions),
+        storiesRow(id),
         skinsRow(id, own),
       ),
     );
+  }
+
+  function storiesRow(id: string) {
+    const list = personalStories(id);
+    if (!list.length) return null;
+    return h(
+      'div',
+      { class: 'cd-stories' },
+      h('div', { class: 'cd-skins-head' }, h('span', { class: 'eyebrow' }, 'STORY'), h('span', { class: 'dim' }, '동료 개인 이야기')),
+      h(
+        'div',
+        { class: 'cd-stories-row' },
+        list.map((s) =>
+          h(
+            'button',
+            { class: 'story-btn' + (s.open ? '' : ' locked') + (s.isNew ? ' new' : '') + (st.save.story[s.id] ? ' seen' : ''), onclick: () => { if (!s.open) return ui.toast(`${s.need} 열려요`); audio.sfx('confirm'); ui.show('Story', { id: s.id, next: 'Collection', nextData: { tab: tab.id, sel: id, page } }); } },
+            svg(s.open ? I.book : I.lock),
+            h('span', null, `이야기 ${s.n}`),
+            h('small', null, s.open ? (st.save.story[s.id] ? '다시 보기' : 'NEW') : s.need),
+          ),
+        ),
+      ),
+    );
+  }
+
+  function recordsView(): Screen {
+    const doms = App.content.domains;
+    const selDom = doms.find((d) => d.id === data?.sel) ?? doms.find((d) => recordsOf(d.id).some((r) => hasRecord(r.id))) ?? doms[0];
+    const list = recordsOf(selDom.id);
+    const got = list.filter((r) => hasRecord(r.id)).length;
+    const left = h(
+      'div',
+      { class: 'col-left' },
+      tabs(
+        tabList.map((t) => ({ id: t.id, label: t.name, color: t.color, sub: t.id === 'records' ? `${st.save.extra.records.length}/${App.content.records.length}` : `${t.chars.filter((c) => st.owns(c.id)).length}/${t.chars.length}` })),
+        'records',
+        (id) => ui.show('Collection', { tab: id }, { instant: true }),
+        'enter',
+      ),
+      h('div', { class: 'rec-doms enter' }, doms.map((d) => h('button', { class: 'rec-dom' + (d.id === selDom.id ? ' on' : ''), vars: { c: d.color }, onclick: () => ui.show('Collection', { tab: 'records', sel: d.id }, { instant: true }) }, h('b', null, d.name), h('small', { class: 'num' }, `${recordsOf(d.id).filter((r) => hasRecord(r.id)).length}/${recordsOf(d.id).length}`)))),
+      h(
+        'div',
+        { class: 'rec-list' },
+        list.map((r, i) => {
+          const own = hasRecord(r.id);
+          return h('article', { class: 'rec-item panel enter' + (own ? '' : ' locked'), style: { ['--i' as any]: String(i) }, vars: { c: selDom.color } }, h('div', { class: 'rec-no num' }, String(i + 1).padStart(2, '0')), h('div', { class: 'rec-text' }, h('b', null, own ? r.title : '???'), h('p', null, own ? r.text : '이 영역의 미니게임을 플레이하면 가끔 발견돼요. 어려움 모드에서 두 배.')));
+        }),
+      ),
+    );
+    const el = h(
+      'div',
+      { class: 'collection' },
+      topBar('도감 · 기록', { back: () => ui.show('Lobby'), sub: `${selDom.name} · ${got}/${list.length} · 관측자가 남긴 메모` }),
+      h('div', { class: 'col-body records' }, left),
+    );
+    return { el, back: () => ui.show('Lobby') };
   }
 
   function skinsRow(id: string, own: boolean) {

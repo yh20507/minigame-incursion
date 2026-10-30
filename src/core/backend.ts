@@ -80,6 +80,7 @@ export function mergeSave(def: SaveData, raw: Partial<SaveData>): SaveData {
     skins: { ...def.extra.skins, ...(raw.extra?.skins ?? {}), owned: [...(raw.extra?.skins?.owned ?? [])], equipped: { ...(raw.extra?.skins?.equipped ?? {}) } },
     pass: { ...def.extra.pass, ...(raw.extra?.pass ?? {}), claimed: [...(raw.extra?.pass?.claimed ?? [])], weekly: { ...(raw.extra?.pass?.weekly ?? {}) }, daily: { ...(raw.extra?.pass?.daily ?? {}) }, done: [...(raw.extra?.pass?.done ?? [])], attendDays: [...(raw.extra?.pass?.attendDays ?? [])] },
     hardBest: { ...(raw.extra?.hardBest ?? {}) },
+    records: [...(raw.extra?.records ?? [])],
   };
   s.extra.log = raw.extra?.log ?? [];
   s.owned = { ...def.owned, ...(raw.owned ?? {}) };

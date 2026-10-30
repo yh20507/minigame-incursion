@@ -103,7 +103,7 @@ export interface TitleDef {
   id: string;
   name: string;
   desc: string;
-  cond: { type: 'pulls' | 'owned' | 'rarity' | 'enhance' | 'world' | 'stars' | 'cleared' | 'attend' | 'skins' | 'hard'; n?: number; min?: number; world?: string; key?: string };
+  cond: { type: 'pulls' | 'owned' | 'rarity' | 'enhance' | 'world' | 'stars' | 'cleared' | 'attend' | 'skins' | 'hard' | 'records' | 'stories'; n?: number; min?: number; world?: string; key?: string };
   coins: number;
 }
 
@@ -285,6 +285,8 @@ export interface SaveData {
     pass: { season: string; xp: number; claimed: number[]; week: string; weekly: Record<string, number>; day: string; daily: Record<string, number>; done: string[]; freePull: string; attendDays: string[] };
     /** 어려움 모드 최고 점수 (온라인 저장용) */
     hardBest: Record<string, number>;
+    /** 모은 기록 조각 id */
+    records: string[];
   };
 }
 
@@ -337,6 +339,13 @@ export interface Season {
   highlight?: string;
   banners: string[];
   notes: string[];
+}
+
+export interface RecordDef {
+  id: string;
+  domain: string;
+  title: string;
+  text: string;
 }
 
 export interface FrontierDef {

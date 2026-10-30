@@ -8,7 +8,7 @@ import { Store } from '../core/store';
 import { T, domNavigate } from '../core/ui';
 import { audio } from '../core/audio';
 
-const DATA = ['domains', 'minigames', 'characters', 'gacha', 'banners', 'synergies', 'challenges', 'story', 'worlds', 'items', 'updates', 'frontier', 'rewards', 'skins', 'pass'];
+const DATA = ['domains', 'minigames', 'characters', 'gacha', 'banners', 'synergies', 'challenges', 'story', 'worlds', 'items', 'updates', 'frontier', 'rewards', 'skins', 'pass', 'records'];
 
 export class BootScene extends Phaser.Scene {
   constructor() {

@@ -3,6 +3,7 @@ import { App } from '../../core/app';
 import { audio } from '../../core/audio';
 import { lobbyMusicName, playLobbyMusic } from '../../core/lobby';
 import { currentSeason, unseenNews } from '../../core/news';
+import { unreadPersonal } from '../../core/storyflow';
 import { bestArt, bgArt, ui, type Screen } from '../app';
 import { RC, btn, coinPill, iconBtn, itemIcon, rarityStars, stars } from '../components';
 import { fmt, h, svg } from '../dom';
@@ -171,7 +172,7 @@ export function lobbyScreen(): Screen {
     h(
       'div',
       { class: 'tile-grid enter' },
-      tile(I.book, '도감', `${st.ownedChars().length}/${App.content.chars.length}`, () => ui.show('Collection')),
+      tile(I.book, '도감', unreadPersonal() ? `새 이야기 ${unreadPersonal()}개` : `${st.ownedChars().length}/${App.content.chars.length}`, () => ui.show('Collection'), { badge: unreadPersonal() }),
       tile(I.team, '편성', '팀 · 패시브', () => ui.show('Team', { back: { scene: 'Lobby' } })),
       tile(I.bolt, '도전', challengeOpen ? '번개 · 오늘 · 마라톤' : '잿빛 왕관 해방 후', challengeOpen ? () => ui.show('Challenge') : locked('잿빛 왕관을 해방하면 열려요'), { lock: !challengeOpen }),
       tile(I.compass, '원정대', explore ? '탐사 · 파견' : '최종장 이후', explore ? () => ui.show('Expedition') : locked('최종장을 깨면 열려요'), { lock: !explore }),

@@ -34,6 +34,7 @@ export function defaultSave(content: Content): SaveData {
       skins: { owned: [], equipped: {}, shards: 0, pity: 0, pulls: 0 },
       pass: { season: '', xp: 0, claimed: [], week: '', weekly: {}, day: '', daily: {}, done: [], freePull: '', attendDays: [] },
       hardBest: {},
+      records: [],
     },
   };
 }
@@ -326,6 +327,10 @@ export class Store {
         return { cur: this.save.extra.skins.owned.length, need: c.n! };
       case 'hard':
         return { cur: this.hardCleared(), need: c.n! };
+      case 'records':
+        return { cur: this.save.extra.records.length, need: c.n! };
+      case 'stories':
+        return { cur: Object.keys(this.save.story).filter((k) => k.startsWith('p_')).length, need: c.n! };
     }
     return { cur: 0, need: 1 };
   }

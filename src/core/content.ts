@@ -13,7 +13,7 @@ import type {
   Synergies,
   RewardsDef,
   SkinDef,
-  SkinsData, PassDef } from './types';
+  SkinsData, PassDef, RecordDef } from './types';
 
 /** 게임 콘텐츠(데이터 파일). public/data/*.json 에서 불러온다. */
 export class Content {
@@ -32,6 +32,7 @@ export class Content {
   rewards!: RewardsDef;
   skins!: SkinsData;
   pass!: PassDef;
+  records!: RecordDef[];
   /** 실제 그림 파일이 있는 스킨 id (Boot 이 채움) */
   skinFiles = new Set<string>();
   private skinMap = new Map<string, SkinDef>();
@@ -56,6 +57,7 @@ export class Content {
     c.frontier = cache.get('frontier');
     c.rewards = cache.get('rewards') ?? { attendance: [], titles: [], tickets: [] };
     c.skins = cache.get('skins') ?? { config: {}, grades: {}, skins: [] };
+    c.records = cache.get('records') ?? [];
     c.pass = cache.get('pass') ?? { season: '', name: '', sub: '', start: '', end: '', xpPerLevel: 100, maxLevel: 0, levels: [], weekly: [], daily: [] };
     c.index();
     return c;
