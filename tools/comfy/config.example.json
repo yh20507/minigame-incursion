@@ -8,13 +8,13 @@
  "steps": 28,
  "cfg": 6.5,
  "style": "masterpiece, best quality, anime style, clean lineart, vibrant colors, detailed",
- "negative": "lowres, blurry, jpeg artifacts, watermark, signature, text, logo, speech bubble, extra limbs, extra fingers, bad hands, bad anatomy, cropped, multiple views, multiple characters, 2girls, 2boys, nsfw, nude, revealing clothes, green skin, green tint, monochrome, sepia, frame, border, panel, split screen",
+ "negative": "lowres, blurry, jpeg artifacts, watermark, signature, text, logo, speech bubble, extra limbs, extra fingers, bad hands, bad anatomy, cropped, multiple views, multiple characters, 2girls, 2boys, nsfw, nude, revealing clothes, green skin, green tint, monochrome, sepia, frame, border, panel, split screen, dark background, gradient background, scenery",
  "kinds": {
   "sprite": {
    "width": 768,
    "height": 768,
    "candidates": 3,
-   "prefix": "1 character, solo, human chibi, super deformed, full body, standing straight, front view, visible face, two arms two legs, arms slightly out, simple flat colors, thick clean outlines, plain white background, no shadow, no frame, no text",
+   "prefix": "1 character, solo, human chibi, super deformed, full body, standing straight, front view, visible face, two arms two legs, arms slightly out, simple flat colors, thick clean outlines, (plain white background:1.4), no shadow, no frame, no text",
    "style": "best quality, anime chibi character design, flat shading"
   },
   "art": {
@@ -39,8 +39,9 @@
   }
  },
  "refKinds": [
-  "sprite",
-  "art",
-  "full"
- ]
+  "art"
+ ],
+ "refDenoise": {
+  "art": 0.6
+ }
 }
