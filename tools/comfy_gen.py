@@ -282,17 +282,22 @@ def convert(cfg, src, entry):
     dst = target_path(cfg, entry)
     os.makedirs(os.path.dirname(dst), exist_ok=True)
     k = entry["kind"]
-    if k == "full":
-        Image.open(src).convert("RGB").save(dst)
+    if k in ("full", "art"):
+        # 고해상도 일러스트는 변환 없이 (긴 변 1024 로만 맞춤)
+        im = Image.open(src).convert("RGB")
+        im.thumbnail((1024, 1536))
+        im.save(dst)
         return dst
     import pixelize
 
     if k == "sprite":
         pixelize.process(src, dst, (48, 48), 32, False, 60, False, 0)
-    elif k == "art":
-        pixelize.process(src, dst, (256, 256), 64, True, 60, True, 0)
     elif k == "bg":
+        # 미니게임용 픽셀 배경 + 메뉴 화면용 고해상도 배경(_hd) 둘 다
         pixelize.process(src, dst, (640, 360), 64, True, 60, True, 0)
+        hd = Image.open(src).convert("RGB")
+        hd = hd.resize((1920, 1080), Image.LANCZOS)
+        hd.save(dst[:-4] + "_hd.png")
     return dst
 
 

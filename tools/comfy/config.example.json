@@ -11,8 +11,8 @@
   "negative": "lowres, blurry, jpeg artifacts, watermark, signature, text, logo, extra limbs, bad anatomy, cropped, nsfw",
   "kinds": {
     "sprite": { "width": 1024, "height": 1024, "prefix": "full body, standing, front view, chibi proportions, centered, plain flat green background" },
-    "art":    { "width": 1024, "height": 1024, "prefix": "character portrait, upper body, detailed, simple background" },
+    "art":    { "width": 1024, "height": 1024, "steps": 32, "prefix": "character portrait, upper body, looking at viewer, detailed anime style, soft lighting, simple gradient background", "style": "masterpiece, best quality, highly detailed" },
     "full":   { "width": 896,  "height": 1344, "steps": 40, "prefix": "special rare card illustration, high quality, detailed anime style, dynamic pose, dramatic lighting, full body", "style": "masterpiece, best quality, highly detailed, intricate details" },
-    "bg":     { "width": 1344, "height": 768,  "prefix": "wide landscape scenery, no characters, game background" }
+    "bg":     { "width": 1344, "height": 768,  "prefix": "wide landscape scenery, no characters, game background", "style": "masterpiece, best quality, highly detailed, cinematic lighting" }
   }
 }

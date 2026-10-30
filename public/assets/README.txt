@@ -1,10 +1,10 @@
 여기에 그림을 넣으면 게임에 반영됩니다. (exe 옆 assets 폴더도 똑같이 동작)
 
 chars/<캐릭터id>_sprite.png   게임용 48x48, 투명 배경
-chars/<캐릭터id>_art.png      기본 일러스트 256x256 (전원)
-bg/<영역id>.png               배경 640x360 (ashen, neon, nebula, rift, 세계관 id)
+chars/<캐릭터id>_art.png      기본 일러스트 1024x1024 고해상도 (전원)
+bg/<영역id>.png               미니게임 배경 640x360 픽셀 (ashen, neon, nebula, rift, 세계관 id)
+bg/<영역id>_hd.png            메뉴 화면 배경 1920x1080 고해상도 (선택)
 chars/<id>_full.png           ★4·★5 특별 일러스트 (고퀄리티, 크기 자유)
-items/<아이템id>.png          아이템 아이콘 (선택)
 ui/logo.png                   타이틀 로고 (선택)
 
 캐릭터 id 와 설명 전체 목록은 ASSETS.md 를 보세요.

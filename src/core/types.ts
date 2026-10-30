@@ -196,7 +196,7 @@ export interface SaveData {
     daily: { date: string; cleared: boolean; best: number };
     microBest: number;
     marathonBest: number;
-    settings: { sfx: number; bgm: number; theme: number };
+    settings: { sfx: number; bgm: number; theme: number; lowfx?: boolean };
     log: GachaLogEntry[];
     lobby: LobbyConfig;
     seenNews: string[];

@@ -34,10 +34,10 @@ function resolveFile(rel) {
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 1280,
-    height: 720,
-    minWidth: 640,
-    minHeight: 360,
+    width: 1600,
+    height: 900,
+    minWidth: 960,
+    minHeight: 540,
     icon: require('path').join(__dirname, '..', 'dist', 'icon.png'),
     useContentSize: true,
     backgroundColor: '#07060f',

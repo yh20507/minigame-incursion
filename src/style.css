@@ -1,81 +1,10 @@
 @font-face { font-family: 'Galmuri11'; src: url('./fonts/Galmuri11.woff2') format('woff2'); }
 @font-face { font-family: 'Galmuri11Bold'; src: url('./fonts/Galmuri11-Bold.woff2') format('woff2'); }
 @font-face { font-family: 'Galmuri9'; src: url('./fonts/Galmuri9.woff2') format('woff2'); }
-
 html, body { margin: 0; padding: 0; height: 100%; background: #07060f; overflow: hidden; }
 #game { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
 #game canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
-
-#overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(7, 6, 15, 0.75); z-index: 10; font-family: 'Galmuri11', monospace; color: #eae6ff; }
-#overlay.show { display: flex; }
-.login { width: 340px; padding: 24px; background: #15122a; border: 2px solid #6b5bd6; box-shadow: 0 0 0 4px #07060f, 0 0 0 6px #2c2560; }
-.login h2 { margin: 0 0 4px; font-family: 'Galmuri11Bold', monospace; font-size: 24px; color: #ff5fd2; }
-.login p { margin: 0 0 16px; font-size: 12px; color: #a69fd0; line-height: 1.6; }
-.login label { display: block; font-size: 12px; margin: 10px 0 4px; color: #c9c3ef; }
-.login input { width: 100%; box-sizing: border-box; padding: 8px; font-family: 'Galmuri11', monospace; font-size: 12px; background: #0b0a18; color: #fff; border: 2px solid #3a3270; outline: none; }
-.login input:focus { border-color: #ff5fd2; }
-.login .row { display: flex; gap: 8px; margin-top: 18px; }
-.login button { flex: 1; padding: 9px 0; font-family: 'Galmuri11', monospace; font-size: 12px; cursor: pointer; border: 2px solid #6b5bd6; background: #2c2560; color: #fff; }
-.login button.primary { background: #ff5fd2; border-color: #ff5fd2; color: #1a0f22; }
-.login button:hover { filter: brightness(1.15); }
-.login .msg { min-height: 18px; margin-top: 12px; font-size: 12px; color: #ffd84b; line-height: 1.5; }
-.login .offline { margin-top: 10px; background: transparent; border: none; color: #8a83b8; text-decoration: underline; width: 100%; }
-
-.viewer { position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(ellipse at center, rgba(40, 32, 20, 0.92), rgba(7, 6, 15, 0.98)); opacity: 0; transition: opacity 0.35s; cursor: pointer; font-family: 'Galmuri11', monospace; color: #eae6ff; overflow: hidden; }
-.viewer.show { opacity: 1; }
-.viewer .frame { position: relative; line-height: 0; transform: scale(0.94); transition: transform 0.5s cubic-bezier(.2,1.4,.4,1); }
-.viewer.show .frame { transform: scale(1); }
-.viewer img { max-width: 88vw; max-height: 78vh; object-fit: contain; display: block; }
-.viewer img.pixel { image-rendering: pixelated; height: 70vh; width: auto; max-height: 70vh; }
-.viewer .cap { margin-top: 18px; font-family: 'Galmuri11Bold', monospace; font-size: 24px; }
-.viewer .sub { margin-top: 6px; font-size: 12px; color: #c9c3ef; }
-.viewer .hint { position: absolute; bottom: 18px; font-size: 12px; color: #8a83b8; }
-.viewer .line { margin-top: 8px; min-height: 18px; font-size: 14px; color: #ffffff; text-shadow: 0 0 8px rgba(255,255,255,0.4); }
-.viewer .note { margin-top: 10px; font-size: 12px; color: #ffd84b; }
-
-/* ★4 전설: 금빛 테두리와 은은한 빛 */
-.viewer.legend .frame { box-shadow: 0 0 0 2px #ffc845, 0 0 40px rgba(255, 200, 69, 0.45); }
-.viewer.legend .cap { color: #ffc845; text-shadow: 0 0 12px rgba(255, 200, 69, 0.6); }
-
-/* ★5 초레어: 무지개 테두리 + 홀로그램 광택 + 반짝이 */
-.viewer.ultra { background: radial-gradient(ellipse at center, rgba(70, 20, 80, 0.94), rgba(7, 6, 15, 0.99)); }
-.viewer.ultra .frame { padding: 3px; background: linear-gradient(120deg, #ff5fd2, #ffd84b, #5fd3e0, #b06cff, #ff5fd2); background-size: 300% 300%; animation: mi-border 3s linear infinite; box-shadow: 0 0 70px rgba(255, 95, 210, 0.55), 0 0 140px rgba(95, 211, 224, 0.25); }
-.viewer.ultra .frame .holo { position: absolute; inset: 3px; pointer-events: none; overflow: hidden; }
-.viewer.ultra .frame .holo::before { content: ''; position: absolute; top: -50%; left: -60%; width: 45%; height: 200%; transform: rotate(18deg); background: linear-gradient(90deg, transparent, rgba(255,255,255,0.0) 10%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0.0) 90%, transparent); mix-blend-mode: overlay; animation: mi-sheen 2.6s ease-in-out infinite; }
-.viewer.ultra .frame .holo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, rgba(255,95,210,0.18), rgba(255,216,75,0.12), rgba(95,211,224,0.18), rgba(176,108,255,0.18)); background-size: 250% 250%; mix-blend-mode: color-dodge; animation: mi-border 4s linear infinite; }
-.viewer.ultra .cap { background: linear-gradient(90deg, #ff5fd2, #ffd84b, #5fd3e0, #ff5fd2); background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: mi-border 3s linear infinite; }
-.viewer .spark { position: absolute; width: 14px; height: 14px; pointer-events: none; opacity: 0; animation: mi-twinkle 1.8s ease-in-out infinite; }
-.viewer .spark::before, .viewer .spark::after { content: ''; position: absolute; left: 50%; top: 50%; background: #fff; transform: translate(-50%, -50%); box-shadow: 0 0 6px #fff, 0 0 12px rgba(255, 216, 75, 0.9); }
-.viewer .spark::before { width: 2px; height: 14px; }
-.viewer .spark::after { width: 14px; height: 2px; }
-@keyframes mi-border { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
-@keyframes mi-sheen { 0% { left: -60%; } 60%, 100% { left: 130%; } }
-@keyframes mi-twinkle { 0%, 100% { opacity: 0; transform: scale(0.3) rotate(0deg); } 50% { opacity: 1; transform: scale(1) rotate(45deg); } }
-
-/* 로비 배경 (게임 화면 뒤, 창 해상도 그대로) */
 #game { position: relative; z-index: 1; }
-#backdrop { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: #07060f; display: none; }
-#backdrop.show { display: block; }
-#backdrop .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s ease; }
-#backdrop .slide.on { opacity: 1; }
-#backdrop .blur { position: absolute; inset: -40px; background-size: cover; background-position: center; filter: blur(28px) brightness(0.45) saturate(1.2); }
-#backdrop .pic { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
-#backdrop .pic .frame { position: relative; line-height: 0; height: 92vh; }
-#backdrop .pic img { height: 100%; width: auto; max-width: 96vw; object-fit: contain; display: block; }
-#backdrop .pic.cover .frame { height: 100%; width: 100%; }
-#backdrop .pic.cover img { width: 100%; height: 100%; max-width: none; object-fit: cover; }
-#backdrop img.pixel { image-rendering: pixelated; }
-#backdrop .pic.left { justify-content: flex-start; padding-left: 6vw; }
-#backdrop .ultra .frame { padding: 3px; background: linear-gradient(120deg, #ff5fd2, #ffd84b, #5fd3e0, #b06cff, #ff5fd2); background-size: 300% 300%; animation: mi-border 3s linear infinite; box-shadow: 0 0 70px rgba(255, 95, 210, 0.5); }
-#backdrop .ultra .holo { position: absolute; inset: 3px; pointer-events: none; overflow: hidden; }
-#backdrop .ultra .holo::before { content: ''; position: absolute; top: -50%; left: -60%; width: 45%; height: 200%; transform: rotate(18deg); background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent); mix-blend-mode: overlay; animation: mi-sheen 3.4s ease-in-out infinite; }
-#backdrop .ultra .holo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, rgba(255,95,210,0.16), rgba(255,216,75,0.1), rgba(95,211,224,0.16), rgba(176,108,255,0.16)); background-size: 250% 250%; mix-blend-mode: color-dodge; animation: mi-border 4s linear infinite; }
-#backdrop .legend .frame { box-shadow: 0 0 0 2px #ffc845, 0 0 40px rgba(255, 200, 69, 0.4); }
-#backdrop .spark { position: absolute; width: 14px; height: 14px; pointer-events: none; opacity: 0; animation: mi-twinkle 1.8s ease-in-out infinite; }
-#backdrop .spark::before, #backdrop .spark::after { content: ''; position: absolute; left: 50%; top: 50%; background: #fff; transform: translate(-50%, -50%); box-shadow: 0 0 6px #fff, 0 0 12px rgba(255, 216, 75, 0.9); }
-#backdrop .spark::before { width: 2px; height: 14px; }
-#backdrop .spark::after { width: 14px; height: 2px; }
-
 /* 휴대폰 세로 화면 안내 */
 #rotate { display: none; position: fixed; inset: 0; z-index: 9999; background: #07060f; color: #f2eefc; flex-direction: column; align-items: center; justify-content: center; font-family: 'Galmuri11', sans-serif; text-align: center; }
 #rotate div { font-size: 48px; margin-bottom: 12px; }

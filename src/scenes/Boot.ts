@@ -4,7 +4,7 @@ import { Content } from '../core/content';
 import { makeBgTextures, makeCharTextures, makeIconTextures, makeItemTextures } from '../core/art';
 import { LocalBackend, SupabaseBackend, loadOnlineConfig } from '../core/backend';
 import { Store } from '../core/store';
-import { T } from '../core/ui';
+import { T, domNavigate } from '../core/ui';
 import { audio } from '../core/audio';
 
 const DATA = ['domains', 'minigames', 'characters', 'gacha', 'banners', 'synergies', 'challenges', 'story', 'worlds', 'items', 'updates', 'frontier', 'rewards'];
@@ -31,7 +31,10 @@ export class BootScene extends Phaser.Scene {
       this.load.image('art_' + ch.id, `assets/chars/${ch.id}_art.png`);
       if (ch.rarity >= 4) this.load.image('full_' + ch.id, `assets/chars/${ch.id}_full.png`);
     }
-    for (const id of [...App.content.domains.map((d) => d.id), 'rift', ...App.content.worlds.map((w) => w.id)]) this.load.image('bg_' + id, `assets/bg/${id}.png`);
+    for (const id of [...App.content.domains.map((d) => d.id), 'rift', ...App.content.worlds.map((w) => w.id)]) {
+      this.load.image('bg_' + id, `assets/bg/${id}.png`); // 미니게임용 (픽셀 640×360)
+      this.load.image('bghd_' + id, `assets/bg/${id}_hd.png`); // 메뉴 화면용 고해상도 (선택)
+    }
     for (const it of App.content.items) this.load.image('it_' + it.id, `assets/items/${it.id}.png`);
     this.load.image('logo', 'assets/ui/logo.png');
     this.load.once('complete', () => this.finish());
@@ -67,6 +70,7 @@ export class BootScene extends Phaser.Scene {
       App.store = new Store(App.content, App.backend);
       await App.store.init();
     }
-    this.scene.start('Title');
+    this.scene.start('Blank');
+    domNavigate?.('Title');
   }
 }

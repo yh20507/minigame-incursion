@@ -127,11 +127,24 @@ export function button(
 }
 
 /** 화면 전환 (짧은 페이드) */
+/** 고해상도 DOM 화면으로 넘기는 함수 (ui/app 이 등록) */
+export let domNavigate: ((key: string, data?: object) => void) | null = null;
+export function setDomNavigate(fn: (key: string, data?: object) => void) {
+  domNavigate = fn;
+}
+/** Phaser 가 아니라 DOM 으로 그리는 화면들 */
+export const DOM_SCREENS = new Set(['Title', 'Lobby', 'Gacha', 'Collection', 'Team', 'Challenge', 'Settings', 'Bag', 'Decor', 'Expedition', 'Rewards', 'WorldMap', 'Domain', 'Prep', 'Result', 'Story']);
+
 export function go(scene: Phaser.Scene, key: string, data?: object) {
   if ((scene as any).__leaving) return;
   (scene as any).__leaving = true;
   scene.cameras.main.fadeOut(140, 7, 6, 15);
-  scene.cameras.main.once('camerafadeoutcomplete', () => scene.scene.start(key, data));
+  scene.cameras.main.once('camerafadeoutcomplete', () => {
+    if (DOM_SCREENS.has(key) && domNavigate) {
+      scene.scene.start('Blank');
+      domNavigate(key, data);
+    } else scene.scene.start(key, data);
+  });
 }
 
 export function fadeIn(scene: Phaser.Scene) {
