@@ -25,6 +25,7 @@ export class GolfGame extends MiniGame {
   label!: Phaser.GameObjects.Text;
   trail: Phaser.GameObjects.Arc[] = [];
   stillT = 0;
+  flyT = 0; // 이번 샷 비행 시간
 
   create() {
     const bg = this.gfx();
@@ -106,12 +107,13 @@ export class GolfGame extends MiniGame {
           dy = this.dragStart![1] - p.y;
         const d = Math.min(140, Math.hypot(dx, dy));
         if (d > 8) {
-          const pw = d * 3.2;
+          const pw = d * 3.6;
           b.vx = (dx / Math.hypot(dx, dy)) * pw;
           b.vy = (dy / Math.hypot(dx, dy)) * pw;
           b.moving = true;
           this.strokes++;
           this.stillT = 0;
+          this.flyT = 0;
           this.h.sfx('throw');
         }
       }
@@ -131,8 +133,12 @@ export class GolfGame extends MiniGame {
         b.x += b.vx * h;
         b.y += b.vy * h;
       }
-      b.vx *= 1 - 0.12 * dt;
-      b.vy *= 1 - 0.12 * dt;
+      // 마찰: 기본으로도 꽤 감속하고, 3초 넘게 날면(행성 궤도에 잡힌 경우) 점점 세게 잡아서 반드시 멈추게 한다
+      this.flyT += dt;
+      const drag = 0.45 + Math.max(0, this.flyT - 3) * 0.9;
+      const k = Math.max(0, 1 - drag * dt);
+      b.vx *= k;
+      b.vy *= k;
       // 벽 반사
       if (b.x < 6 || b.x > 634) {
         b.vx *= -0.7;
@@ -169,7 +175,13 @@ export class GolfGame extends MiniGame {
         }
       }
       // 구멍
-      if (Math.hypot(this.hole.x - b.x, this.hole.y - b.y) < 11 && Math.hypot(b.vx, b.vy) < 260) {
+      const hd = Math.hypot(this.hole.x - b.x, this.hole.y - b.y);
+      if (hd < 16) {
+        // 구멍 근처면 빨려 들어가듯 감속
+        b.vx *= 1 - 3 * dt;
+        b.vy *= 1 - 3 * dt;
+      }
+      if (hd < 12 && Math.hypot(b.vx, b.vy) < 320) {
         this.holes++;
         const pts = Math.max(60, 320 - (this.strokes - 1) * 90);
         this.h.sfx('win');
@@ -179,11 +191,12 @@ export class GolfGame extends MiniGame {
         this.s.time.delayedCall(500, () => !this.finished && this.course());
       }
       // 멈춤 판정
-      if (Math.hypot(b.vx, b.vy) < 12) this.stillT += dt;
+      if (Math.hypot(b.vx, b.vy) < 22) this.stillT += dt;
       else this.stillT = 0;
-      if (this.stillT > 0.5) {
+      if (this.stillT > 0.35 || this.flyT > 9) {
         b.moving = false;
         b.vx = b.vy = 0;
+        this.h.sfx('tick');
       }
       // 잔상
       const t = this.add(this.s.add.circle(b.x, b.y, 2, 0xffffff, 0.5));

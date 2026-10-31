@@ -1,3 +1,4 @@
+import { showReveal } from './ui/reveal';
 import './style.css';
 import './ui/ui.css';
 import Phaser from 'phaser';
@@ -47,6 +48,7 @@ async function start() {
   (window as any).__game = game;
   (window as any).__app = App;
   (window as any).__ui = ui;
+  (window as any).__reveal = showReveal;
 }
 
 start();

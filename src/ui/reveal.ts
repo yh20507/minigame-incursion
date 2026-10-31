@@ -1,7 +1,7 @@
 /** ★4·★5 등장 연출 (뽑기·도감·선택권에서 공용). 끝나면 resolve. */
 import { App } from '../core/app';
 import { audio } from '../core/audio';
-import { bestArt, ui } from './app';
+import { bestArt, ui, figArt } from './app';
 import { RC, rarityName } from './components';
 import { h, svg, wait } from './dom';
 import { fx } from './fx';
@@ -13,7 +13,8 @@ export function showReveal(charId: string, o: { note?: string; tag?: string; qui
     const ch = App.content.char(charId);
     const ultra = o.skin ? o.skin.grade === 'SS' : ch.rarity >= 5;
     const col = o.skin ? App.content.skins.grades[o.skin.grade].color : RC[ch.rarity];
-    const art = bestArt(charId, true, o.skin ? o.skin.id : undefined);
+    const cut = figArt(charId, o.skin ? o.skin.id : null);
+    const art = cut ? { url: cut.url, pixel: false, kind: 'fig' as const } : bestArt(charId, true, o.skin ? o.skin.id : undefined);
     const world = App.content.world(ch.domain);
     const domCol = App.content.domainColor(ch.domain);
 
@@ -26,7 +27,7 @@ export function showReveal(charId: string, o: { note?: string; tag?: string; qui
       h('div', { class: 'rv-rays' }, fx.rays(col)),
       ultra ? h('div', { class: 'rv-prism' }) : null,
       h('div', { class: 'rv-lines' }, h('i'), h('i'), h('i')),
-      h('div', { class: 'rv-art ' + (art.kind === 'spr' ? 'is-sprite' : art.kind === 'art' ? 'is-art' : 'is-full') }, h('img', { src: art.url, class: art.pixel ? 'pixel' : '', alt: '' }), ultra ? h('div', { class: 'rv-holo' }) : null),
+      h('div', { class: 'rv-art ' + (art.kind === 'spr' ? 'is-sprite' : art.kind === 'art' ? 'is-art' : art.kind === 'fig' ? 'is-fig' : 'is-full') }, h('img', { src: art.url, class: art.pixel ? 'pixel' : '', alt: '' }), ultra ? h('div', { class: 'rv-holo' }) : null),
       h(
         'div',
         { class: 'rv-text' },

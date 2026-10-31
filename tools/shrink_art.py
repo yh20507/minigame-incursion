@@ -9,7 +9,7 @@ import sys
 from PIL import Image
 
 root = sys.argv[1] if len(sys.argv) > 1 else "dist/assets"
-TARGET = ("_art.png", "_full.png", "_hd.png")
+TARGET = ("_art.png", "_full.png", "_hd.png", "_fig.png")
 before = after = n = 0
 for d, _, files in os.walk(root):
     for f in files:
@@ -18,7 +18,7 @@ for d, _, files in os.walk(root):
         src = os.path.join(d, f)
         dst = src[:-4] + ".webp"
         im = Image.open(src)
-        im = im.convert("RGBA") if im.mode in ("RGBA", "LA", "P") and im.getchannel("A").getextrema()[0] < 255 else im.convert("RGB")
+        im = im.convert("RGBA") if im.mode in ("RGBA", "LA", "PA") or (im.mode == "P" and "transparency" in im.info) else im.convert("RGB")
         im.save(dst, "WEBP", quality=90, method=6)
         before += os.path.getsize(src)
         after += os.path.getsize(dst)

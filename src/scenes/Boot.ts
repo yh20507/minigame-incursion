@@ -30,11 +30,15 @@ export class BootScene extends Phaser.Scene {
     for (const ch of App.content.chars) {
       this.load.image('spr_' + ch.id, `assets/chars/${ch.id}_sprite.png`);
       this.load.image('art_' + ch.id, `assets/chars/${ch.id}_art.png`);
-      if (ch.rarity >= 4) this.load.image('full_' + ch.id, `assets/chars/${ch.id}_full.png`);
+      if (ch.rarity >= 4) {
+        this.load.image('full_' + ch.id, `assets/chars/${ch.id}_full.png`);
+        this.load.image('fig_' + ch.id, `assets/chars/${ch.id}_fig.png`); // 누끼 (로비용)
+      }
     }
     for (const sk of App.content.skins.skins) {
       this.load.image('skin_' + sk.id + '_art', `assets/chars/skins/${sk.id}_art.png`);
       this.load.image('skin_' + sk.id + '_full', `assets/chars/skins/${sk.id}_full.png`);
+      this.load.image('skin_' + sk.id + '_fig', `assets/chars/skins/${sk.id}_fig.png`);
       this.load.image('skin_' + sk.id + '_sprite', `assets/chars/skins/${sk.id}_sprite.png`);
     }
     for (const id of [...App.content.domains.map((d) => d.id), 'rift', ...App.content.worlds.map((w) => w.id)]) {

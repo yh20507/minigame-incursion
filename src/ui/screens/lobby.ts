@@ -4,7 +4,7 @@ import { audio } from '../../core/audio';
 import { lobbyMusicName, playLobbyMusic } from '../../core/lobby';
 import { currentSeason, unseenNews } from '../../core/news';
 import { unreadPersonal } from '../../core/storyflow';
-import { bestArt, bgArt, ui, type Screen } from '../app';
+import { bestArt, bgArt, ui, type Screen, figArt } from '../app';
 import { RC, btn, coinPill, iconBtn, itemIcon, rarityStars, stars } from '../components';
 import { fmt, h, svg } from '../dom';
 import { fx } from '../fx';
@@ -34,14 +34,15 @@ export function lobbyScreen(): Screen {
   const stage = h('div', { class: 'lobby-stage' });
   const renderScene = (s: Scene, first: boolean) => {
     const ch = App.content.char(s.char);
-    const art = bestArt(s.char);
+    const cut = figArt(s.char);
+    const art = cut ? { url: cut.url, pixel: false, kind: 'fig' as const } : bestArt(s.char);
     const bgA = bgArt(s.bg);
     const bgUrl = bgA.url;
     const bgFile = !bgA.pixel;
     const col = App.content.domainColor(ch.domain);
     const fig = h(
       'div',
-      { class: 'lobby-fig ' + (art.kind === 'spr' ? 'is-sprite' : art.kind === 'art' ? 'is-art' : 'is-full'), vars: { c: col, rc: RC[ch.rarity] } },
+      { class: 'lobby-fig ' + (art.kind === 'spr' ? 'is-sprite' : art.kind === 'art' ? 'is-art' : art.kind === 'fig' ? 'is-fig' : 'is-full'), vars: { c: col, rc: RC[ch.rarity] } },
       h('div', { class: 'fig-glow' }),
       h('img', { src: art.url, class: (art.pixel ? 'pixel ' : '') + 'breathe', alt: '' }),
       h('div', { class: 'fig-floor' }),
@@ -72,6 +73,8 @@ export function lobbyScreen(): Screen {
       'div',
       { class: 'lobby-scene' + (first ? ' first' : ''), vars: { c: col } },
       h('div', { class: 'lobby-bg' + (bgFile ? '' : ' pixel'), style: bgUrl ? { backgroundImage: `url(${bgUrl})` } : {} }),
+      // 특별 일러스트는 같은 그림을 흐리게 깔아서 그림과 배경이 이어지게 (사진 붙인 느낌 제거)
+      !cut && art.kind === 'full' && !art.pixel ? h('div', { class: 'lobby-bgart', style: { backgroundImage: `url(${art.url})` } }) : null,
       h('div', { class: 'lobby-rays' }, fx.rays(col)),
       fig,
       plate,

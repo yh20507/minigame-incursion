@@ -305,12 +305,16 @@ input[type=range].slider::-webkit-slider-thumb { -webkit-appearance: none; width
 .lobby-rays .rays { width: 1600px; height: 1600px; margin: -800px 0 0 -800px; }
 .lobby-fig { position: absolute; left: 160px; bottom: 0; width: 760px; height: 1020px; display: flex; align-items: flex-end; justify-content: center; cursor: pointer; will-change: transform; transform: translate(calc(var(--mx) * 10px), calc(var(--my) * 6px)); transition: transform 0.6s ease-out; }
 .lobby-fig img { position: relative; z-index: 2; max-width: 100%; max-height: 100%; object-fit: contain; object-position: bottom; }
-.lobby-fig.is-full img { height: 100%; }
+.lobby-fig.is-full img { height: 100%; mask-image: linear-gradient(to right, transparent 0, #000 16%, #000 84%, transparent 100%), linear-gradient(to bottom, #000 0, #000 78%, transparent 100%); -webkit-mask-composite: source-in; mask-composite: intersect; filter: drop-shadow(0 0 28px rgba(0,0,0,0.45)); }
+.lobby-bgart { position: absolute; inset: -6%; background-size: cover; background-position: 30% 20%; filter: blur(22px) brightness(0.55) saturate(1.1); opacity: 0.9; transform: translate(calc(var(--mx) * -8px), calc(var(--my) * -5px)); transition: transform 0.6s ease-out; }
+.lobby-bgart::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(6,6,13,0.2) 0%, rgba(6,6,13,0.25) 45%, rgba(6,6,13,0.85) 78%, #06060d 100%), linear-gradient(to top, #06060d 0%, rgba(6,6,13,0.35) 28%, transparent 55%), linear-gradient(to bottom, rgba(6,6,13,0.8) 0%, transparent 25%); }
 .lobby-fig.is-art img { width: 620px; height: 620px; margin-bottom: 140px; mask-image: linear-gradient(to bottom, #000 80%, transparent); }
 .lobby-fig.is-sprite img { width: 480px; height: 480px; margin-bottom: 120px; image-rendering: pixelated; }
 .fig-glow { position: absolute; left: 50%; bottom: 60px; width: 900px; height: 500px; transform: translateX(-50%); background: radial-gradient(ellipse at 50% 100%, color-mix(in srgb, var(--c) 45%, transparent), transparent 65%); }
 .fig-floor { position: absolute; left: 50%; bottom: 90px; width: 560px; height: 90px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(ellipse, color-mix(in srgb, var(--rc) 55%, transparent), transparent 70%); z-index: 1; }
 .lobby-fig.is-full .fig-floor { display: none; }
+.lobby-fig.is-fig img { height: 96%; max-width: 100%; object-fit: contain; object-position: bottom; filter: drop-shadow(0 18px 30px rgba(0,0,0,0.55)) drop-shadow(0 0 2px rgba(0,0,0,0.3)); }
+.lobby-fig.is-fig .fig-glow { bottom: 0; height: 640px; opacity: 0.9; }
 .lobby-fig.poke img { animation: poke 0.35s ease; }
 @keyframes poke { 30% { transform: scale(1.04, 0.96) translateY(6px); } 60% { transform: scale(0.98, 1.03) translateY(-6px); } }
 .lobby-plate { position: absolute; left: 180px; bottom: 150px; display: flex; flex-direction: column; gap: 4px; padding: 18px 26px 16px 26px; background: linear-gradient(90deg, rgba(6,6,13,0.85), rgba(6,6,13,0.4) 80%, transparent); border-left: 5px solid var(--c); z-index: 3; pointer-events: none; animation: enterL 0.6s both 0.2s; }
@@ -552,6 +556,8 @@ input[type=range].slider::-webkit-slider-thumb { -webkit-appearance: none; width
 .reveal.art .rv-art { opacity: 1; transform: none; }
 .rv-art img { max-width: 100%; max-height: 100%; object-fit: contain; object-position: bottom; }
 .rv-art.is-art img { max-height: 820px; mask-image: linear-gradient(to bottom, #000 82%, transparent); margin-bottom: 60px; }
+.rv-art.is-fig img { max-height: 96%; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6)) drop-shadow(0 0 30px color-mix(in srgb, var(--c) 40%, transparent)); }
+.rv-art.is-full img { mask-image: linear-gradient(to right, transparent 0, #000 14%, #000 86%, transparent 100%), linear-gradient(to bottom, #000 80%, transparent 100%); -webkit-mask-composite: source-in; mask-composite: intersect; }
 .rv-art.is-sprite img { width: 560px; height: 560px; margin-bottom: 180px; image-rendering: pixelated; }
 .rv-holo { position: absolute; inset: 0; background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,0.35) 48%, transparent 60%); background-size: 260% 100%; animation: holo 2.6s linear infinite; mix-blend-mode: overlay; pointer-events: none; }
 .rv-text { position: absolute; left: 140px; top: 50%; transform: translateY(-50%); max-width: 760px; opacity: 0; transition: opacity 0.4s; }

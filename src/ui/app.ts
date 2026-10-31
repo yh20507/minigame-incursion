@@ -359,6 +359,17 @@ function keysFor(id: string, kind: 'full' | 'art' | 'spr', skinId?: string | nul
   return out;
 }
 
+/** 로비용 누끼 그림(_fig). 없으면 null */
+export function figArt(id: string, skinId?: string | null): { url: string; full: string } | null {
+  const sk = skinId === undefined ? App.store?.equippedSkin?.(id)?.id : skinId;
+  for (const [fig, full] of [...(sk ? [[`skin_${sk}_fig`, `skin_${sk}_full`]] : []), [`fig_${id}`, `full_${id}`]]) {
+    const t = texInfo(fig);
+    const f = texInfo(full);
+    if (t && t.file && f && f.file) return { url: t.url, full: f.url };
+  }
+  return null;
+}
+
 /** 큰 화면에 쓸 가장 좋은 캐릭터 그림. pixel = 임시(픽셀) 그림이라 확대 시 또렷하게. skinId 를 주면 그 스킨으로 (null 이면 기본) */
 export function bestArt(id: string, preferFull = true, skinId?: string | null): { url: string; pixel: boolean; kind: 'full' | 'art' | 'spr' } {
   const order: ('full' | 'art' | 'spr')[] = preferFull ? ['full', 'art', 'spr'] : ['art', 'spr'];
