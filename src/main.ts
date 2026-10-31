@@ -33,6 +33,8 @@ async function start() {
     roundPixels: true,
     scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
     input: { keyboard: true, mouse: true, touch: true },
+    // 그림을 <img src> 로 직접 읽는다 (XHR→blob 방식은 Electron 의 app:// 스킴에서 blob 주소가 막히는 PC 가 있음)
+    loader: { imageLoadType: 'HTMLImageElement' },
     scene: [BootScene, BlankScene, PlayScene],
   });
   ui.init(game);
