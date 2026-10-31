@@ -240,10 +240,11 @@ NO_GENDER = {"teumsae", "b07", "qura", "adel", "architect", "chrono", "halma", "
 NO_FRAME = "(no frame:1.3), no border, no card frame, no text, no letters, borderless full-bleed illustration"
 
 
-def with_gender(cid, look):
+def with_gender(cid, look, base_look=""):
+    """base_look: 스킨일 때 원래 캐릭터의 look (거기 적힌 1boy/1girl 을 따라간다)"""
     if "1boy" in look or "1girl" in look or cid in NO_GENDER:
         return look
-    if cid in MALE:
+    if cid in MALE or "1boy" in base_look:
         return "1boy, male, masculine, " + look
     return "1girl, female, " + look
 
@@ -326,7 +327,7 @@ def build_prompts(cfg, existing):
         if not c:
             continue
         look = sk.get("look") or f"{c.get('look', '')}, {sk.get('name', '')}"
-        look = with_gender(c["id"], look)
+        look = with_gender(c["id"], look, c.get("look", ""))
         setting = {
             "ashen": "dark fantasy knight kingdom", "neon": "rainy cyberpunk harbor city", "nebula": "space station in a nebula",
             "rift": "mysterious dimensional rift", "frost": "frozen clocktower city", "abyss": "deep sea lighthouse village",
