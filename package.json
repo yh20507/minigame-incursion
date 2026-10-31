@@ -1,7 +1,7 @@
 {
   "name": "minigame-incursion",
   "productName": "미니게임-인커젼",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "미니게임-인커젼: 조각세계 미니게임 수집 게임",
   "private": true,
   "main": "electron/main.cjs",

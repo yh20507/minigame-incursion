@@ -14,23 +14,35 @@ protocol.registerSchemesAsPrivileged([
 const distDir = path.join(__dirname, '..', 'dist');
 const userDir = process.env.PORTABLE_EXECUTABLE_DIR || path.dirname(app.getPath('exe'));
 
-function resolveFile(rel) {
+function candidatesFor(rel) {
   const candidates = [];
   if (rel.startsWith('assets/') || rel === 'config.json' || rel.startsWith('data/')) {
     candidates.push(path.join(userDir, rel));
   }
   candidates.push(path.join(distDir, rel));
-  for (const p of candidates) {
-    const norm = path.normalize(p);
-    if (!norm.startsWith(path.normalize(userDir)) && !norm.startsWith(path.normalize(distDir))) continue;
+  return candidates.map((p) => path.normalize(p)).filter((norm) => norm.startsWith(path.normalize(userDir)) || norm.startsWith(path.normalize(distDir)));
+}
+
+/** 바깥 폴더(exe 옆 assets) → 안쪽(dist) 순서로, 실제로 읽히는 첫 파일을 돌려준다.
+ *  OneDrive 의 '온라인 전용' 자리표시자처럼 stat 은 되는데 읽기가 실패하는 파일은 건너뛴다. */
+function readFirst(rel) {
+  for (const norm of candidatesFor(rel)) {
     try {
-      if (fs.statSync(norm).isFile()) return norm;
+      if (!fs.statSync(norm).isFile()) continue;
+      return { file: norm, data: fs.readFileSync(norm) };
     } catch {
-      /* 없음 */
+      /* 다음 후보 */
     }
   }
   return null;
 }
+
+function resolveFile(rel) {
+  const r = readFirst(rel);
+  return r ? r.file : null;
+}
+
+const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.woff': 'font/woff', '.woff2': 'font/woff2', '.ttf': 'font/ttf', '.txt': 'text/plain; charset=utf-8', '.map': 'application/json' };
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -70,8 +82,9 @@ app.whenReady().then(async () => {
     const u = new URL(req.url);
     let rel = decodeURIComponent(u.pathname).replace(/^\/+/, '');
     if (!rel) rel = 'index.html';
-    const file = resolveFile(rel);
-    if (!file) return new Response('not found', { status: 404 });
+    const found = readFirst(rel);
+    if (!found) return new Response('not found', { status: 404 });
+    const file = found.file;
     // 음원·영상은 직접 응답 (구간 요청을 지원해야 재생·이어듣기가 된다)
     const ext = path.extname(file).toLowerCase();
     const MEDIA = { '.mp3': 'audio/mpeg', '.ogg': 'audio/ogg', '.wav': 'audio/wav', '.m4a': 'audio/mp4', '.mp4': 'video/mp4', '.webm': 'video/webm' };
@@ -91,7 +104,8 @@ app.whenReady().then(async () => {
       }
       return new Response(fs.readFileSync(file), { status: 200, headers: { ...headers, 'Content-Length': String(size) } });
     }
-    return net.fetch(pathToFileURL(file).toString());
+    // 일반 파일은 직접 읽어서 응답 (asar 안/밖, OneDrive 모두 같은 경로로 처리)
+    return new Response(found.data, { status: 200, headers: { 'Content-Type': MIME[ext] || 'application/octet-stream', 'Content-Length': String(found.data.length), 'Cache-Control': 'no-store' } });
   });
   createWindow();
 });
