@@ -18,3 +18,9 @@ public/assets/audio/chars/sl_*
 public/assets/audio/worlds/
 public/assets/audio/bgm/gacha_*
 __pycache__/
+# 생성 일러스트·배경은 용량 때문에 저장소에 안 올림 (exe 옆 assets/ 폴더로 배포)
+public/assets/chars/*_art.png
+public/assets/chars/*_full.png
+public/assets/chars/skins/*_art.png
+public/assets/chars/skins/*_full.png
+public/assets/bg/

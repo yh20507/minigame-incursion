@@ -8,7 +8,7 @@
  "steps": 30,
  "cfg": 6,
  "style": "masterpiece, best quality, amazing quality, very aesthetic, absurdres, anime style, clean lineart, vibrant colors, detailed",
- "negative": "worst quality, bad quality, very displeasing, lowres, blurry, jpeg artifacts, watermark, signature, text, logo, speech bubble, extra limbs, extra fingers, bad hands, bad anatomy, cropped, multiple views, multiple characters, 2girls, 2boys, nsfw, nude, nipples, revealing clothes, green skin, green tint, monochrome, sepia, frame, border, panel, split screen, dark background, gradient background, scenery",
+ "negative": "worst quality, bad quality, very displeasing, lowres, blurry, jpeg artifacts, watermark, signature, text, logo, speech bubble, extra limbs, extra fingers, bad hands, bad anatomy, cropped, multiple views, multiple characters, 2girls, 2boys, nsfw, nude, nipples, revealing clothes, green skin, green tint, monochrome, sepia, frame, border, card frame, trading card, ornate border, letters, numbers, panel, split screen, dark background, gradient background, scenery",
  "kinds": {
   "sprite": {
    "width": 768,
@@ -28,7 +28,7 @@
    "height": 1216,
    "steps": 40,
    "candidates": 3,
-   "prefix": "special rare card illustration, 1 character, solo, high quality, detailed anime style, dynamic pose, dramatic lighting, full body",
+   "prefix": "special full body illustration, 1 character, solo, high quality, detailed anime style, dynamic pose, dramatic lighting, full body",
    "style": "masterpiece, best quality, highly detailed, intricate details",
    "hires": 1.5,
    "hiresDenoise": 0.45

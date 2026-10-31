@@ -228,6 +228,26 @@ def fill_workflow(template, values):
 
 
 # ---------------------------------------------------------------- 프롬프트
+# 원작 캐릭터의 성별. look 에 1boy/1girl 이 없으면 여기 기준으로 붙인다 (Illustrious 계열은 안 적으면 거의 여자로 그림)
+MALE = {
+    "heim", "felix", "marcus", "cassian", "gino", "tan", "koda", "leo", "bas", "kai", "kirill", "drake", "onyx", "orden",
+    "vorex", "bastian", "kairos", "harold", "bell", "toby", "rufe", "cedric", "zephy", "dar", "omar", "kasim", "silvan",
+    "theo", "orphe", "fin", "ur",
+}
+# 사람이 아니라서 성별 태그를 안 붙이는 애들
+NO_GENDER = {"teumsae", "b07", "qura", "adel", "architect", "chrono", "halma", "observer", "mv_rocket", "lol_blitz", "op_brook"}
+# 카드 테두리·글자가 그려지는 걸 막는 문구 (full 일러스트는 게임 안에서 따로 틀을 씌운다)
+NO_FRAME = "(no frame:1.3), no border, no card frame, no text, no letters, borderless full-bleed illustration"
+
+
+def with_gender(cid, look):
+    if "1boy" in look or "1girl" in look or cid in NO_GENDER:
+        return look
+    if cid in MALE:
+        return "1boy, male, masculine, " + look
+    return "1girl, female, " + look
+
+
 def build_prompts(cfg, existing):
     """characters.json · domains · worlds 에서 프롬프트를 만든다. 사용자가 고친 항목은 유지."""
     chars = game_data("characters")
@@ -251,6 +271,7 @@ def build_prompts(cfg, existing):
 
     for c in chars:
         look = c.get("look") or c.get("title", "")
+        look = with_gender(c["id"], look)
         group = c["domain"]
         setting = {
             "ashen": "dark fantasy knight kingdom",
@@ -273,9 +294,10 @@ def build_prompts(cfg, existing):
                 parts.append(setting + " mood")
             if k == "full":
                 if c["rarity"] >= 5:
-                    parts.append("radiant, glowing magical particles, iridescent light, special rare card art")
+                    parts.append("radiant, glowing magical particles, iridescent light")
                 if setting:
                     parts.append(setting + " background")
+                parts.append(NO_FRAME)
             put(f"{c['id']}:{k}", {"id": c["id"], "kind": k, "name": c["name"], "group": group, "prompt": ", ".join(p for p in parts if p)})
 
     bg_hint = {
@@ -304,6 +326,7 @@ def build_prompts(cfg, existing):
         if not c:
             continue
         look = sk.get("look") or f"{c.get('look', '')}, {sk.get('name', '')}"
+        look = with_gender(c["id"], look)
         setting = {
             "ashen": "dark fantasy knight kingdom", "neon": "rainy cyberpunk harbor city", "nebula": "space station in a nebula",
             "rift": "mysterious dimensional rift", "frost": "frozen clocktower city", "abyss": "deep sea lighthouse village",
