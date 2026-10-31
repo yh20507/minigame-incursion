@@ -65,13 +65,17 @@ export function decorScreen(data: { tab?: Tab; page?: number }): Screen {
   // ---------------- 배경 슬라이드
   function bgTab() {
     const cands: (BgItem & { label: string; color: string; sub: string })[] = [];
+    // 특별 일러스트 파일이 실제로 있는 ★4·★5 만 (임시 그림·도트는 로비에서 보기 안 좋음)
     for (const c of st.ownedChars().sort((a, b) => b.rarity - a.rarity)) {
-      if (c.rarity >= 4 && artIsFile('full', c.id)) cands.push({ k: 'full', id: c.id, label: c.name, color: RC[c.rarity], sub: '특별 일러스트' });
-      else if (c.rarity >= 4) cands.push({ k: 'art', id: c.id, label: c.name, color: RC[c.rarity], sub: '일러스트' });
+      if (c.rarity >= 4 && artIsFile('full', c.id)) cands.push({ k: 'full', id: c.id, label: c.name, color: RC[c.rarity], sub: '★'.repeat(c.rarity) + ' 특별 일러스트' });
     }
-    for (const d of App.content.domains) if (st.isDomainUnlocked(d)) cands.push({ k: 'bg', id: d.id, label: d.name, color: d.color, sub: '영역 배경' });
-    cands.push({ k: 'bg', id: 'rift', label: '균열', color: '#b48cff', sub: '배경' });
-    for (const w of st.visibleWorlds()) cands.push({ k: 'bg', id: w.id, label: w.name, color: w.color, sub: '세계관 배경' });
+    for (const d of App.content.domains) if (st.isDomainUnlocked(d) && artIsFile('bg', d.id)) cands.push({ k: 'bg', id: d.id, label: d.name, color: d.color, sub: '영역 배경' });
+    if (artIsFile('bg', 'rift')) cands.push({ k: 'bg', id: 'rift', label: '균열', color: '#b48cff', sub: '배경' });
+    for (const w of st.visibleWorlds()) if (artIsFile('bg', w.id)) cands.push({ k: 'bg', id: w.id, label: w.name, color: w.color, sub: '세계관 배경' });
+    // 예전에 골라둔 것 중 이제 목록에 없는 건 정리
+    const before = lb.bgs.length;
+    lb.bgs = lb.bgs.filter((b) => cands.some((c) => c.k === b.k && c.id === b.id));
+    if (lb.bgs.length !== before) void save();
     return h(
       'div',
       { class: 'decor-tab enter' },
@@ -88,7 +92,6 @@ export function decorScreen(data: { tab?: Tab; page?: number }): Screen {
         cands.map((it) => {
           const idx = lb.bgs.findIndex((b) => b.k === it.k && b.id === it.id);
           const url = it.k === 'bg' ? bgArt(it.id).url : artUrl(it.k, it.id);
-          const pixel = it.k === 'bg' ? bgArt(it.id).pixel : !artIsFile(it.k, it.id);
           return h(
             'button',
             {
@@ -103,7 +106,7 @@ export function decorScreen(data: { tab?: Tab; page?: number }): Screen {
                 reopen();
               },
             },
-            url ? h('img', { src: url, class: pixel ? 'pixel' : '', alt: '' }) : null,
+            url ? h('img', { src: url, class: it.k === 'full' ? 'portrait' : '', alt: '' }) : null,
             h('div', { class: 'bg-cell-shade' }),
             h('div', { class: 'bg-cell-text' }, h('b', null, it.label), h('small', null, it.sub)),
             idx >= 0 ? h('div', { class: 'bg-cell-num num' }, String(idx + 1)) : null,

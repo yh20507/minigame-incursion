@@ -16,10 +16,12 @@ const userDir = process.env.PORTABLE_EXECUTABLE_DIR || path.dirname(app.getPath(
 
 function candidatesFor(rel) {
   const candidates = [];
+  // 일러스트는 용량 때문에 exe 안에 .webp 로 들어간다. 게임은 .png 로 요청하므로 같은 이름의 .webp 도 찾아본다.
+  const rels = rel.endsWith('.png') ? [rel, rel.slice(0, -4) + '.webp'] : [rel];
   if (rel.startsWith('assets/') || rel === 'config.json' || rel.startsWith('data/')) {
-    candidates.push(path.join(userDir, rel));
+    for (const r of rels) candidates.push(path.join(userDir, r));
   }
-  candidates.push(path.join(distDir, rel));
+  for (const r of rels) candidates.push(path.join(distDir, r));
   return candidates.map((p) => path.normalize(p)).filter((norm) => norm.startsWith(path.normalize(userDir)) || norm.startsWith(path.normalize(distDir)));
 }
 

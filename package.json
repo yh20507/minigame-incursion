@@ -1,7 +1,7 @@
 {
   "name": "minigame-incursion",
   "productName": "미니게임-인커젼",
-  "version": "0.6.7",
+  "version": "0.7.0",
   "description": "미니게임-인커젼: 조각세계 미니게임 수집 게임",
   "private": true,
   "main": "electron/main.cjs",
@@ -11,7 +11,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "app": "electron .",
-    "dist": "npm run build && electron-builder --win --x64",
+    "dist": "npm run build && python tools/shrink_art.py dist/assets && electron-builder --win --x64",
     "assets:list": "node tools/asset-list.mjs",
     "db:characters": "node tools/characters-sql.mjs"
   },
@@ -68,13 +68,6 @@
       {
         "from": "public/config.json",
         "to": "config.json"
-      },
-      {
-        "from": "public/assets",
-        "to": "assets",
-        "filter": [
-          "**/*"
-        ]
       }
     ],
     "afterPack": "build/after-pack.mjs"
