@@ -26,6 +26,7 @@ export class GolfGame extends MiniGame {
   trail: Phaser.GameObjects.Arc[] = [];
   stillT = 0;
   flyT = 0; // 이번 샷 비행 시간
+  streak = 0; // 연속으로 2타 이내에 넣은 홀 수
 
   create() {
     const bg = this.gfx();
@@ -183,12 +184,15 @@ export class GolfGame extends MiniGame {
       }
       if (hd < 12 && Math.hypot(b.vx, b.vy) < 320) {
         this.holes++;
-        const pts = Math.max(60, 320 - (this.strokes - 1) * 90);
+        // 홀인원 700 · 2타 500 · 3타 350 · 그 뒤 250, 2타 이내로 연속 성공하면 홀마다 +150 씩 더
+        const base = [700, 500, 350][this.strokes - 1] ?? 250;
+        this.streak = this.strokes <= 2 ? this.streak + 1 : 0;
+        const bonus = Math.max(0, this.streak - 1) * 150;
         this.h.sfx('win');
-        this.h.addScore(pts, this.hole.x, this.hole.y - 40);
-        this.h.float(this.strokes === 1 ? '홀인원!' : `${this.strokes}타`, this.hole.x, this.hole.y - 60, '#ffd84b');
+        this.h.addScore(base + bonus, this.hole.x, this.hole.y - 40);
+        this.h.float((this.strokes === 1 ? '홀인원!' : `${this.strokes}타`) + (bonus ? ` · 연속 ${this.streak}` : ''), this.hole.x, this.hole.y - 60, '#ffd84b');
         b.moving = false;
-        this.s.time.delayedCall(500, () => !this.finished && this.course());
+        this.s.time.delayedCall(350, () => !this.finished && this.course());
       }
       // 멈춤 판정
       if (Math.hypot(b.vx, b.vy) < 22) this.stillT += dt;
@@ -216,8 +220,25 @@ export class GolfGame extends MiniGame {
       const d = Math.min(140, Math.hypot(dx, dy));
       const ux = dx / (Math.hypot(dx, dy) || 1),
         uy = dy / (Math.hypot(dx, dy) || 1);
+      // 예상 궤적: 처음 0.7초만 점선으로 (행성 중력 반영, 충돌은 무시)
+      let px = b.x, py = b.y, pvx = ux * d * 3.6, pvy = uy * d * 3.6;
+      const step = 1 / 60;
+      for (let i = 0; i < 42; i++) {
+        for (const pl of this.planets) {
+          const ddx = pl.x - px, ddy = pl.y - py;
+          const dd2 = Math.max(400, ddx * ddx + ddy * ddy), dd = Math.sqrt(dd2), ff = pl.mass / dd2;
+          pvx += (ddx / dd) * ff * step * 60;
+          pvy += (ddy / dd) * ff * step * 60;
+        }
+        px += pvx * step;
+        py += pvy * step;
+        if (i % 3 === 0) {
+          a.fillStyle(0xffd84b, 0.85 - i * 0.018);
+          a.fillCircle(px, py, 1.6);
+        }
+      }
       a.lineStyle(2, 0xffd84b, 0.9);
-      a.lineBetween(b.x, b.y, b.x + ux * d, b.y + uy * d);
+      a.lineBetween(b.x, b.y, b.x + ux * Math.min(d, 40), b.y + uy * Math.min(d, 40));
       a.lineStyle(1, 0xffffff, 0.4);
       a.lineBetween(b.x, b.y, b.x - ux * 30, b.y - uy * 30);
     }
