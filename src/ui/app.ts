@@ -379,6 +379,15 @@ export function bestArt(id: string, preferFull = true, skinId?: string | null): 
 
 /** 도감·카드용 초상 (art 파일 → 임시 art) */
 export function portraitArt(id: string, skinId?: string | null): { url: string; pixel: boolean } {
+  // 1) 파일 일러스트 2) 파일 도트 3) 임시 일러스트 (글자 박힌 자리표시)
+  for (const key of keysFor(id, 'art', skinId)) {
+    const t = texInfo(key);
+    if (t && t.file) return { url: t.url, pixel: false };
+  }
+  for (const key of keysFor(id, 'spr', skinId)) {
+    const t = texInfo(key);
+    if (t && t.file) return { url: t.url, pixel: true };
+  }
   for (const key of keysFor(id, 'art', skinId)) {
     const t = texInfo(key);
     if (t) return { url: t.url, pixel: !t.file };
