@@ -1,0 +1,237 @@
+{
+ "season": "s1",
+ "name": "조각난 세계",
+ "sub": "SEASON 1",
+ "start": "2026-10-01",
+ "end": "2027-02-27",
+ "xpPerLevel": 100,
+ "maxLevel": 30,
+ "levels": [
+  {
+   "lv": 1,
+   "coins": 325
+  },
+  {
+   "lv": 2,
+   "coins": 350
+  },
+  {
+   "lv": 3,
+   "items": {
+    "shard": 1
+   }
+  },
+  {
+   "lv": 4,
+   "coins": 400
+  },
+  {
+   "lv": 5,
+   "skinShards": 15,
+   "coins": 800
+  },
+  {
+   "lv": 6,
+   "items": {
+    "shard": 1
+   }
+  },
+  {
+   "lv": 7,
+   "coins": 475
+  },
+  {
+   "lv": 8,
+   "coins": 500
+  },
+  {
+   "lv": 9,
+   "items": {
+    "shard": 1
+   }
+  },
+  {
+   "lv": 10,
+   "items": {
+    "shard": 2
+   },
+   "coins": 2000
+  },
+  {
+   "lv": 11,
+   "coins": 575
+  },
+  {
+   "lv": 12,
+   "items": {
+    "shard": 1
+   }
+  },
+  {
+   "lv": 13,
+   "coins": 625
+  },
+  {
+   "lv": 14,
+   "coins": 650
+  },
+  {
+   "lv": 15,
+   "skinShards": 15,
+   "coins": 800
+  },
+  {
+   "lv": 16,
+   "coins": 700
+  },
+  {
+   "lv": 17,
+   "coins": 725
+  },
+  {
+   "lv": 18,
+   "items": {
+    "shard": 1
+   }
+  },
+  {
+   "lv": 19,
+   "coins": 775
+  },
+  {
+   "lv": 20,
+   "items": {
+    "shard": 2
+   },
+   "coins": 2000
+  },
+  {
+   "lv": 21,
+   "items": {
+    "shard": 1
+   }
+  },
+  {
+   "lv": 22,
+   "coins": 850
+  },
+  {
+   "lv": 23,
+   "coins": 875
+  },
+  {
+   "lv": 24,
+   "items": {
+    "shard": 1
+   }
+  },
+  {
+   "lv": 25,
+   "skinShards": 15,
+   "coins": 800
+  },
+  {
+   "lv": 26,
+   "coins": 950
+  },
+  {
+   "lv": 27,
+   "items": {
+    "shard": 1
+   }
+  },
+  {
+   "lv": 28,
+   "coins": 1000
+  },
+  {
+   "lv": 29,
+   "coins": 1025
+  },
+  {
+   "lv": 30,
+   "ticket": "tk_pass_s1"
+  }
+ ],
+ "weekly": [
+  {
+   "id": "w_play",
+   "name": "미니게임 10판 플레이",
+   "type": "play",
+   "n": 10,
+   "xp": 20
+  },
+  {
+   "id": "w_earn",
+   "name": "미니게임으로 코인 3,000 벌기",
+   "type": "earn",
+   "n": 3000,
+   "xp": 20
+  },
+  {
+   "id": "w_star",
+   "name": "미니게임에서 ★3 기록 3번",
+   "type": "star3",
+   "n": 3,
+   "xp": 15
+  },
+  {
+   "id": "w_hard",
+   "name": "어려움 모드 3판 플레이",
+   "type": "hard",
+   "n": 3,
+   "xp": 25
+  },
+  {
+   "id": "w_pull",
+   "name": "균열 소환 10회",
+   "type": "pull",
+   "n": 10,
+   "xp": 15
+  },
+  {
+   "id": "w_chal",
+   "name": "도전 모드 3판 (번개·오늘·마라톤)",
+   "type": "challenge",
+   "n": 3,
+   "xp": 20
+  },
+  {
+   "id": "w_attend",
+   "name": "이번 주 4일 접속",
+   "type": "attend",
+   "n": 4,
+   "xp": 25
+  }
+ ],
+ "daily": [
+  {
+   "id": "d_login",
+   "name": "접속하기",
+   "type": "attend",
+   "n": 1,
+   "xp": 5
+  },
+  {
+   "id": "d_play",
+   "name": "미니게임 2판 플레이",
+   "type": "play",
+   "n": 2,
+   "xp": 10
+  },
+  {
+   "id": "d_earn",
+   "name": "코인 500 벌기",
+   "type": "earn",
+   "n": 500,
+   "xp": 10
+  },
+  {
+   "id": "d_pull",
+   "name": "균열 소환 1회 (무료 소환도 돼요)",
+   "type": "pull",
+   "n": 1,
+   "xp": 5
+  }
+ ]
+}

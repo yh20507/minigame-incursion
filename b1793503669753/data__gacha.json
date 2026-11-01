@@ -1,0 +1,61 @@
+{
+ "rarities": [
+  {
+   "id": 1,
+   "name": "★1",
+   "rate": 30,
+   "color": "#9aa3ad",
+   "refund": 40
+  },
+  {
+   "id": 2,
+   "name": "★2",
+   "rate": 17,
+   "color": "#4aa3ff",
+   "refund": 100
+  },
+  {
+   "id": 3,
+   "name": "★3",
+   "rate": 7.4,
+   "color": "#b06cff",
+   "refund": 300
+  },
+  {
+   "id": 4,
+   "name": "★4",
+   "rate": 0.5,
+   "color": "#ffc845",
+   "refund": 1000
+  },
+  {
+   "id": 5,
+   "name": "★5",
+   "rate": 0.1,
+   "color": "#ff5fd2",
+   "refund": 2000
+  }
+ ],
+ "itemRate": 45,
+ "pity": {
+  "legend": 300,
+  "ultra": 1000
+ },
+ "multiGuarantee": 2,
+ "firstMultiGuarantee": 4,
+ "cost": {
+  "single": 200,
+  "multi": 1900,
+  "multiCount": 11
+ },
+ "enhance": {
+  "max": 3,
+  "need": [
+   1,
+   2,
+   3
+  ],
+  "bonusPerLevel": 0.25
+ },
+ "startCoins": 2000
+}

@@ -1,0 +1,628 @@
+{
+ "attendance": [
+  {
+   "day": 1,
+   "coins": 300
+  },
+  {
+   "day": 2,
+   "items": {
+    "shield": 1
+   }
+  },
+  {
+   "day": 3,
+   "coins": 400
+  },
+  {
+   "day": 4,
+   "items": {
+    "time": 1
+   }
+  },
+  {
+   "day": 5,
+   "coins": 500
+  },
+  {
+   "day": 6,
+   "items": {
+    "score": 1
+   }
+  },
+  {
+   "day": 7,
+   "coins": 1500,
+   "items": {
+    "revive": 1
+   }
+  },
+  {
+   "day": 8,
+   "coins": 300
+  },
+  {
+   "day": 9,
+   "items": {
+    "shield": 1
+   }
+  },
+  {
+   "day": 10,
+   "coins": 400
+  },
+  {
+   "day": 11,
+   "items": {
+    "time": 1
+   }
+  },
+  {
+   "day": 12,
+   "coins": 500
+  },
+  {
+   "day": 13,
+   "items": {
+    "score": 1
+   }
+  },
+  {
+   "day": 14,
+   "coins": 2000,
+   "items": {
+    "revive": 1,
+    "shield": 1
+   }
+  },
+  {
+   "day": 15,
+   "coins": 300
+  },
+  {
+   "day": 16,
+   "items": {
+    "shield": 1
+   }
+  },
+  {
+   "day": 17,
+   "coins": 400
+  },
+  {
+   "day": 18,
+   "items": {
+    "time": 1
+   }
+  },
+  {
+   "day": 19,
+   "coins": 500
+  },
+  {
+   "day": 20,
+   "items": {
+    "score": 1
+   }
+  },
+  {
+   "day": 21,
+   "coins": 2500,
+   "items": {
+    "shard": 1
+   }
+  },
+  {
+   "day": 22,
+   "coins": 300
+  },
+  {
+   "day": 23,
+   "items": {
+    "shield": 1
+   }
+  },
+  {
+   "day": 24,
+   "coins": 400
+  },
+  {
+   "day": 25,
+   "items": {
+    "time": 1
+   }
+  },
+  {
+   "day": 26,
+   "coins": 500
+  },
+  {
+   "day": 27,
+   "items": {
+    "score": 1
+   }
+  },
+  {
+   "day": 28,
+   "coins": 5000,
+   "items": {
+    "shard": 2,
+    "revive": 1
+   }
+  }
+ ],
+ "titles": [
+  {
+   "id": "first_pull",
+   "name": "첫 균열",
+   "desc": "처음으로 균열에서 동료를 불렀다",
+   "cond": {
+    "type": "pulls",
+    "n": 1
+   },
+   "coins": 300
+  },
+  {
+   "id": "pull100",
+   "name": "균열 단골",
+   "desc": "균열 소환 100회",
+   "cond": {
+    "type": "pulls",
+    "n": 100
+   },
+   "coins": 1000
+  },
+  {
+   "id": "pull300",
+   "name": "천장을 본 자",
+   "desc": "균열 소환 300회",
+   "cond": {
+    "type": "pulls",
+    "n": 300
+   },
+   "coins": 2000
+  },
+  {
+   "id": "pull1000",
+   "name": "차원의 지배자",
+   "desc": "균열 소환 1000회",
+   "cond": {
+    "type": "pulls",
+    "n": 1000
+   },
+   "coins": 5000
+  },
+  {
+   "id": "own10",
+   "name": "동료 열 명",
+   "desc": "동료 10명 모으기",
+   "cond": {
+    "type": "owned",
+    "n": 10
+   },
+   "coins": 500
+  },
+  {
+   "id": "own30",
+   "name": "북적이는 캠프",
+   "desc": "동료 30명 모으기",
+   "cond": {
+    "type": "owned",
+    "n": 30
+   },
+   "coins": 1500
+  },
+  {
+   "id": "own60",
+   "name": "조각세계 인맥왕",
+   "desc": "동료 60명 모으기",
+   "cond": {
+    "type": "owned",
+    "n": 60
+   },
+   "coins": 3000
+  },
+  {
+   "id": "legend1",
+   "name": "전설과의 만남",
+   "desc": "★4 이상 동료 1명",
+   "cond": {
+    "type": "rarity",
+    "min": 4,
+    "n": 1
+   },
+   "coins": 800
+  },
+  {
+   "id": "ultra1",
+   "name": "초레어 소환사",
+   "desc": "★5 동료 1명",
+   "cond": {
+    "type": "rarity",
+    "min": 5,
+    "n": 1
+   },
+   "coins": 2000
+  },
+  {
+   "id": "ultra4",
+   "name": "네 개의 별",
+   "desc": "★5 동료 4명",
+   "cond": {
+    "type": "rarity",
+    "min": 5,
+    "n": 4
+   },
+   "coins": 4000
+  },
+  {
+   "id": "enhance3",
+   "name": "한계 돌파",
+   "desc": "동료 하나를 3강까지",
+   "cond": {
+    "type": "enhance",
+    "n": 3
+   },
+   "coins": 1000
+  },
+  {
+   "id": "w_marvel",
+   "name": "어벤져스 어셈블",
+   "desc": "마블 동료 전원 모으기",
+   "cond": {
+    "type": "world",
+    "world": "marvel"
+   },
+   "coins": 3000
+  },
+  {
+   "id": "w_onepiece",
+   "name": "밀짚모자 동맹",
+   "desc": "원피스 동료 전원 모으기",
+   "cond": {
+    "type": "world",
+    "world": "onepiece"
+   },
+   "coins": 3000
+  },
+  {
+   "id": "w_lol",
+   "name": "협곡의 소환사",
+   "desc": "리그 오브 레전드 동료 전원 모으기",
+   "cond": {
+    "type": "world",
+    "world": "lol"
+   },
+   "coins": 3000
+  },
+  {
+   "id": "w_stellive",
+   "name": "별빛 팬클럽",
+   "desc": "스텔라이브 멤버 전원 모으기",
+   "cond": {
+    "type": "world",
+    "world": "stellive"
+   },
+   "coins": 3000
+  },
+  {
+   "id": "stars18",
+   "name": "별 사냥꾼",
+   "desc": "미니게임 별 18개",
+   "cond": {
+    "type": "stars",
+    "n": 18
+   },
+   "coins": 1000
+  },
+  {
+   "id": "stars36",
+   "name": "만점 플레이어",
+   "desc": "미니게임 별 36개",
+   "cond": {
+    "type": "stars",
+    "n": 36
+   },
+   "coins": 3000
+  },
+  {
+   "id": "hero",
+   "name": "조각세계의 영웅",
+   "desc": "최종장 클리어",
+   "cond": {
+    "type": "cleared",
+    "key": "final"
+   },
+   "coins": 3000
+  },
+  {
+   "id": "attend7",
+   "name": "일주일 개근",
+   "desc": "누적 출석 7일",
+   "cond": {
+    "type": "attend",
+    "n": 7
+   },
+   "coins": 700
+  },
+  {
+   "id": "attend28",
+   "name": "한 달 개근",
+   "desc": "누적 출석 28일",
+   "cond": {
+    "type": "attend",
+    "n": 28
+   },
+   "coins": 2800
+  },
+  {
+   "id": "attend100",
+   "name": "백일의 방랑자",
+   "desc": "누적 출석 100일",
+   "cond": {
+    "type": "attend",
+    "n": 100
+   },
+   "coins": 5000
+  },
+  {
+   "id": "skin3",
+   "name": "옷장이 늘었다",
+   "desc": "스킨 3개 모으기",
+   "cond": {
+    "type": "skins",
+    "n": 3
+   },
+   "coins": 800
+  },
+  {
+   "id": "skin10",
+   "name": "패셔니스타",
+   "desc": "스킨 10개 모으기",
+   "cond": {
+    "type": "skins",
+    "n": 10
+   },
+   "coins": 2500
+  },
+  {
+   "id": "skin25",
+   "name": "의상실 주인",
+   "desc": "스킨 25개 모으기",
+   "cond": {
+    "type": "skins",
+    "n": 25
+   },
+   "coins": 5000
+  },
+  {
+   "id": "hard3",
+   "name": "한계 너머",
+   "desc": "어려움 모드에서 ★3 기준 넘기기 3게임",
+   "cond": {
+    "type": "hard",
+    "n": 3
+   },
+   "coins": 1500
+  },
+  {
+   "id": "hard8",
+   "name": "시련의 정복자",
+   "desc": "어려움 모드에서 ★3 기준 넘기기 8게임",
+   "cond": {
+    "type": "hard",
+    "n": 8
+   },
+   "coins": 4000
+  },
+  {
+   "id": "hard12",
+   "name": "균열의 조율자",
+   "desc": "어려움 모드에서 ★3 기준 넘기기 12게임",
+   "cond": {
+    "type": "hard",
+    "n": 12
+   },
+   "coins": 8000
+  },
+  {
+   "id": "own100",
+   "name": "조각세계의 모든 이름",
+   "desc": "동료 100명 모으기",
+   "cond": {
+    "type": "owned",
+    "n": 100
+   },
+   "coins": 8000
+  },
+  {
+   "id": "stars60",
+   "name": "별을 모으는 사람",
+   "desc": "별 60개 모으기",
+   "cond": {
+    "type": "stars",
+    "n": 60
+   },
+   "coins": 3000
+  },
+  {
+   "id": "stars100",
+   "name": "백 개의 별",
+   "desc": "별 100개 모으기",
+   "cond": {
+    "type": "stars",
+    "n": 100
+   },
+   "coins": 8000
+  },
+  {
+   "id": "hard24",
+   "name": "시련을 읽는 자",
+   "desc": "어려움 모드에서 ★3 기준 넘기기 24게임",
+   "cond": {
+    "type": "hard",
+    "n": 24
+   },
+   "coins": 6000
+  },
+  {
+   "id": "hard36",
+   "name": "조각세계 최강",
+   "desc": "모든 미니게임(36) 어려움 모드 ★3 기준 달성",
+   "cond": {
+    "type": "hard",
+    "n": 36
+   },
+   "coins": 15000
+  },
+  {
+   "id": "c_frost",
+   "name": "태엽을 되감은 사람",
+   "desc": "서리 시계탑 해방",
+   "cond": {
+    "type": "cleared",
+    "key": "frost"
+   },
+   "coins": 2000
+  },
+  {
+   "id": "c_abyss",
+   "name": "등대지기",
+   "desc": "심해 등대 해방",
+   "cond": {
+    "type": "cleared",
+    "key": "abyss"
+   },
+   "coins": 2000
+  },
+  {
+   "id": "c_sky",
+   "name": "구름 정원사",
+   "desc": "하늘 정원 해방",
+   "cond": {
+    "type": "cleared",
+    "key": "sky"
+   },
+   "coins": 2000
+  },
+  {
+   "id": "c_glass",
+   "name": "거울 너머를 본 사람",
+   "desc": "유리 사막 해방",
+   "cond": {
+    "type": "cleared",
+    "key": "glass"
+   },
+   "coins": 2000
+  },
+  {
+   "id": "c_paper",
+   "name": "커튼콜",
+   "desc": "종이 극장 해방",
+   "cond": {
+    "type": "cleared",
+    "key": "paper"
+   },
+   "coins": 2000
+  },
+  {
+   "id": "reader",
+   "name": "읽는 사람",
+   "desc": "관측자의 서재 — 마지막 장을 읽어 내기",
+   "cond": {
+    "type": "cleared",
+    "key": "library"
+   },
+   "coins": 6000
+  },
+  {
+   "id": "rec12",
+   "name": "기록 수집가",
+   "desc": "기록 조각 12개 찾기",
+   "cond": {
+    "type": "records",
+    "n": 12
+   },
+   "coins": 1500
+  },
+  {
+   "id": "rec36",
+   "name": "조각세계의 사서",
+   "desc": "기록 조각 36개 찾기",
+   "cond": {
+    "type": "records",
+    "n": 36
+   },
+   "coins": 4000
+  },
+  {
+   "id": "rec72",
+   "name": "서고지기",
+   "desc": "모든 기록 조각(72) 찾기",
+   "cond": {
+    "type": "records",
+    "n": 72
+   },
+   "coins": 10000
+  },
+  {
+   "id": "sto10",
+   "name": "귀 기울이는 사람",
+   "desc": "동료 개인 이야기 10편 읽기",
+   "cond": {
+    "type": "stories",
+    "n": 10
+   },
+   "coins": 1500
+  },
+  {
+   "id": "sto30",
+   "name": "이야기꾼",
+   "desc": "동료 개인 이야기 30편 읽기",
+   "cond": {
+    "type": "stories",
+    "n": 30
+   },
+   "coins": 4000
+  },
+  {
+   "id": "sto70",
+   "name": "모든 이름을 아는 자",
+   "desc": "동료 개인 이야기 전부(70) 읽기",
+   "cond": {
+    "type": "stories",
+    "n": 70
+   },
+   "coins": 10000
+  }
+ ],
+ "tickets": [
+  {
+   "id": "tk_marvel",
+   "world": "marvel",
+   "rarity": 4
+  },
+  {
+   "id": "tk_onepiece",
+   "world": "onepiece",
+   "rarity": 4
+  },
+  {
+   "id": "tk_lol",
+   "world": "lol",
+   "rarity": 4
+  },
+  {
+   "id": "tk_stellive",
+   "world": "stellive",
+   "rarity": 4
+  },
+  {
+   "id": "tk_pass_s1",
+   "world": "any",
+   "rarity": 5,
+   "pass": "s1",
+   "name": "시즌 1 ★5 선택권"
+  }
+ ]
+}

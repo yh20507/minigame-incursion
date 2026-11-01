@@ -1,0 +1,3058 @@
+[
+ {
+  "id": "teumsae",
+  "name": "틈새",
+  "title": "균열의 정령",
+  "origin": "special",
+  "domain": "rift",
+  "rarity": 1,
+  "pool": false,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "균열에서 태어난 작은 정령. 수다스럽고 호기심이 많다. 방랑자의 첫 동료.",
+  "look": "tiny round purple spirit creature, two small horns, pink cheeks, glowing outline, cute mascot",
+  "line": "같이 가자, 방랑자!"
+ },
+ {
+  "id": "heim",
+  "name": "하임",
+  "title": "성문 경비병",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "무너진 성문을 혼자 지켜온 고참 경비병. 의심이 많지만 정이 깊다.",
+  "look": "middle-aged gate guard, bushy beard, worn iron helmet, spear, dented shield",
+  "line": "성문은 내가 지킨다."
+ },
+ {
+  "id": "brenda",
+  "name": "브렌다",
+  "title": "대장장이",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 5
+   }
+  ],
+  "desc": "망치 한 자루로 왕국의 무기를 다 고쳐온 대장장이. 목소리가 크다.",
+  "look": "sturdy female blacksmith, scorched leather apron, big hammer, rolled-up sleeves",
+  "line": "부러진 건 다 가져와!"
+ },
+ {
+  "id": "felix",
+  "name": "펠릭스",
+  "title": "떠돌이 음유시인",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "몰락한 왕국의 노래를 모으며 떠도는 시인. 박자 감각이 좋다.",
+  "look": "wandering bard, feathered hat, lute, patched cloak",
+  "line": "이번 노래의 주인공은 당신이군요."
+ },
+ {
+  "id": "isolde",
+  "name": "이솔데",
+  "title": "궁수대장",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15,
+    "domain": "ashen"
+   }
+  ],
+  "desc": "백 걸음 밖의 사과도 맞히는 명궁. 말수가 적고 계산이 빠르다.",
+  "look": "female archer captain, longbow, hood, scar near eye, green-brown leather armor",
+  "line": "바람은 읽었다."
+ },
+ {
+  "id": "marcus",
+  "name": "마르쿠스",
+  "title": "연금술사",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "잿더미에서 금을 만들겠다는 꿈을 버리지 못한 연금술사.",
+  "look": "alchemist, round glasses, singed robe, potion vials on belt",
+  "line": "실험은 실패해도 기록은 남지."
+ },
+ {
+  "id": "elowen",
+  "name": "엘로웬",
+  "title": "궁정 마법사",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 20
+   }
+  ],
+  "desc": "왕의 곁을 지키던 마법사. 균열을 연구하며 설계자의 정체를 쫓는다.",
+  "look": "court mage woman, long silver hair, star-patterned robe, staff glowing with rift light",
+  "line": "균열의 무늬가 바뀌었어요. 흥미롭네요."
+ },
+ {
+  "id": "nia",
+  "name": "니아",
+  "title": "그림자 첩자",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 4
+   }
+  ],
+  "desc": "왕국의 비밀 첩보원. 누구의 편인지는 아무도 모른다.",
+  "look": "shadow spy, black hood and mask, twin daggers, slim agile build",
+  "line": "날 본 건 비밀로 해 줘."
+ },
+ {
+  "id": "seraphina",
+  "name": "세라피나",
+  "title": "기사단장",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "왕국 최후의 기사단을 이끄는 단장. 왕을 구하기 위해 검을 놓지 않았다.",
+  "look": "knight commander woman, silver plate armor, red cape, golden braided hair, crested sword",
+  "line": "잿빛 왕관의 이름으로, 길을 열겠다.",
+  "voice": {
+   "pitch": 300,
+   "speed": 0.9,
+   "wave": "sawtooth",
+   "formant": 1.0
+  },
+  "skill": {
+   "id": "charge",
+   "kind": "start_boost",
+   "name": "돌격 명령",
+   "p": {
+    "dur": 8,
+    "mult": 2
+   }
+  }
+ },
+ {
+  "id": "cassian",
+  "name": "카시안",
+  "title": "잿빛 용 기수",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "마지막 남은 잿빛 용과 함께 하늘을 나는 기수. 자유를 무엇보다 사랑한다.",
+  "look": "dragon rider, flight goggles, scarf blowing in wind, dragon scale armor, lance",
+  "line": "꽉 잡아. 하늘로 간다!",
+  "voice": {
+   "pitch": 150,
+   "speed": 1.25,
+   "wave": "sawtooth",
+   "formant": 0.85
+  },
+  "skill": {
+   "id": "dragon_breath",
+   "kind": "periodic",
+   "name": "용의 숨결",
+   "p": {
+    "every": 15,
+    "dur": 5,
+    "mult": 2
+   }
+  }
+ },
+ {
+  "id": "seraphina_x",
+  "name": "[이변] 세라피나",
+  "title": "균열에 물든 기사단장",
+  "origin": "original",
+  "domain": "ashen",
+  "rarity": 5,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "균열이 크게 요동친 순간 나타난 또 다른 세라피나. 다른 세계의 기억을 품고 있다.",
+  "look": "alternate version of a knight commander woman, golden braided hair, dark violet armor, glowing magenta rift aura, otherworldly",
+  "line": "...이 세계의 나는, 아직 웃고 있구나.",
+  "voice": {
+   "pitch": 280,
+   "speed": 0.75,
+   "wave": "triangle",
+   "formant": 1.1
+  },
+  "skill": {
+   "id": "rift_armor",
+   "kind": "rift_armor",
+   "name": "균열 갑주",
+   "p": {
+    "time": 6
+   }
+  }
+ },
+ {
+  "id": "gino",
+  "name": "지노",
+  "title": "배달 라이더",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "빗길 배달로 도시 지도를 머릿속에 다 넣은 라이더. 말이 빠르다.",
+  "look": "delivery rider, neon raincoat, helmet, delivery box on back",
+  "line": "30분 안에 못 오면 공짜!"
+ },
+ {
+  "id": "tan",
+  "name": "탄",
+  "title": "노점 요리사",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "항구 뒷골목 국수 노점의 주인. 비 오는 날 장사가 제일 잘된다.",
+  "look": "street noodle cook, headband, apron, ladle, steaming pot",
+  "line": "한 그릇 말아줄까?"
+ },
+ {
+  "id": "koda",
+  "name": "코다",
+  "title": "거리 DJ",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 5,
+    "domain": "neon"
+   },
+   {
+    "type": "coin",
+    "value": 3
+   }
+  ],
+  "desc": "지붕 위에서 해적 방송을 트는 DJ. 도시의 박자를 만든다.",
+  "look": "street DJ, big headphones, oversized hoodie, neon sunglasses",
+  "line": "볼륨 올려!"
+ },
+ {
+  "id": "yuna",
+  "name": "유나",
+  "title": "해커 '픽셀'",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15,
+    "domain": "neon"
+   }
+  ],
+  "desc": "방화벽을 장난감처럼 다루는 해커. 사탕을 입에 달고 산다.",
+  "look": "hacker girl, lollipop, screen goggles, cat-ear hoodie, laptop",
+  "line": "보안이 너무 허술한데?"
+ },
+ {
+  "id": "leo",
+  "name": "레오",
+  "title": "의체 수리공",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "망가진 의체라면 뭐든 고치는 수리공. 정작 자기 팔은 고장 난 채로 둔다.",
+  "look": "cyborg repair mechanic, broken mechanical arm, tool belt, oily overalls",
+  "line": "나사 하나 빠졌네. 금방 돼."
+ },
+ {
+  "id": "bas",
+  "name": "바스",
+  "title": "밀수선 선장",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "항구에서 가장 빠른 배를 모는 밀수꾼. 화물이 뭔지는 묻지 않는다.",
+  "look": "smuggler ship captain, captain hat, long raincoat, beard, glowing cybernetic eye",
+  "line": "운임은 선불이야."
+ },
+ {
+  "id": "kai",
+  "name": "카이",
+  "title": "기업 경호원",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 12
+   }
+  ],
+  "desc": "대기업 회장을 지키던 경호원. 회사가 사라진 뒤에도 습관처럼 주위를 살핀다.",
+  "look": "corporate bodyguard, black suit, sunglasses, earpiece",
+  "line": "제 뒤에 계십시오."
+ },
+ {
+  "id": "roxy",
+  "name": "록시",
+  "title": "바이크 갱 두목",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 10
+   },
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "네온 고가도로를 지배하는 바이크 갱의 두목. 속도 말고는 관심이 없다.",
+  "look": "biker gang boss woman, leather jacket, neon mohawk, helmet under arm",
+  "line": "느린 건 질색이야."
+ },
+ {
+  "id": "silva",
+  "name": "실바",
+  "title": "정보상 '거미'",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "도시의 모든 소문이 모이는 곳에 그녀가 있다. 정보값은 비싸다.",
+  "look": "information broker woman, spiderweb pattern shawl, floating holographic screens, long nails",
+  "line": "궁금한 게 있으면, 값을 치러."
+ },
+ {
+  "id": "lumiere",
+  "name": "루미에르",
+  "title": "네온 가수",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "도시 전체 전광판에 얼굴이 걸린 가수. 무대 밖에서는 조용한 사람이다.",
+  "look": "neon pop singer woman, glamorous stage dress, holographic microphone, glowing long hair",
+  "line": "오늘 밤 무대는 당신을 위한 거야.",
+  "voice": {
+   "pitch": 390,
+   "speed": 1.05,
+   "wave": "square",
+   "formant": 1.2
+  },
+  "skill": {
+   "id": "encore",
+   "kind": "encore",
+   "name": "앙코르",
+   "p": {
+    "dur": 5
+   }
+  }
+ },
+ {
+  "id": "lumiere_x",
+  "name": "[이변] 루미에르",
+  "title": "균열의 무대에 선 가수",
+  "origin": "original",
+  "domain": "neon",
+  "rarity": 5,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "time",
+    "value": 4
+   }
+  ],
+  "desc": "균열 너머의 무대에서 노래하던 또 다른 루미에르. 노래가 끝나지 않는다.",
+  "look": "alternate version of a neon pop singer woman, glowing long hair, dark iridescent stage dress, magenta rift aura, otherworldly",
+  "line": "앙코르는... 영원히.",
+  "voice": {
+   "pitch": 360,
+   "speed": 0.8,
+   "wave": "triangle",
+   "formant": 1.25
+  },
+  "skill": {
+   "id": "spotlight",
+   "kind": "slow",
+   "name": "스포트라이트",
+   "active": true,
+   "p": {
+    "dur": 3,
+    "factor": 0.5,
+    "cd": 20
+   }
+  }
+ },
+ {
+  "id": "fip",
+  "name": "피프",
+  "title": "화물 정리원",
+  "origin": "original",
+  "domain": "nebula",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 5,
+    "domain": "nebula"
+   },
+   {
+    "type": "time",
+    "value": 1
+   }
+  ],
+  "desc": "무중력 화물칸에서 상자를 차곡차곡 쌓는 게 특기인 정리원.",
+  "look": "small cargo handler, work vest, carrying a crate",
+  "line": "각 잡아서 쌓아드릴게요!"
+ },
+ {
+  "id": "b07",
+  "name": "B-07",
+  "title": "정비 로봇",
+  "origin": "original",
+  "domain": "nebula",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "정거장 배관을 수리하는 구형 로봇. 삐빅 소리로 감정을 표현한다.",
+  "look": "round old maintenance robot, single lens eye, wrench arm",
+  "line": "삐빅. 수리 개시."
+ },
+ {
+  "id": "margo",
+  "name": "마고",
+  "title": "식당 주인",
+  "origin": "original",
+  "domain": "nebula",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "정거장 유일의 식당을 운영하는 주인. 외계인 손님 입맛도 다 외운다.",
+  "look": "plump space diner owner woman, space apron, frying pan",
+  "line": "배고프면 일단 먹고 해요!"
+ },
+ {
+  "id": "astrid",
+  "name": "아스트리드",
+  "title": "파일럿",
+  "origin": "original",
+  "domain": "nebula",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "소행성대를 눈 감고도 빠져나간다는 파일럿. 착륙은 서툴다.",
+  "look": "pilot woman, flight suit, helmet under arm, short hair",
+  "line": "벨트 매. 흔들릴 거야."
+ },
+ {
+  "id": "kirill",
+  "name": "키릴",
+  "title": "생물학자",
+  "origin": "original",
+  "domain": "nebula",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "성운에 사는 생물을 연구하는 학자. 연구 대상에게 이름을 붙여준다.",
+  "look": "space biologist, lab coat, holding a small fluffy nebula creature",
+  "line": "이 아이 이름은 '뭉치'예요."
+ },
+ {
+  "id": "drake",
+  "name": "드레이크",
+  "title": "현상금 사냥꾼",
+  "origin": "original",
+  "domain": "nebula",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15,
+    "domain": "nebula"
+   }
+  ],
+  "desc": "현상금 붙은 놈은 다 잡는다는 사냥꾼. 지금은 쉬는 중이라고 우긴다.",
+  "look": "bounty hunter, long coat, rifle, wanted poster",
+  "line": "현상금이 붙었으면, 내 손님이지."
+ },
+ {
+  "id": "onyx",
+  "name": "오닉스",
+  "title": "경비대장",
+  "origin": "original",
+  "domain": "nebula",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 20
+   }
+  ],
+  "desc": "정거장의 질서를 책임지는 경비대장. 규칙을 어기는 사람에게 엄격하다.",
+  "look": "security chief, heavy armored spacesuit, large shield, stern face",
+  "line": "질서 유지. 협조 부탁한다."
+ },
+ {
+  "id": "qura",
+  "name": "큐-라",
+  "title": "외계 상인",
+  "origin": "original",
+  "domain": "nebula",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 4
+   }
+  ],
+  "desc": "촉수 네 개로 물건 네 개를 동시에 파는 상인. 흥정에 진 적이 없다.",
+  "look": "alien merchant with four tentacles each holding goods, big eyes, merchant vest",
+  "line": "특별가! 오늘만! 진짜로!"
+ },
+ {
+  "id": "nova",
+  "name": "노바",
+  "title": "은하 탐험가",
+  "origin": "original",
+  "domain": "nebula",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "지도에 없는 곳만 골라 가는 탐험가. 조각세계도 그녀에겐 새 놀이터다.",
+  "look": "galaxy explorer woman, explorer spacesuit, big backpack, star pin, confident smile",
+  "line": "가 본 적 없는 곳이라면, 가야지!",
+  "voice": {
+   "pitch": 340,
+   "speed": 1.3,
+   "wave": "square",
+   "formant": 1.1
+  },
+  "skill": {
+   "id": "warp_dodge",
+   "kind": "dodge",
+   "name": "워프",
+   "p": {
+    "chance": 30
+   }
+  }
+ },
+ {
+  "id": "orden",
+  "name": "오르덴",
+  "title": "잿빛 왕",
+  "origin": "special",
+  "domain": "ashen",
+  "rarity": 4,
+  "pool": false,
+  "unlock": "잿빛 왕관 보스 스테이지 클리어",
+  "passives": [
+   {
+    "type": "score",
+    "value": 20,
+    "domain": "ashen"
+   },
+   {
+    "type": "shield",
+    "value": 1
+   },
+   {
+    "type": "coin",
+    "value": 10
+   }
+  ],
+  "desc": "설계자에게 사로잡혀 시련의 문지기가 되었던 왕. 해방된 뒤 방랑자에게 검을 맡겼다.",
+  "look": "ash king, ash-covered crown, cracked royal armor, huge greatsword, weary",
+  "line": "이 검은 이제 너의 것이다.",
+  "voice": {
+   "pitch": 95,
+   "speed": 0.7,
+   "wave": "sawtooth",
+   "formant": 0.7
+  },
+  "skill": {
+   "id": "majesty",
+   "kind": "extra_life",
+   "name": "왕의 위엄",
+   "p": {
+    "n": 1
+   }
+  }
+ },
+ {
+  "id": "adel",
+  "name": "아델",
+  "title": "하버마스터",
+  "origin": "special",
+  "domain": "neon",
+  "rarity": 4,
+  "pool": false,
+  "unlock": "네온 하버 보스 스테이지 클리어",
+  "passives": [
+   {
+    "type": "score",
+    "value": 20,
+    "domain": "neon"
+   },
+   {
+    "type": "time",
+    "value": 4
+   },
+   {
+    "type": "coin",
+    "value": 10
+   }
+  ],
+  "desc": "항구 관리 AI의 인격. 해방된 뒤 방랑자에게 감사를 기록했다.",
+  "look": "holographic AI harbor master, translucent cyan body, harbor uniform, rings of data orbiting",
+  "line": "협력 프로토콜을 개시합니다.",
+  "voice": {
+   "pitch": 230,
+   "speed": 1.0,
+   "wave": "square",
+   "formant": 1.4
+  },
+  "skill": {
+   "id": "harbor",
+   "kind": "time_bank",
+   "name": "항만 효율",
+   "p": {
+    "per": 100,
+    "sec": 0.3
+   }
+  }
+ },
+ {
+  "id": "vorex",
+  "name": "보렉스",
+  "title": "표류선 함장",
+  "origin": "special",
+  "domain": "nebula",
+  "rarity": 4,
+  "pool": false,
+  "unlock": "성운 표류선 보스 스테이지 클리어",
+  "passives": [
+   {
+    "type": "score",
+    "value": 20,
+    "domain": "nebula"
+   },
+   {
+    "type": "shield",
+    "value": 1
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "성운 표류선의 함장. 오랜만에 자기 의지로 키를 잡았다.",
+  "look": "old space captain, huge build, worn captain coat, mechanical prosthetic arm, white beard",
+  "line": "항로는 우리가 정한다.",
+  "voice": {
+   "pitch": 110,
+   "speed": 0.85,
+   "wave": "sawtooth",
+   "formant": 0.75
+  },
+  "skill": {
+   "id": "helm",
+   "kind": "last_stand",
+   "name": "불굴의 키",
+   "p": {
+    "dur": 5,
+    "mult": 2
+   }
+  }
+ },
+ {
+  "id": "architect",
+  "name": "설계자",
+  "title": "조각세계를 꿰맨 자",
+  "origin": "special",
+  "domain": "rift",
+  "rarity": 5,
+  "pool": false,
+  "unlock": "최종장 클리어",
+  "passives": [
+   {
+    "type": "score",
+    "value": 25
+   },
+   {
+    "type": "coin",
+    "value": 25
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "텅 빈 세계에 홀로 남아, 함께 놀 누군가를 기다리며 세계를 꿰맸던 존재.",
+  "look": "mysterious figure in dark cloak, face hidden in shadow, glowing pink eyes, threads and needle motif, lonely",
+  "line": "이번엔 시련이 아니라, 그냥 놀자.",
+  "voice": {
+   "pitch": 130,
+   "speed": 0.65,
+   "wave": "triangle",
+   "formant": 0.9
+  },
+  "skill": {
+   "id": "one_more",
+   "kind": "roulette",
+   "name": "한 판 더",
+   "p": {}
+  }
+ },
+ {
+  "id": "mv_hawkeye",
+  "name": "호크아이",
+  "title": "백발백중 궁수",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "화살 한 통이면 충분하다는 명궁. 초능력은 없지만 누구보다 침착하다.",
+  "look": "hawkeye (marvel), clint barton, 1boy, short blond hair, purple and black tactical suit, sleeveless, archery bow and quiver, arm guard, serious face",
+  "line": "빗나간 적? 아직 없어."
+ },
+ {
+  "id": "mv_falcon",
+  "name": "팔콘",
+  "title": "날개 달린 파트너",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "기계 날개로 하늘을 나는 영웅. 동료를 끝까지 챙긴다.",
+  "look": "falcon (marvel), sam wilson, 1boy, dark skin, short black hair, red and silver winged flight suit, mechanical metal wings spread, red goggles",
+  "line": "공중 지원은 맡겨."
+ },
+ {
+  "id": "mv_antman",
+  "name": "앤트맨",
+  "title": "작아지는 영웅",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 5
+   }
+  ],
+  "desc": "몸을 개미만큼 줄였다 키웠다 하는 영웅. 늘 농담이 먼저 나온다.",
+  "look": "ant-man (marvel), scott lang, 1boy, red and black suit with silver details, full helmet with red lenses, antenna, shrinking particles",
+  "line": "작다고 무시하면 곤란해."
+ },
+ {
+  "id": "mv_deadpool",
+  "name": "데드풀",
+  "title": "입 다물 줄 모르는 용병",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "어떤 상처도 다시 아무는 용병. 시도 때도 없이 화면 밖을 향해 말을 건다.",
+  "look": "deadpool (marvel), 1boy, full red and black mask with white eye patches, red and black bodysuit, two katanas on back, pouches, playful pose",
+  "line": "이번 뽑기, 나라서 실망했지?"
+ },
+ {
+  "id": "mv_widow",
+  "name": "블랙 위도우",
+  "title": "최정예 스파이",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   }
+  ],
+  "desc": "격투와 첩보의 달인. 말보다 행동이 빠르다.",
+  "look": "black widow (marvel), natasha romanoff, 1girl, red hair, wavy bob, black tactical bodysuit zipped up, utility belt, wrist gauntlets, confident",
+  "line": "계획은 이미 세워뒀어."
+ },
+ {
+  "id": "mv_rocket",
+  "name": "로켓",
+  "title": "총기광 너구리",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "무기라면 뭐든 개조하는 우주 너구리. 너구리라고 부르면 화낸다.",
+  "look": "rocket raccoon (marvel), anthropomorphic raccoon, brown fur, orange jumpsuit, oversized futuristic rifle, smirk",
+  "line": "더 큰 총 없어?"
+ },
+ {
+  "id": "mv_wolverine",
+  "name": "울버린",
+  "title": "불사신 광전사",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "손등에서 금속 발톱이 튀어나오는 사나이. 무뚝뚝하지만 정이 깊다.",
+  "look": "wolverine (x-men), logan, 1boy, yellow and blue costume, black mask with pointed ears, adamantium claws out, muscular, sideburns",
+  "line": "귀찮게 하지 마."
+ },
+ {
+  "id": "mv_cap",
+  "name": "캡틴 아메리카",
+  "title": "방패를 든 리더",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 12
+   }
+  ],
+  "desc": "둥근 방패 하나로 전장을 지휘하는 리더. 원칙을 굽히지 않는다.",
+  "look": "captain america (marvel), steve rogers, 1boy, blue star-spangled suit, white star on chest, red and white stripes, round vibranium shield, blue helmet with A",
+  "line": "모두 내 뒤로."
+ },
+ {
+  "id": "mv_panther",
+  "name": "블랙 팬서",
+  "title": "왕국의 수호자",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 12
+   }
+  ],
+  "desc": "비밀 왕국의 왕이자 전사. 기품과 힘을 함께 지녔다.",
+  "look": "black panther (marvel), t'challa, 1boy, sleek black vibranium suit, silver claw necklace, panther mask with pointed ears, purple energy lines",
+  "line": "내 왕국은 내가 지킨다."
+ },
+ {
+  "id": "mv_strange",
+  "name": "닥터 스트레인지",
+  "title": "시간을 다루는 마법사",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   },
+   {
+    "type": "score",
+    "value": 5
+   }
+  ],
+  "desc": "신비한 마법을 다루는 소서러 슈프림. 시간의 흐름까지 엿본다.",
+  "look": "doctor strange (marvel), stephen strange, 1boy, grey streaks in black hair, goatee, blue tunic, red cloak of levitation, eye of agamotto amulet, glowing orange magic circles",
+  "line": "수많은 미래 중 이길 길은 하나."
+ },
+ {
+  "id": "mv_ironman",
+  "name": "아이언맨",
+  "title": "천재 발명가",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "스스로 만든 강철 슈트를 입는 천재. 자신감이 넘친다.",
+  "look": "iron man (marvel), tony stark, red and gold powered armor, glowing blue arc reactor on chest, glowing eye slits, repulsor hand, sleek metallic",
+  "line": "슈트 업그레이드는 이미 끝났지.",
+  "skill": {
+   "id": "reserve",
+   "kind": "shield_regen",
+   "name": "예비 동력",
+   "p": {
+    "every": 15
+   }
+  }
+ },
+ {
+  "id": "mv_thor",
+  "name": "토르",
+  "title": "천둥의 신",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "망치를 휘둘러 번개를 부르는 신. 호탕하게 웃는다.",
+  "look": "thor (marvel), 1boy, long blond hair, beard, silver scale armor with six circular discs, red cape, hammer mjolnir, lightning",
+  "line": "천둥이 내 편이다!",
+  "skill": {
+   "id": "thunder",
+   "kind": "invuln",
+   "name": "천둥",
+   "active": true,
+   "p": {
+    "dur": 3,
+    "mult": 2,
+    "cd": 25
+   }
+  }
+ },
+ {
+  "id": "mv_wanda",
+  "name": "스칼렛 위치",
+  "title": "현실을 비트는 마녀",
+  "origin": "world",
+  "domain": "marvel",
+  "rarity": 5,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "현실 자체를 바꿔 버리는 힘을 가진 마녀. 균열과 묘하게 공명한다.",
+  "look": "scarlet witch (marvel), wanda maximoff, 1girl, auburn hair, red tiara crown headpiece, red corset costume, red cape, glowing red chaos magic in hands",
+  "line": "이 세계도... 바꿀 수 있어.",
+  "skill": {
+   "id": "reality",
+   "kind": "warp",
+   "name": "현실 조작",
+   "p": {
+    "chance": 50,
+    "refund": 2
+   }
+  }
+ },
+ {
+  "id": "op_usopp",
+  "name": "우솝",
+  "title": "거짓말쟁이 저격수",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "새총 한 자루로 버티는 저격수. 겁은 많지만 결정적인 순간엔 물러서지 않는다.",
+  "look": "usopp (one piece), 1boy, very long nose, black curly hair, bandana, goggles on forehead, brown overalls, slingshot, grin",
+  "line": "나에겐 부하가 8천 명 있다고!"
+ },
+ {
+  "id": "op_franky",
+  "name": "프랑키",
+  "title": "변태 사이보그 선장공",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "몸을 개조한 배 목수. 콜라를 연료 삼아 움직인다.",
+  "look": "franky (one piece), 1boy, cyborg, blue pompadour hair, sunglasses, open hawaiian shirt, speedo, huge metal forearms, star tattoo",
+  "line": "오늘 컨디션, 슈퍼다!"
+ },
+ {
+  "id": "op_brook",
+  "name": "브룩",
+  "title": "해골 음악가",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 5
+   }
+  ],
+  "desc": "한 번 죽었다 살아난 해골 음악가. 바이올린 실력이 일품이다.",
+  "look": "brook (one piece), skeleton, black afro, top hat, black suit with cravat, cane sword, violin, cheerful",
+  "line": "요호호, 뼈만 남았지만 기분은 좋아요."
+ },
+ {
+  "id": "op_buggy",
+  "name": "버기",
+  "title": "광대 해적",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "몸이 조각조각 분리되는 광대 선장. 운 하나로 출세한다.",
+  "look": "buggy the clown (one piece), 1boy, big red round nose, blue hair, clown makeup, pirate captain coat, striped hat with skull",
+  "line": "내가 바로 대해적이다!"
+ },
+ {
+  "id": "op_nami",
+  "name": "나미",
+  "title": "항해사",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   }
+  ],
+  "desc": "날씨를 읽는 천재 항해사. 돈 계산은 누구보다 빠르다.",
+  "look": "nami (one piece), 1girl, long orange hair, brown eyes, blue tattoo on left shoulder, clima-tact staff, white and blue striped shirt, jeans, navigator, cheerful",
+  "line": "항로는 내가 정할게."
+ },
+ {
+  "id": "op_sanji",
+  "name": "상디",
+  "title": "일류 요리사",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "발차기로 싸우는 요리사. 배고픈 사람은 누구든 먹인다.",
+  "look": "sanji (one piece), 1boy, blond hair covering one eye, curly eyebrow, goatee, black suit, blue dress shirt, cigarette, chef",
+  "line": "배고프면 일단 먹어."
+ },
+ {
+  "id": "op_jinbe",
+  "name": "징베",
+  "title": "바다의 협객",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "어인족의 거한이자 조타수. 의리와 침착함의 상징.",
+  "look": "jinbe (one piece), fishman, blue skin, whale shark features, yellow kimono with wave pattern, topknot, large build, calm",
+  "line": "키는 내가 잡겠다."
+ },
+ {
+  "id": "op_robin",
+  "name": "니코 로빈",
+  "title": "고고학자",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 12
+   }
+  ],
+  "desc": "몸 어디서든 손을 피워내는 고고학자. 역사의 비밀을 쫓는다.",
+  "look": "nico robin (one piece), 1girl, long black hair, blue eyes, purple top, sarong, sunglasses on head, archaeologist, elegant, many blooming arms",
+  "line": "이 균열에도 역사가 있겠지."
+ },
+ {
+  "id": "op_law",
+  "name": "트라팔가 로우",
+  "title": "죽음의 외과의",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 12
+   }
+  ],
+  "desc": "공간을 수술대처럼 다루는 의사 선장. 계획에 철저하다.",
+  "look": "trafalgar law (one piece), 1boy, white spotted fur hat, goatee, tattoos on hands, yellow and black hoodie, long nodachi sword kikoku, calm",
+  "line": "작전대로 움직여."
+ },
+ {
+  "id": "op_hancock",
+  "name": "보아 핸콕",
+  "title": "해적 여제",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   },
+   {
+    "type": "score",
+    "value": 5
+   }
+  ],
+  "desc": "여인국을 다스리는 여제. 오만하지만 한 사람 앞에서만 약해진다.",
+  "look": "boa hancock (one piece), 1girl, very long black hair, large earrings, red qipao-style long dress (modest), snake salome, pirate empress, haughty",
+  "line": "내가 아름다워서 용서받는 거야."
+ },
+ {
+  "id": "op_zoro",
+  "name": "롤로노아 조로",
+  "title": "삼도류 검사",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "검 세 자루를 쓰는 검사. 길은 늘 잃지만 칼끝은 정확하다.",
+  "look": "roronoa zoro (one piece), 1boy, short green hair, scar over left eye, three katanas, dark green coat, red sash, black bandana on arm",
+  "line": "길은... 이쪽이 맞을 거다.",
+  "skill": {
+   "id": "three_worlds",
+   "kind": "combo",
+   "name": "삼천세계",
+   "p": {
+    "step": 0.1,
+    "max": 2
+   }
+  }
+ },
+ {
+  "id": "op_ace",
+  "name": "포트거스 D. 에이스",
+  "title": "불꽃의 사나이",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "온몸이 불꽃이 되는 해적. 동생을 무엇보다 아낀다.",
+  "look": "portgas d. ace (one piece), 1boy, black wavy hair, freckles, orange cowboy hat with smiley badges, shirtless with black shorts, red bead necklace, fire fist flames",
+  "line": "불꽃은 꺼지지 않아.",
+  "skill": {
+   "id": "flame",
+   "kind": "late_bloom",
+   "name": "불꽃",
+   "p": {
+    "last": 10,
+    "mult": 2
+   }
+  }
+ },
+ {
+  "id": "op_luffy",
+  "name": "몽키 D. 루피",
+  "title": "고무인간 선장",
+  "origin": "world",
+  "domain": "onepiece",
+  "rarity": 5,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "몸이 고무처럼 늘어나는 해적 선장. 동료를 위해서라면 무엇이든 한다.",
+  "look": "monkey d. luffy (one piece), 1boy, black messy hair, straw hat, scar under left eye, red open vest, blue shorts, sandals, huge grin",
+  "line": "조각세계? 전부 모험이다!",
+  "skill": {
+   "id": "gear2",
+   "kind": "revive_plus",
+   "name": "기어 세컨드",
+   "p": {
+    "dur": 5,
+    "mult": 3
+   }
+  }
+ },
+ {
+  "id": "lol_garen",
+  "name": "가렌",
+  "title": "데마시아의 힘",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "거대한 대검을 든 데마시아의 기사. 정의를 의심하지 않는다.",
+  "look": "garen (league of legends), 1boy, short brown hair, massive two-handed greatsword, blue and gold heavy plate armor, demacia crest",
+  "line": "데마시아는 물러서지 않는다."
+ },
+ {
+  "id": "lol_ashe",
+  "name": "애쉬",
+  "title": "서리 궁수",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "얼음 화살을 쏘는 프렐요드의 지도자. 차분하게 앞을 내다본다.",
+  "look": "ashe (league of legends), 1girl, long white hair, blue hooded cape, ice bow, frost arrow, freljord",
+  "line": "얼음은 길을 막지 않아. 길을 만든다."
+ },
+ {
+  "id": "lol_yi",
+  "name": "마스터 이",
+  "title": "우주류 검사",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 5
+   }
+  ],
+  "desc": "눈을 감고도 적을 베는 검의 달인. 수련을 쉬지 않는다.",
+  "look": "master yi (league of legends), 1boy, seven-lens goggles helmet, long sword, green and gold wuju armor, meditating stance",
+  "line": "눈은 마음을 속인다."
+ },
+ {
+  "id": "lol_darius",
+  "name": "다리우스",
+  "title": "녹서스의 손",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "도끼 하나로 군대를 이끄는 장군. 강한 자만 인정한다.",
+  "look": "darius (league of legends), 1boy, black hair, beard, huge axe, dark red and black noxian armor, scar, intimidating",
+  "line": "약한 자는 물러나라."
+ },
+ {
+  "id": "lol_lux",
+  "name": "럭스",
+  "title": "빛의 소녀",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   }
+  ],
+  "desc": "빛을 다루는 데마시아의 마법사. 늘 밝고 씩씩하다.",
+  "look": "lux (league of legends), luxanna crownguard, 1girl, blonde hair, blue eyes, white and gold light armor, light baton staff, light magic, smile",
+  "line": "빛으로 길을 비출게!"
+ },
+ {
+  "id": "lol_blitz",
+  "name": "블리츠크랭크",
+  "title": "증기 골렘",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "무엇이든 갈고리로 끌어오는 증기 로봇. 의외로 다정하다.",
+  "look": "blitzcrank (league of legends), steam golem robot, yellow brass body, glowing eye, giant mechanical hands, steam vents",
+  "line": "목표 포착. 끌어당긴다."
+ },
+ {
+  "id": "lol_irelia",
+  "name": "이렐리아",
+  "title": "칼날 무희",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "춤추듯 칼날을 조종하는 아이오니아의 수호자.",
+  "look": "irelia (league of legends), 1girl, dark hair, ionian dancer outfit, floating blades circling, graceful pose",
+  "line": "칼날은 내 뜻대로 춤춘다."
+ },
+ {
+  "id": "lol_cait",
+  "name": "케이틀린",
+  "title": "필트오버의 보안관",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 12
+   }
+  ],
+  "desc": "백 미터 밖 표적도 놓치지 않는 저격수. 수사에 집요하다.",
+  "look": "caitlyn (league of legends), 1girl, long dark purple hair, purple top hat, sheriff outfit, long sniper rifle, piltover",
+  "line": "단서는 이미 찾았어."
+ },
+ {
+  "id": "lol_vi",
+  "name": "바이",
+  "title": "필트오버의 집행자",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 12
+   }
+  ],
+  "desc": "거대한 강철 주먹을 단 집행자. 문은 부수고 지나간다.",
+  "look": "vi (league of legends), 1girl, short pink hair, giant hextech gauntlets, tattoos, piltover enforcer, confident grin",
+  "line": "문? 그냥 부수면 되잖아."
+ },
+ {
+  "id": "lol_leesin",
+  "name": "리 신",
+  "title": "눈먼 수도승",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   },
+   {
+    "type": "score",
+    "value": 5
+   }
+  ],
+  "desc": "앞을 보지 못하지만 누구보다 정확하게 움직이는 수도승.",
+  "look": "lee sin (league of legends), 1boy, red blindfold, shirtless, red monk pants, kick stance, dragon tattoo",
+  "line": "보이지 않아도 느낄 수 있다."
+ },
+ {
+  "id": "lol_yasuo",
+  "name": "야스오",
+  "title": "용서받지 못한 자",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "바람을 다루는 떠돌이 검객. 과거를 짊어지고 걷는다.",
+  "look": "yasuo (league of legends), 1boy, black ponytail, stubble, blue sleeveless tunic, katana, wind swirl, ionia",
+  "line": "바람이 이끄는 대로.",
+  "skill": {
+   "id": "windwall",
+   "kind": "invuln",
+   "name": "바람 장막",
+   "active": true,
+   "p": {
+    "dur": 2,
+    "mult": 1,
+    "cd": 12
+   }
+  }
+ },
+ {
+  "id": "lol_ahri",
+  "name": "아리",
+  "title": "구미호",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "아홉 꼬리를 지닌 여우 마법사. 인간을 이해하고 싶어 한다.",
+  "look": "ahri (league of legends), 1girl, nine tails, fox ears, long black hair, whisker marks, red and white outfit, blue orb, charming",
+  "line": "날 따라와 볼래?",
+  "skill": {
+   "id": "charm",
+   "kind": "crit",
+   "name": "매혹",
+   "p": {
+    "chance": 10,
+    "mult": 2
+   }
+  }
+ },
+ {
+  "id": "lol_kaisa",
+  "name": "카이사",
+  "title": "공허의 딸",
+  "origin": "world",
+  "domain": "lol",
+  "rarity": 5,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "공허의 갑피와 하나가 된 사냥꾼. 균열 너머의 위협에 가장 민감하다.",
+  "look": "kai'sa (league of legends), 1girl, long dark purple hair, sleek purple void symbiote armor suit, glowing purple accents, void shoulder cannons",
+  "line": "공허도 이 균열은 못 넘어.",
+  "skill": {
+   "id": "hunt",
+   "kind": "hunt",
+   "name": "사냥 본능",
+   "p": {
+    "per": 1000,
+    "max": 3
+   }
+  }
+ },
+ {
+  "id": "sl_yuni",
+  "name": "아야츠노 유니",
+  "title": "1기생",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 5,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "지구에서 깨어난 알리콘. 게임과 저스트 채팅 방송을 한다.",
+  "look": "stellive, ayatsuno yuni, 1girl, unicorn horn, single horn, spiral horn, white hair, long hair, wavy hair, rainbow streak in bangs, twin braids, blue hair ribbons, purple eyes, white cropped jacket, high collar, blue trim, long sleeves, gem emblem on chest",
+  "line": "",
+  "skill": {
+   "id": "live_start",
+   "kind": "live_start",
+   "name": "라이브 스타트",
+   "p": {
+    "dur": 10,
+    "mult": 1.5
+   }
+  }
+ },
+ {
+  "id": "sl_huya",
+  "name": "사키하네 후야",
+  "title": "1기생 · Everys",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "한때 별이었던 고대의 엘더 드래곤. 스텔라이브의 첫 전학생.",
+  "look": "stellive, sakihane huya, 1girl, purple hair, very long hair, yellow eyes, black curved horns, pointy ears, purple beret, star hair ornament, black choker, gold necklace, pink gem, white puffy short sleeves, purple and black dress, frills, black bow",
+  "line": "",
+  "skill": {
+   "id": "rhythm_sense",
+   "kind": "rhythm",
+   "name": "리듬 감각",
+   "p": {
+    "window": 3,
+    "step": 5,
+    "max": 50
+   }
+  }
+ },
+ {
+  "id": "sl_gangzi",
+  "name": "강지",
+  "title": "스텔라이브 대표",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "스텔라이브의 대표. 정식 멤버가 아닌 게스트 멤버로 소개된다.",
+  "look": "stellive, 1girl, black hair, blue inner hair, gradient hair, very long hair, hair between eyes, yellow eyes, black hairband, black hair ribbons, white frilled ribbon trim, criss-cross choker, white camisole, cross-laced front, lace trim, sleeveless, black dress",
+  "line": "",
+  "skill": {
+   "id": "endure",
+   "kind": "endure",
+   "name": "버티기",
+   "p": {
+    "dur": 3,
+    "refund": 1
+   }
+  }
+ },
+ {
+  "id": "sl_hina",
+  "name": "시라유키 히나",
+  "title": "2기생 · Universe",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 12
+   }
+  ],
+  "desc": "아이돌의 꿈을 접은, 차분한 목소리의 가수이자 피아니스트.",
+  "look": "stellive, shirayuki hina, 1girl, black hair, long hair, blue eyes, large red hair bow, single braid, small red bow, gold heart hair clip, white collared shirt, red striped bowtie, beige sweater vest, school uniform",
+  "line": ""
+ },
+ {
+  "id": "sl_mashiro",
+  "name": "네네코 마시로",
+  "title": "2기생 · Universe",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 12
+   }
+  ],
+  "desc": "고양이 동료들을 찾아 헤매는 외계인. 공포 게임을 즐긴다.",
+  "look": "stellive, neneko mashiro, 1girl, grey hair, short hair, bob cut, red streak in hair, red eyes, grey cat ears, black peaked cap, hair clip, white frilled shirt, red necktie, black corset, black jacket, quilted jacket lining, off shoulder jacket",
+  "line": ""
+ },
+ {
+  "id": "sl_toa",
+  "name": "시즈키 토아",
+  "title": "4기생 · ABYSS",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 3
+   },
+   {
+    "type": "score",
+    "value": 5
+   }
+  ],
+  "desc": "대대로 퇴마를 이어온 가문에서 태어난 갸루 엑소시스트. 봉인 사건 이후 시간이 열아홉 살에 멈췄고, 퇴마 중 생긴 균열로 인간 세계에 떨어져 운명에서 벗어난 삶을 꿈꾼다.",
+  "look": "stellive, 1girl, black hair, purple highlights, long hair, low twintails, purple eyes, pink heart hair clip, pink x hair clip, grey collared shirt, pink bow, navy blazer, cross necklace, silver chain, pink armband",
+  "line": ""
+ },
+ {
+  "id": "sl_lize",
+  "name": "아카네 리제",
+  "title": "2기생 · Universe",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   }
+  ],
+  "desc": "피보다 음악을 좋아하는 하프 뱀파이어.",
+  "look": "stellive, akane lize, 1girl, red hair, long hair, blonde streak, blunt bangs, grey eyes, mole under eye, bat hair clip, ear piercing, cross choker, red gem, black halter top, black jacket, red paint splatter, oversized jacket",
+  "line": ""
+ },
+ {
+  "id": "sl_tabi",
+  "name": "아라하시 타비",
+  "title": "2기생 · Universe",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "다른 우주에서 온 보물 사냥꾼.",
+  "look": "stellive, arahashi tabi, 1girl, light blue hair, long hair, twintails, blue eyes, goggles on head, white hooded jacket, compass badge, blue ribbon bow, white frilled shirt, belt",
+  "line": ""
+ },
+ {
+  "id": "sl_shibuki",
+  "name": "텐코 시부키",
+  "title": "3기생 · Cliché",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "천 년 묵은 여우신이었지만 지금은 게임에 빠진 집순이.",
+  "look": "stellive, tenko shibuki, 1girl, light purple hair, long hair, hair buns, ahoge, pink pom pom hair ornament, heterochromia, blue eyes, orange eyes, fang, open mouth, smile, white haori, red hakama skirt, red ribbon, red cross lacing",
+  "line": ""
+ },
+ {
+  "id": "sl_rang",
+  "name": "코가네 랑",
+  "title": "4기생 · ABYSS",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   }
+  ],
+  "desc": "산의 결계를 만들어 내는 500년 묵은 영물 호랑이. 결계가 무너진 뒤 처음으로 현대 세상과 마주하며 적응해 가는 중.",
+  "look": "stellive, 1girl, grey hair, long hair, gold inner hair, tiger ears, gold bell hair ornament, yellow eyes, black and gold top, cloud pattern, white fur coat, off shoulder, prayer beads",
+  "line": ""
+ },
+ {
+  "id": "sl_rin",
+  "name": "아오쿠모 린",
+  "title": "3기생 · Cliché",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "진심 어린 서비스를 배우러 온 전직 지하 메이드 콘셉트 아이돌.",
+  "look": "stellive, aokumo rin, 1girl, white hair, blue streaks, very long hair, side ponytail, blue hair ribbon, maid headdress, blue eyes, cloud hair ornament, grey dress, blue frills, black puffy sleeves, buttons, collar",
+  "line": ""
+ },
+ {
+  "id": "sl_nana",
+  "name": "하나코 나나",
+  "title": "3기생 · Cliché",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "정체를 숨기고 도망 중인 전직 비밀 요원.",
+  "look": "stellive, hanako nana, 1girl, pink hair, long hair, multicolored streaks, blue and green streaks, green eyes, black beret, sunglasses on head, x hair clip, pink bunny ornament, grey shirt, red plaid bow, green gem brooch, black sleeveless dress, black jacket, suspenders, heart buckle, chain",
+  "line": ""
+ },
+ {
+  "id": "sl_riko",
+  "name": "유즈하 리코",
+  "title": "3기생 · Cliché",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 5
+   }
+  ],
+  "desc": "마왕을 쓰러뜨린 뒤 다시 용사가 되고 싶은 용사.",
+  "look": "stellive, yuzuha riko, 1girl, light green hair, twintails, purple eyes, halo hair ornament, white double-breasted coat, black shirt, grey ribbon tie, green gem brooch, white flower on shoulder",
+  "line": ""
+ },
+ {
+  "id": "sl_hiyori",
+  "name": "하나요 히요리",
+  "title": "4기생 · ABYSS",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 5
+   }
+  ],
+  "desc": "버려진 놀이공원에 홀로 남겨져 기억을 잃은 채 지박령이 된 소녀. 노랫소리에 이끌려 잃어버린 기억과 흔적을 찾아 나선다.",
+  "look": "stellive, 1girl, light brown hair, ash blonde hair, long hair, blunt bangs, pink eyes, large white flower hair ornament, white veil, white chinese dress, frills, pink tassels, star ornament",
+  "line": ""
+ },
+ {
+  "id": "sl_meri",
+  "name": "토키노 메리",
+  "title": "4기생 · ABYSS",
+  "origin": "world",
+  "domain": "stellive",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "사람들에게 불운을 가져다주던 저주 인형. 자신의 목소리로 긍정적인 감정을 나눌 수 있다는 것을 깨닫고 합류했다. 두 눈을 가린 모습이 특징.",
+  "look": "stellive, 1girl, blonde hair, long hair, wavy hair, hair over eyes, ahoge, yellow button hair ornament, striped hair ribbon, teal ribbon, black choker, white sailor collar, white dress, large black bow, black sleeves, teal button",
+  "line": ""
+ },
+ {
+  "id": "ur",
+  "name": "우르",
+  "title": "굴뚝 청소부",
+  "origin": "original",
+  "domain": "frost",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "얼어붙은 도시에서 유일하게 연기가 나는 굴뚝을 찾아다니는 소년. 따뜻한 곳엔 아직 시간이 흐른다고 믿는다.",
+  "look": "soot-covered boy, oversized scarf, chimney brush, snow on cap, pixel style",
+  "line": "연기 나는 굴뚝은 아직 살아 있는 집이에요."
+ },
+ {
+  "id": "nell",
+  "name": "넬",
+  "title": "찻집 소녀",
+  "origin": "original",
+  "domain": "frost",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "시계탑 아래 찻집에서 식지 않는 차를 내는 소녀. 손님의 시간은 멈췄지만 찻잔은 아직 따뜻하다.",
+  "look": "girl in apron holding steaming teapot, frost on window behind, warm lantern light",
+  "line": "차 한 잔 드실래요? 식을 틈이 없어서요."
+ },
+ {
+  "id": "gretel",
+  "name": "그레텔",
+  "title": "톱니 수리공",
+  "origin": "original",
+  "domain": "frost",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   },
+   {
+    "type": "coin",
+    "value": 6
+   }
+  ],
+  "desc": "탑의 톱니를 손보던 수리공. 멈춘 시계를 고치려다 손끝만 시간 속에 갇혔다.",
+  "look": "mechanic woman with goggles, brass gears on belt, one frozen glowing hand",
+  "line": "톱니 하나가 빠지면 전부 멈춰요. 세계도 그래요."
+ },
+ {
+  "id": "bastian",
+  "name": "바스티안",
+  "title": "얼음 조각가",
+  "origin": "original",
+  "domain": "frost",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "얼음으로 멈춘 순간을 깎아 보존하는 조각가. 녹지 않는 눈을 재료 삼아 도시 사람들의 마지막 표정을 남긴다.",
+  "look": "ice sculptor with chisel, frost beard, carving a translucent statue",
+  "line": "녹지 않으니까 영원하지. 그게 좋은 건지는 모르겠지만."
+ },
+ {
+  "id": "isu",
+  "name": "이스",
+  "title": "시간 기록관",
+  "origin": "original",
+  "domain": "frost",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 4
+   }
+  ],
+  "desc": "탑의 시계가 멈춘 정확한 순간을 기록한 유일한 사람. 그 뒤로 매 순간을 적으며 시간이 흐른다는 증거를 모은다.",
+  "look": "archivist in long coat, quill and pocket watch, stacks of frozen pages, calm eyes",
+  "line": "기록하는 한, 시간은 흐른 거예요.",
+  "voice": {
+   "pitch": 240,
+   "speed": 0.9,
+   "wave": "triangle",
+   "formant": 1.0
+  }
+ },
+ {
+  "id": "kairos",
+  "name": "카이로스",
+  "title": "멈춘 시계의 기사",
+  "origin": "original",
+  "domain": "frost",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "시계탑을 지키던 기사. 시계가 멈추던 순간 검을 휘두르고 있었고, 그 한 번의 베기가 아직 끝나지 않았다.",
+  "look": "knight with clock-face shield, frost-blue armor, sword mid-swing frozen in ice shards",
+  "line": "내 검은 아직 그 순간을 베고 있다.",
+  "voice": {
+   "pitch": 140,
+   "speed": 0.85,
+   "wave": "sawtooth",
+   "formant": 0.8
+  },
+  "skill": {
+   "id": "last_moment",
+   "kind": "late_bloom",
+   "name": "마지막 순간",
+   "p": {
+    "last": 15,
+    "mult": 1.8
+   }
+  }
+ },
+ {
+  "id": "chrono",
+  "name": "크로노",
+  "title": "시계탑의 심장",
+  "origin": "original",
+  "domain": "frost",
+  "rarity": 5,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 15
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "탑의 가장 깊은 곳에서 태어난 태엽 아이. 멈춘 시계의 초침 하나를 품고 있어, 세계가 멈춰도 혼자 움직인다.",
+  "look": "small automaton child with glass chest showing a ticking heart, brass and frost, oversized key on back, gentle glow",
+  "line": "째깍. ...들려? 나만 들리는 거야?",
+  "voice": {
+   "pitch": 360,
+   "speed": 1.1,
+   "wave": "triangle",
+   "formant": 1.2
+  },
+  "skill": {
+   "id": "time_stop",
+   "kind": "time_stop",
+   "name": "태엽 멈춤",
+   "active": true,
+   "p": {
+    "dur": 2
+   }
+  }
+ },
+ {
+  "id": "halma",
+  "name": "할마",
+  "title": "태엽지기",
+  "origin": "special",
+  "domain": "frost",
+  "rarity": 4,
+  "pool": false,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "shield",
+    "value": 1
+   },
+   {
+    "type": "coin",
+    "value": 10
+   }
+  ],
+  "desc": "탑의 큰 시계를 돌리던 늙은 자동인형. 관측자가 시계를 멈추자 스스로를 문지기로 삼아 누구도 탑에 오르지 못하게 막았다.",
+  "look": "old clockwork automaton grandmother, brass joints, shawl of gears, lantern with frozen flame",
+  "line": "시계를 다시 돌리면, 끝도 다시 다가온단다.",
+  "unlock": "서리 시계탑 보스 스테이지 클리어",
+  "voice": {
+   "pitch": 170,
+   "speed": 0.7,
+   "wave": "sawtooth",
+   "formant": 0.75
+  },
+  "skill": {
+   "id": "slow_gear",
+   "kind": "chill",
+   "name": "태엽 감속",
+   "p": {
+    "dur": 3,
+    "factor": 0.5
+   }
+  }
+ },
+ {
+  "id": "moss",
+  "name": "모스",
+  "title": "조개 줍는 아이",
+  "origin": "original",
+  "domain": "abyss",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "등대 발치에서 빛나는 조개를 줍는 아이. 조개 속 빛으로 집에 가는 길을 표시한다.",
+  "look": "small kid with glowing shell bucket, diving goggles on forehead, bioluminescent freckles",
+  "line": "이 조개는 아직 빛나요. 이쪽이 집이에요."
+ },
+ {
+  "id": "lilia",
+  "name": "릴리아",
+  "title": "심해 요리사",
+  "origin": "original",
+  "domain": "abyss",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "어둠 속에서도 냄새만으로 요리하는 해저 마을의 요리사. 등불이 꺼진 집에 따뜻한 국을 돌린다.",
+  "look": "cheerful cook with glowing jellyfish lamp hat, ladle, bubbles around",
+  "line": "불 없이도 끓일 수 있어요. 방법이 있죠."
+ },
+ {
+  "id": "harold",
+  "name": "해롤드",
+  "title": "잠수부",
+  "origin": "original",
+  "domain": "abyss",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "등대의 꺼진 등불을 되살릴 연료를 찾아 더 깊은 곳으로 내려가는 잠수부. 매번 조금씩 더 늦게 돌아온다.",
+  "look": "old diver in brass helmet, rope around waist, carrying glowing fuel canister",
+  "line": "밑에는 아직 빛이 있어. 멀어서 그렇지."
+ },
+ {
+  "id": "yur",
+  "name": "유르",
+  "title": "소라 음악가",
+  "origin": "original",
+  "domain": "abyss",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   },
+   {
+    "type": "coin",
+    "value": 6
+   }
+  ],
+  "desc": "소라 껍데기로 바다 밑의 소리를 연주하는 음악가. 어둠 속에서 길을 잃은 사람은 그 소리를 따라온다.",
+  "look": "musician with giant conch horn, flowing seaweed hair, sound ripples visible",
+  "line": "빛이 없으면 소리로 길을 내면 돼."
+ },
+ {
+  "id": "sasha",
+  "name": "사샤",
+  "title": "난파선 수색가",
+  "origin": "original",
+  "domain": "abyss",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 12
+   }
+  ],
+  "desc": "심해에 가라앉은 배들에서 이름 잃은 물건을 건져 올린다. 이름을 되찾아 주면 물건은 다시 빛난다.",
+  "look": "salvager woman with headlamp, net full of glowing relics, scar on cheek, determined",
+  "line": "이름을 불러 주면 돌아와요. 물건도, 사람도.",
+  "voice": {
+   "pitch": 230,
+   "speed": 1.0,
+   "wave": "square",
+   "formant": 1.0
+  }
+ },
+ {
+  "id": "nerei",
+  "name": "네레이",
+  "title": "심해의 노래꾼",
+  "origin": "original",
+  "domain": "abyss",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "coin",
+    "value": 10
+   }
+  ],
+  "desc": "바다 밑 깊은 곳에서 등대를 향해 노래하는 존재. 노랫소리가 닿는 곳의 등불은 꺼지지 않는다.",
+  "look": "deep-sea singer with long teal hair, lantern-fish companions, flowing robes of light, ethereal (modest clothing)",
+  "line": "들려요? 아직 꺼지지 않았어요.",
+  "voice": {
+   "pitch": 290,
+   "speed": 0.85,
+   "wave": "sine",
+   "formant": 1.1
+  },
+  "skill": {
+   "id": "echo",
+   "kind": "echo",
+   "name": "메아리",
+   "p": {
+    "ratio": 0.5,
+    "delay": 1
+   }
+  }
+ },
+ {
+  "id": "bell",
+  "name": "벨",
+  "title": "등대지기",
+  "origin": "special",
+  "domain": "abyss",
+  "rarity": 4,
+  "pool": false,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "time",
+    "value": 4
+   },
+   {
+    "type": "coin",
+    "value": 10
+   }
+  ],
+  "desc": "마지막 등불을 지키는 등대지기. 관측자가 빛을 거두자 자신의 기억을 태워 등불을 밝히고 있다.",
+  "look": "lighthouse keeper in weathered coat, holding a lantern that burns with white memory-flame, tired kind smile",
+  "line": "이름은 잊었어도, 불은 안 꺼뜨렸어.",
+  "unlock": "심해 등대 보스 스테이지 클리어",
+  "voice": {
+   "pitch": 120,
+   "speed": 0.8,
+   "wave": "sawtooth",
+   "formant": 0.8
+  },
+  "skill": {
+   "id": "lamp",
+   "kind": "shield_regen",
+   "name": "등불",
+   "p": {
+    "every": 12
+   }
+  }
+ },
+ {
+  "id": "toby",
+  "name": "토비",
+  "title": "구름 목동",
+  "origin": "original",
+  "domain": "sky",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "구름 양떼를 몰고 섬 사이를 건너는 소년. 양이 떨어지면 구름이 되어 돌아온다고 믿는다.",
+  "look": "shepherd boy with crook, fluffy cloud sheep, windblown hair, floating island edge",
+  "line": "양들아, 가장자리는 조심!"
+ },
+ {
+  "id": "mia",
+  "name": "미아",
+  "title": "씨앗 장수",
+  "origin": "original",
+  "domain": "sky",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "섬마다 다니며 씨앗을 파는 소녀. 떨어지는 섬에도 꼭 씨앗 하나를 심고 떠난다.",
+  "look": "girl with seed pouches, flower crown, paper umbrella catching wind",
+  "line": "떨어져도 어딘가에 뿌리는 내려요."
+ },
+ {
+  "id": "rufe",
+  "name": "루프",
+  "title": "새 조련사",
+  "origin": "original",
+  "domain": "sky",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   },
+   {
+    "type": "coin",
+    "value": 6
+   }
+  ],
+  "desc": "섬 사이를 오가는 전령새를 기르는 조련사. 새들이 돌아오지 않는 섬이 늘고 있다.",
+  "look": "falconer with huge messenger bird on arm, leather gloves, goggles",
+  "line": "새가 안 돌아오면 그 섬은 이미 없는 거야."
+ },
+ {
+  "id": "enya",
+  "name": "엔야",
+  "title": "바람 측정사",
+  "origin": "original",
+  "domain": "sky",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "바람의 세기를 재서 섬이 떨어질 날을 계산하는 측정사. 계산이 맞을 때마다 조금씩 말수가 줄었다.",
+  "look": "girl with wind gauge instruments, ribbons measuring wind, notebook, serious face",
+  "line": "...사흘. 이 섬은 사흘이에요."
+ },
+ {
+  "id": "cedric",
+  "name": "세드릭",
+  "title": "공중 정원사",
+  "origin": "original",
+  "domain": "sky",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 10
+   },
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "떨어진 섬의 정원을 다른 섬에 옮겨 심는 정원사. 꽃이 뿌리내리면 섬 하나가 살아남은 셈이라고 말한다.",
+  "look": "gardener with pruning shears and watering can, moss on shoulders, vines wrapping his arms",
+  "line": "꽃이 살면 섬도 산 거야. 그렇게 치자.",
+  "voice": {
+   "pitch": 180,
+   "speed": 0.95,
+   "wave": "triangle",
+   "formant": 1.0
+  }
+ },
+ {
+  "id": "aurel",
+  "name": "아우렐",
+  "title": "바람 기수",
+  "origin": "original",
+  "domain": "sky",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "바람 그 자체를 타는 기수. 떨어지는 섬 사이를 날며 주민을 실어 나른다. 바람이 멎으면 함께 떨어질 것을 안다.",
+  "look": "wind rider in flowing cape riding a current of visible wind, goggles, light armor, dynamic pose",
+  "line": "바람이 있는 동안은 아무도 안 떨어뜨려.",
+  "voice": {
+   "pitch": 200,
+   "speed": 1.1,
+   "wave": "sawtooth",
+   "formant": 0.95
+  },
+  "skill": {
+   "id": "gust",
+   "kind": "invuln",
+   "name": "돌풍",
+   "active": true,
+   "p": {
+    "dur": 2.5,
+    "mult": 1.5,
+    "cd": 18
+   }
+  }
+ },
+ {
+  "id": "zephy",
+  "name": "제피",
+  "title": "바람의 정원사",
+  "origin": "special",
+  "domain": "sky",
+  "rarity": 4,
+  "pool": false,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 10
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "섬들을 바람으로 묶어 둔 첫 정원사. 관측자가 바람을 거두자 자기 숨으로 섬을 붙들고 있었다.",
+  "look": "ancient gardener spirit made of leaves and wind, long beard of petals, staff that is a living branch",
+  "line": "숨이 다하기 전에 와 줬구나.",
+  "unlock": "하늘 정원 보스 스테이지 클리어",
+  "voice": {
+   "pitch": 130,
+   "speed": 0.75,
+   "wave": "sine",
+   "formant": 0.8
+  },
+  "skill": {
+   "id": "steady",
+   "kind": "steady",
+   "name": "잔잔한 바람",
+   "p": {
+    "every": 10,
+    "sec": 3
+   }
+  }
+ },
+ {
+  "id": "dar",
+  "name": "다르",
+  "title": "유리 장인 견습",
+  "origin": "original",
+  "domain": "glass",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "모래를 녹여 거울을 만드는 공방의 견습. 자기가 만든 거울엔 절대 자기 얼굴을 비추지 않는다.",
+  "look": "apprentice glassblower with blowpipe, sand-dusted apron, nervous eyes",
+  "line": "제 거울은 안 봐요. 뭐가 나올지 몰라서."
+ },
+ {
+  "id": "sahara",
+  "name": "사하라",
+  "title": "대상 소녀",
+  "origin": "original",
+  "domain": "glass",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "사막을 건너는 대상(隊商)의 막내. 신기루와 진짜 오아시스를 구별하는 눈을 가졌다.",
+  "look": "desert caravan girl with headscarf, holding a small compass, camel silhouette behind",
+  "line": "저건 가짜예요. 그림자가 없잖아요."
+ },
+ {
+  "id": "omar",
+  "name": "오마르",
+  "title": "모래 항해사",
+  "origin": "original",
+  "domain": "glass",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   },
+   {
+    "type": "coin",
+    "value": 6
+   }
+  ],
+  "desc": "유리 모래 위를 미끄러지는 썰매배의 항해사. 별이 두 개로 보이는 밤엔 출항하지 않는다.",
+  "look": "sand sailor with wide hat, sled-ship wheel, star charts",
+  "line": "별이 두 개면 하나는 거짓이야. 그날은 안 가."
+ },
+ {
+  "id": "rina",
+  "name": "리나",
+  "title": "신기루 안내인",
+  "origin": "original",
+  "domain": "glass",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "길 잃은 사람을 신기루 밖으로 데려다주는 안내인. 자신도 한 번 신기루에서 나온 적이 있다고, 아마도.",
+  "look": "guide with veil and lantern, footprints that shimmer, reflective eyes",
+  "line": "이쪽이 진짜 길이에요. ...아마도요."
+ },
+ {
+  "id": "kasim",
+  "name": "카심",
+  "title": "거울 상인",
+  "origin": "original",
+  "domain": "glass",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 20
+   }
+  ],
+  "desc": "거울 속에서 꺼내 온 물건을 파는 상인. 물건마다 \"원본은 아님\"이라는 꼬리표를 정직하게 붙인다.",
+  "look": "merchant with cart of mirrors, rings on every finger, sly but honest grin",
+  "line": "원본은 아니지만, 쓰는 데는 문제없어요.",
+  "voice": {
+   "pitch": 190,
+   "speed": 1.05,
+   "wave": "square",
+   "formant": 1.0
+  }
+ },
+ {
+  "id": "silvan",
+  "name": "실반",
+  "title": "거울 검사",
+  "origin": "original",
+  "domain": "glass",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "coin",
+    "value": 10
+   }
+  ],
+  "desc": "거울 속에서 나온 자신과 매일 밤 검을 겨루는 검사. 어느 쪽이 이기든 다음 날 아침엔 한 사람만 남는다.",
+  "look": "swordsman with mirrored blade, half of face reflected differently, dusk desert",
+  "line": "어젯밤엔 내가 이겼다. 아마도 내가.",
+  "voice": {
+   "pitch": 150,
+   "speed": 0.9,
+   "wave": "sawtooth",
+   "formant": 0.85
+  },
+  "skill": {
+   "id": "vengeance",
+   "kind": "vengeance",
+   "name": "되갚음",
+   "p": {
+    "dur": 5,
+    "mult": 2
+   }
+  }
+ },
+ {
+  "id": "aina",
+  "name": "아이나",
+  "title": "반영의 여왕",
+  "origin": "special",
+  "domain": "glass",
+  "rarity": 4,
+  "pool": false,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "shield",
+    "value": 1
+   },
+   {
+    "type": "coin",
+    "value": 10
+   }
+  ],
+  "desc": "거울 속 사막을 다스리는 여왕. 관측자가 원본의 세계를 지우자, 비친 쪽을 진짜로 만들어 사람들을 살려 두었다.",
+  "look": "queen of reflections, crown of glass shards, gown that mirrors the sky, regal and sad",
+  "line": "비친 것도 살아 있어. 그걸 가짜라 부르지 마.",
+  "unlock": "유리 사막 보스 스테이지 클리어",
+  "voice": {
+   "pitch": 250,
+   "speed": 0.8,
+   "wave": "triangle",
+   "formant": 1.0
+  },
+  "skill": {
+   "id": "reflect",
+   "kind": "rewrite",
+   "name": "반영",
+   "p": {
+    "n": 1
+   }
+  }
+ },
+ {
+  "id": "ink",
+  "name": "잉크",
+  "title": "소품 담당",
+  "origin": "original",
+  "domain": "paper",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "coin",
+    "value": 8
+   }
+  ],
+  "desc": "무대 뒤에서 소품을 챙기는 아이. 대본에 없는 소품을 몰래 올려 두는 버릇이 있다.",
+  "look": "stagehand kid with ink-stained hands, carrying too many props, mischievous",
+  "line": "이건 대본에 없는데... 재밌잖아요."
+ },
+ {
+  "id": "fold",
+  "name": "폴드",
+  "title": "접는 아이",
+  "origin": "original",
+  "domain": "paper",
+  "rarity": 1,
+  "pool": true,
+  "passives": [
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "종이를 접어 무대 세트를 만드는 아이. 접은 것은 펼 수 있다고, 도시도 그렇다고 믿는다.",
+  "look": "child folding origami buildings, paper crane on shoulder, focused",
+  "line": "접은 건 다시 펼 수 있어요. 전부 다요."
+ },
+ {
+  "id": "marion",
+  "name": "마리온",
+  "title": "무대 조명사",
+  "origin": "original",
+  "domain": "paper",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 8
+   },
+   {
+    "type": "coin",
+    "value": 6
+   }
+  ],
+  "desc": "조명으로 배우의 표정을 만드는 조명사. 조명이 꺼진 자리는 대본에서도 사라진다는 걸 안다.",
+  "look": "lighting technician on catwalk, spotlight in hands, headset, warm glow",
+  "line": "빛이 닿는 동안은 네 장면이야."
+ },
+ {
+  "id": "theo",
+  "name": "테오",
+  "title": "대본 필경사",
+  "origin": "original",
+  "domain": "paper",
+  "rarity": 2,
+  "pool": true,
+  "passives": [
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "대본을 베껴 쓰는 필경사. 베끼는 중에 몰래 한 줄씩 고치고 있다. 아직 아무도 눈치채지 못했다.",
+  "look": "scribe with quill and scroll, ink pot, candlelight, guilty smile",
+  "line": "한 줄쯤 바꿔도 아무도 몰라. ...아직은."
+ },
+ {
+  "id": "viola",
+  "name": "비올라",
+  "title": "그림자 연극 배우",
+  "origin": "original",
+  "domain": "paper",
+  "rarity": 3,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 10
+   },
+   {
+    "type": "time",
+    "value": 2
+   }
+  ],
+  "desc": "그림자만으로 연기하는 배우. 실체가 없어서 막이 내려도 사라지지 않는다고 스스로를 위로한다.",
+  "look": "shadow puppeteer actress, silhouette with glowing eyes, paper screen behind, elegant",
+  "line": "그림자는 막이 내려도 남아. 그렇지?",
+  "voice": {
+   "pitch": 260,
+   "speed": 0.9,
+   "wave": "triangle",
+   "formant": 1.0
+  }
+ },
+ {
+  "id": "colette",
+  "name": "콜레트",
+  "title": "종이 인형사",
+  "origin": "original",
+  "domain": "paper",
+  "rarity": 4,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 15
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "종이 인형에게 배역을 주는 인형사. 대본에 없는 배역을 만들어 주면 인형이 살아난다는 걸 처음 알아낸 사람.",
+  "look": "puppeteer woman with paper marionettes, cross-bar strings, flowing ribbons, theatrical costume",
+  "line": "배역이 있으면 살아 있는 거야. 내가 줄게.",
+  "voice": {
+   "pitch": 270,
+   "speed": 1.0,
+   "wave": "square",
+   "formant": 1.05
+  },
+  "skill": {
+   "id": "revise",
+   "kind": "rewrite",
+   "name": "대본 수정",
+   "p": {
+    "n": 1
+   }
+  }
+ },
+ {
+  "id": "orphe",
+  "name": "오르페",
+  "title": "종이 극장의 주연",
+  "origin": "original",
+  "domain": "paper",
+  "rarity": 5,
+  "pool": true,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 20
+   },
+   {
+    "type": "shield",
+    "value": 1
+   }
+  ],
+  "desc": "모든 대본의 주연을 맡아 온 종이 배우. 마지막 장이 쓰이는 지금, 처음으로 대본에 없는 대사를 하려 한다.",
+  "look": "paper-crafted lead actor, origami crown, cloak of script pages, dramatic spotlight, confident smile",
+  "line": "이 대사는 대본에 없어. 내 거야.",
+  "voice": {
+   "pitch": 210,
+   "speed": 0.95,
+   "wave": "sawtooth",
+   "formant": 0.95
+  },
+  "skill": {
+   "id": "finale",
+   "kind": "finale",
+   "name": "피날레",
+   "p": {
+    "last": 10,
+    "mult": 2
+   }
+  }
+ },
+ {
+  "id": "fin",
+  "name": "핀",
+  "title": "극단장",
+  "origin": "special",
+  "domain": "paper",
+  "rarity": 4,
+  "pool": false,
+  "passives": [
+   {
+    "type": "score",
+    "value": 20
+   },
+   {
+    "type": "coin",
+    "value": 10
+   },
+   {
+    "type": "time",
+    "value": 3
+   }
+  ],
+  "desc": "종이 극장의 극단장. 관측자가 마지막 장을 쓰기 시작하자 막을 내리지 않으려고 같은 장면을 수천 번 반복시켰다.",
+  "look": "theater director with top hat and cane, coat covered in script text, dramatic gesture, stage curtains",
+  "line": "막은 내리지 않아. 내가 내리지 않는 한.",
+  "unlock": "종이 극장 보스 스테이지 클리어",
+  "voice": {
+   "pitch": 160,
+   "speed": 0.9,
+   "wave": "sawtooth",
+   "formant": 0.85
+  },
+  "skill": {
+   "id": "interlude",
+   "kind": "periodic",
+   "name": "막간극",
+   "p": {
+    "every": 12,
+    "dur": 4,
+    "mult": 2
+   }
+  }
+ },
+ {
+  "id": "observer",
+  "name": "관측자",
+  "title": "이야기를 덮는 자",
+  "origin": "special",
+  "domain": "library",
+  "rarity": 5,
+  "pool": false,
+  "passives": [
+   {
+    "type": "score",
+    "value": 25
+   },
+   {
+    "type": "coin",
+    "value": 25
+   },
+   {
+    "type": "time",
+    "value": 4
+   }
+  ],
+  "desc": "끝난 이야기를 읽고 덮어 서가에 꽂는 존재. 조각세계의 마지막 장을 쓰려 했으나, 읽는 사람이 있는 책은 덮을 수 없다는 걸 배웠다.",
+  "look": "tall robed figure made of drifting pages, a single lantern eye, holding an open book, endless library behind, serene",
+  "line": "...다음 장은 네가 써. 나는 읽을게.",
+  "unlock": "관측자의 서재 클리어",
+  "voice": {
+   "pitch": 110,
+   "speed": 0.7,
+   "wave": "sine",
+   "formant": 0.7
+  },
+  "skill": {
+   "id": "borrow",
+   "kind": "borrow",
+   "name": "열람",
+   "p": {}
+  }
+ }
+]

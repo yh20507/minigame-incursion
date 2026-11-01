@@ -1,0 +1,72 @@
+[
+ {
+  "id": "standard",
+  "name": "상시 균열",
+  "type": "standard",
+  "desc": "게임 오리지널 캐릭터 30종과 아이템이 나온다. 언제든 열려 있다."
+ },
+ {
+  "id": "b_marvel",
+  "name": "마블 균열",
+  "type": "world",
+  "world": "marvel",
+  "start": "2026-10-28",
+  "end": "2027-02-27",
+  "desc": "한정 균열. 이 세계관의 캐릭터와 아이템만 나온다. 기간이 끝나면 닫힌다.",
+  "reruns": [
+   {
+    "start": "2027-05-28",
+    "end": "2027-06-27",
+    "event": "ev_marvel"
+   }
+  ]
+ },
+ {
+  "id": "b_onepiece",
+  "name": "원피스 균열",
+  "type": "world",
+  "world": "onepiece",
+  "start": "2026-10-28",
+  "end": "2027-02-27",
+  "desc": "한정 균열. 이 세계관의 캐릭터와 아이템만 나온다. 기간이 끝나면 닫힌다.",
+  "reruns": [
+   {
+    "start": "2027-08-28",
+    "end": "2027-09-27",
+    "event": "ev_onepiece"
+   }
+  ]
+ },
+ {
+  "id": "b_lol",
+  "name": "리그 오브 레전드 균열",
+  "type": "world",
+  "world": "lol",
+  "start": "2026-10-28",
+  "end": "2027-02-27",
+  "desc": "한정 균열. 이 세계관의 캐릭터와 아이템만 나온다. 기간이 끝나면 닫힌다.",
+  "reruns": [
+   {
+    "start": "2027-11-28",
+    "end": "2027-12-27",
+    "event": "ev_lol"
+   }
+  ]
+ },
+ {
+  "id": "b_stellive",
+  "name": "스텔라이브 균열",
+  "type": "world",
+  "world": "stellive",
+  "start": "2026-10-28",
+  "end": "2027-02-27",
+  "desc": "한정 균열. 스텔라이브 멤버와 아이템만 나온다. 기간이 끝나면 닫힌다.",
+  "reruns": [
+   {
+    "start": "2028-02-28",
+    "end": "2028-03-27",
+    "event": "ev_stellive"
+   }
+  ]
+ }
+]
