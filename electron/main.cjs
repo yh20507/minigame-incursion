@@ -11,8 +11,68 @@ protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
 ]);
 
+const crypto = require('node:crypto');
+
 const distDir = path.join(__dirname, '..', 'dist');
 const userDir = process.env.PORTABLE_EXECUTABLE_DIR || path.dirname(app.getPath('exe'));
+
+// ---------- 자동 업데이트 (게임 코드·데이터만, exe 는 그대로) ----------
+// 켤 때 UPDATE_BASE/web-version.json 을 확인해서 더 새 빌드가 있으면 그 파일들만 받아
+// %APPDATA%/미니게임-인커젼/web 에 두고, 그 폴더를 exe 안 dist 보다 먼저 쓴다.
+// 그림·음악은 exe 안의 것을 그대로 쓴다 (용량이 커서 업데이트 대상 아님).
+const SHELL_API = 1; // 실행기(main.cjs)가 바뀌어 예전 exe 로는 못 돌리는 빌드가 나오면 올린다
+const DEFAULT_UPDATE_BASE = '';
+const updDir = path.join(app.getPath('appData'), '미니게임-인커젼', 'web');
+const stageDir = updDir + '.new';
+let useUpd = false;
+let updatedTo = null;
+
+function readJSON(f) {
+  try {
+    return JSON.parse(fs.readFileSync(f, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+function updateBase() {
+  const cfg = readJSON(path.join(userDir, 'config.json')) || readJSON(path.join(distDir, 'config.json')) || {};
+  return (cfg.updateBase ?? DEFAULT_UPDATE_BASE).replace(/\/+$/, '');
+}
+const buildOf = (m) => (m && Number(m.build)) || 0;
+function swapStaged() {
+  if (!fs.existsSync(path.join(stageDir, 'READY'))) return;
+  fs.rmSync(updDir, { recursive: true, force: true });
+  fs.renameSync(stageDir, updDir);
+}
+function pickActive() {
+  const dist = readJSON(path.join(distDir, 'web-version.json'));
+  const upd = readJSON(path.join(updDir, 'web-version.json'));
+  useUpd = !!upd && (upd.shell ?? 1) <= SHELL_API && buildOf(upd) > buildOf(dist);
+}
+async function checkUpdate() {
+  const base = updateBase();
+  if (!base) return false;
+  const res = await net.fetch(`${base}/web-version.json?t=${Date.now()}`, { cache: 'no-store' });
+  if (!res.ok) return false;
+  const remote = await res.json();
+  if ((remote.shell ?? 1) > SHELL_API) return false; // 새 exe 가 필요한 빌드
+  const local = Math.max(buildOf(readJSON(path.join(distDir, 'web-version.json'))), buildOf(readJSON(path.join(updDir, 'web-version.json'))));
+  if (buildOf(remote) <= local) return false;
+  fs.rmSync(stageDir, { recursive: true, force: true });
+  for (const f of remote.files) {
+    const r = await net.fetch(`${base}/${f.name}`);
+    if (!r.ok) throw new Error('download ' + f.name + ' ' + r.status);
+    const buf = Buffer.from(await r.arrayBuffer());
+    if (crypto.createHash('sha256').update(buf).digest('hex') !== f.sha256) throw new Error('hash ' + f.name);
+    const out = path.join(stageDir, f.path);
+    if (!path.normalize(out).startsWith(path.normalize(stageDir))) throw new Error('bad path');
+    fs.mkdirSync(path.dirname(out), { recursive: true });
+    fs.writeFileSync(out, buf);
+  }
+  fs.writeFileSync(path.join(stageDir, 'web-version.json'), JSON.stringify(remote));
+  fs.writeFileSync(path.join(stageDir, 'READY'), '1');
+  return remote.version || String(remote.build);
+}
 
 function candidatesFor(rel) {
   const candidates = [];
@@ -21,8 +81,10 @@ function candidatesFor(rel) {
   if (rel.startsWith('assets/') || rel === 'config.json' || rel.startsWith('data/')) {
     for (const r of rels) candidates.push(path.join(userDir, r));
   }
+  if (useUpd && rel !== 'config.json') for (const r of rels) candidates.push(path.join(updDir, r));
   for (const r of rels) candidates.push(path.join(distDir, r));
-  return candidates.map((p) => path.normalize(p)).filter((norm) => norm.startsWith(path.normalize(userDir)) || norm.startsWith(path.normalize(distDir)));
+  const roots = [userDir, distDir, updDir].map((d) => path.normalize(d));
+  return candidates.map((p) => path.normalize(p)).filter((norm) => roots.some((r) => norm.startsWith(r)));
 }
 
 /** 바깥 폴더(exe 옆 assets) → 안쪽(dist) 순서로, 실제로 읽히는 첫 파일을 돌려준다.
@@ -61,6 +123,11 @@ function createWindow() {
   });
   Menu.setApplicationMenu(null);
   win.loadURL('app://game/index.html');
+  if (updatedTo) {
+    win.webContents.once('did-finish-load', () => {
+      setTimeout(() => win.webContents.executeJavaScript(`window.__ui && window.__ui.toast(${JSON.stringify('게임이 ' + updatedTo + ' 로 업데이트됐어요')}, 'good')`).catch(() => {}), 4000);
+    });
+  }
   win.webContents.on('before-input-event', (e, input) => {
     if (input.type !== 'keyDown') return;
     if (input.key === 'F11') {
@@ -109,6 +176,24 @@ app.whenReady().then(async () => {
     // 일반 파일은 직접 읽어서 응답 (asar 안/밖, OneDrive 모두 같은 경로로 처리)
     return new Response(found.data, { status: 200, headers: { 'Content-Type': MIME[ext] || 'application/octet-stream', 'Content-Length': String(found.data.length), 'Cache-Control': 'no-store' } });
   });
+  // 지난번에 받아둔 업데이트 적용 → 새 업데이트 확인 (최대 8초, 넘으면 다음에 켤 때 적용)
+  try {
+    swapStaged();
+  } catch {}
+  try {
+    const job = checkUpdate().catch(() => {
+      fs.rmSync(stageDir, { recursive: true, force: true });
+      return false;
+    });
+    const got = await Promise.race([job, new Promise((r) => setTimeout(() => r(false), 8000))]);
+    if (got) {
+      swapStaged();
+      updatedTo = got;
+    }
+  } catch {
+    fs.rmSync(stageDir, { recursive: true, force: true });
+  }
+  pickActive();
   createWindow();
 });
 

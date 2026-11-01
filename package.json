@@ -11,9 +11,10 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "app": "electron .",
-    "dist": "npm run build && python tools/shrink_art.py dist/assets && electron-builder --win --x64",
+    "dist": "npm run build && python tools/shrink_art.py dist/assets && node tools/publish-web.mjs && electron-builder --win --x64",
     "assets:list": "node tools/asset-list.mjs",
-    "db:characters": "node tools/characters-sql.mjs"
+    "db:characters": "node tools/characters-sql.mjs",
+    "web": "npm run build && node tools/publish-web.mjs"
   },
   "devDependencies": {
     "@supabase/supabase-js": "^2.118.0",
