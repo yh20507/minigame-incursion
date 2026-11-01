@@ -21,6 +21,7 @@ export class IcicleGame extends MiniGame {
   slow = false;
   ui!: Phaser.GameObjects.Graphics;
   flakes = 0;
+  chain = 0; // 맞지 않고 연속으로 주운 눈꽃 수
   readonly floorY = 300;
 
   create() {
@@ -105,16 +106,21 @@ export class IcicleGame extends MiniGame {
         it.o.destroy();
         this.items.splice(this.items.indexOf(it), 1);
         if (it.flake) {
+          // 눈꽃 100 + 연속 보너스 (맞으면 끊김, 최대 +200)
           this.flakes++;
+          this.chain++;
           this.h.sfx('coin');
-          this.h.addScore(50, it.x, it.y - 10);
-        } else this.h.hit(it.x, it.y);
+          this.h.addScore(100 + Math.min(200, (this.chain - 1) * 25), it.x, it.y - 10);
+        } else {
+          this.chain = 0;
+          this.h.hit(it.x, it.y);
+        }
         continue;
       }
       if (it.y > this.floorY + 10) {
         if (!it.flake) {
           this.h.sfx('tick');
-          this.h.addScore(10, it.x, this.floorY - 10);
+          this.h.addScore(25, it.x, this.floorY - 10); // 피한 고드름
           const sh = this.add(this.s.add.rectangle(it.x, this.floorY, it.w + 6, 6, 0xcfe9ff));
           this.s.tweens.add({ targets: sh, alpha: 0, scaleX: 2, duration: 250, onComplete: () => sh.destroy() });
         }

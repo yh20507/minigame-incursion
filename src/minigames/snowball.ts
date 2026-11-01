@@ -52,7 +52,7 @@ export class SnowballGame extends MiniGame {
     for (let r = 0; r < rows; r++)
       for (let i = 0; i <= r; i++) {
         const x = cx + (i - r / 2) * 30;
-        const y = 70 - r * 26;
+        const y = 170 - r * 26; // 맨 뒷줄도 화면 안에 (HUD 아래)
         const o = this.gfx();
         this.pins.push({ x, y, up: true, o });
         this.drawPin(this.pins[this.pins.length - 1]);
@@ -113,7 +113,7 @@ export class SnowballGame extends MiniGame {
       const g = this.guide;
       g.clear();
       g.lineStyle(1, 0x1b2838, 0.4);
-      g.lineBetween(this.bx, this.by - 10, this.bx + this.aim * 140 * 0.6, 60);
+      g.lineBetween(this.bx, this.by - 10, this.bx + this.aim * 140 * 0.45, 160);
       this.label.setText(`프레임 ${this.frame + 1} · 쓰러뜨린 핀 ${this.knocked}`);
     } else {
       this.bx += this.vx * dt;
@@ -143,9 +143,9 @@ export class SnowballGame extends MiniGame {
         if (left === 0) {
           this.h.sfx('win');
           this.h.addScore(200, 320, 120);
-          this.h.float('스트라이크!', 320, 100, '#ffd84b');
+          this.h.float('스트라이크!', 320, 200, '#ffd84b');
         } else if (left === this.pins.length) {
-          this.h.hit(this.bx, 60);
+          this.h.hit(this.bx, 140);
         }
         this.wait = 0.8;
       }
