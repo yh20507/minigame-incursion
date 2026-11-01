@@ -27,6 +27,13 @@ export class GolfGame extends MiniGame {
   stillT = 0;
   flyT = 0; // 이번 샷 비행 시간
   streak = 0; // 연속으로 2타 이내에 넣은 홀 수
+  start = { x: 110, y: 260 };
+  /** 이만큼(px) 당기면 최대 세기. 화면 어디서 눌러도 조준 시작 → 벽에 막혀 덜 당겨지는 일 없음 */
+  static PULL = 80;
+  static MAXV = 520;
+  power(d: number) {
+    return (Math.min(d, GolfGame.PULL) / GolfGame.PULL) * GolfGame.MAXV;
+  }
 
   create() {
     const bg = this.gfx();
@@ -48,7 +55,8 @@ export class GolfGame extends MiniGame {
     this.planets = [];
     const d = this.h.difficulty;
     const n = Math.min(5, 2 + Math.floor(this.holes / 2) + Math.round((d - 1) * 2));
-    this.ball = { x: 70, y: this.rnd(220, 300), vx: 0, vy: 0, moving: false };
+    this.start = { x: 110, y: this.rnd(210, 290) };
+    this.ball = { x: this.start.x, y: this.start.y, vx: 0, vy: 0, moving: false };
     this.hole = { x: this.rnd(500, 600), y: this.rnd(50, 150) };
     for (let i = 0; i < n; i++) {
       let x = 0,
@@ -98,7 +106,7 @@ export class GolfGame extends MiniGame {
     const p = this.h.inp.pointer;
     const b = this.ball;
     if (!b.moving) {
-      if (p.pressed && Math.hypot(p.x - b.x, p.y - b.y) < 40) {
+      if (p.pressed) {
         this.dragging = true;
         this.dragStart = [p.x, p.y];
       }
@@ -106,9 +114,9 @@ export class GolfGame extends MiniGame {
         this.dragging = false;
         const dx = this.dragStart![0] - p.x,
           dy = this.dragStart![1] - p.y;
-        const d = Math.min(140, Math.hypot(dx, dy));
+        const d = Math.hypot(dx, dy);
         if (d > 8) {
-          const pw = d * 3.6;
+          const pw = this.power(d);
           b.vx = (dx / Math.hypot(dx, dy)) * pw;
           b.vy = (dy / Math.hypot(dx, dy)) * pw;
           b.moving = true;
@@ -156,8 +164,9 @@ export class GolfGame extends MiniGame {
           if (pl.hole) {
             this.h.hit(b.x, b.y);
             this.h.float('블랙홀!', pl.x, pl.y - 30, '#ff4b6e');
-            b.x = 70;
-            b.y = 280;
+            b.x = this.start.x;
+            b.y = this.start.y;
+            this.streak = 0;
             b.vx = b.vy = 0;
             b.moving = false;
             break;
@@ -185,9 +194,9 @@ export class GolfGame extends MiniGame {
       if (hd < 12 && Math.hypot(b.vx, b.vy) < 320) {
         this.holes++;
         // 홀인원 700 · 2타 500 · 3타 350 · 그 뒤 250, 2타 이내로 연속 성공하면 홀마다 +150 씩 더
-        const base = [700, 500, 350][this.strokes - 1] ?? 250;
+        const base = [1000, 750, 500][this.strokes - 1] ?? 350;
         this.streak = this.strokes <= 2 ? this.streak + 1 : 0;
-        const bonus = Math.max(0, this.streak - 1) * 150;
+        const bonus = Math.max(0, this.streak - 1) * 200;
         this.h.sfx('win');
         this.h.addScore(base + bonus, this.hole.x, this.hole.y - 40);
         this.h.float((this.strokes === 1 ? '홀인원!' : `${this.strokes}타`) + (bonus ? ` · 연속 ${this.streak}` : ''), this.hole.x, this.hole.y - 60, '#ffd84b');
@@ -217,11 +226,12 @@ export class GolfGame extends MiniGame {
     if (this.dragging && this.dragStart) {
       const dx = this.dragStart[0] - p.x,
         dy = this.dragStart[1] - p.y;
-      const d = Math.min(140, Math.hypot(dx, dy));
+      const d = Math.hypot(dx, dy);
+      const pw = this.power(d);
       const ux = dx / (Math.hypot(dx, dy) || 1),
         uy = dy / (Math.hypot(dx, dy) || 1);
       // 예상 궤적: 처음 0.7초만 점선으로 (행성 중력 반영, 충돌은 무시)
-      let px = b.x, py = b.y, pvx = ux * d * 3.6, pvy = uy * d * 3.6;
+      let px = b.x, py = b.y, pvx = ux * pw, pvy = uy * pw;
       const step = 1 / 60;
       for (let i = 0; i < 42; i++) {
         for (const pl of this.planets) {
@@ -238,11 +248,17 @@ export class GolfGame extends MiniGame {
         }
       }
       a.lineStyle(2, 0xffd84b, 0.9);
-      a.lineBetween(b.x, b.y, b.x + ux * Math.min(d, 40), b.y + uy * Math.min(d, 40));
+      a.lineBetween(b.x, b.y, b.x + ux * 24, b.y + uy * 24);
+      // 세기 게이지 (공 아래)
+      const ratio = pw / GolfGame.MAXV;
+      a.fillStyle(0x000000, 0.5);
+      a.fillRect(b.x - 22, b.y + 12, 44, 5);
+      a.fillStyle(ratio >= 0.999 ? 0xff5fd2 : 0xffd84b, 1);
+      a.fillRect(b.x - 22, b.y + 12, 44 * ratio, 5);
       a.lineStyle(1, 0xffffff, 0.4);
       a.lineBetween(b.x, b.y, b.x - ux * 30, b.y - uy * 30);
     }
-    this.label.setText(`홀 ${this.holes} · 이번 홀 ${this.strokes}타 · 공을 드래그해서 발사`);
+    this.label.setText(`홀 ${this.holes} · 이번 홀 ${this.strokes}타 · 아무 데나 누르고 반대로 당겨서 발사`);
   }
 
   microDone() {
