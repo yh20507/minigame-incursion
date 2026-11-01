@@ -21,7 +21,7 @@ const userDir = process.env.PORTABLE_EXECUTABLE_DIR || path.dirname(app.getPath(
 // %APPDATA%/미니게임-인커젼/web 에 두고, 그 폴더를 exe 안 dist 보다 먼저 쓴다.
 // 그림·음악은 exe 안의 것을 그대로 쓴다 (용량이 커서 업데이트 대상 아님).
 const SHELL_API = 1; // 실행기(main.cjs)가 바뀌어 예전 exe 로는 못 돌리는 빌드가 나오면 올린다
-const DEFAULT_UPDATE_BASE = '';
+const DEFAULT_UPDATE_BASE = 'https://raw.githubusercontent.com/yh20507/minigame-incursion/web';
 const updDir = path.join(app.getPath('appData'), '미니게임-인커젼', 'web');
 const stageDir = updDir + '.new';
 let useUpd = false;
@@ -60,7 +60,7 @@ async function checkUpdate() {
   if (buildOf(remote) <= local) return false;
   fs.rmSync(stageDir, { recursive: true, force: true });
   for (const f of remote.files) {
-    const r = await net.fetch(`${base}/${f.name}`);
+    const r = await net.fetch(`${base}/${remote.dir ? remote.dir + '/' : ''}${f.name}`);
     if (!r.ok) throw new Error('download ' + f.name + ' ' + r.status);
     const buf = Buffer.from(await r.arrayBuffer());
     if (crypto.createHash('sha256').update(buf).digest('hex') !== f.sha256) throw new Error('hash ' + f.name);
